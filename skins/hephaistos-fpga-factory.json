@@ -1,0 +1,34 @@
+{
+    "skinId": "hephaistos-fpga-factory",
+    "name": "HEPHAISTOS FPGA Factory Skin",
+    "version": "1.0.0",
+    "description": "Ein durchgaengiger Charakter (HEPHAISTOS) durchlaeuft 12 Arbeitsstationen der FPGA Factory. Nur Akzentfarbe, Werkzeug und Icon aendern sich pro Schritt.",
+    "character": {
+          "name": "HEPHAISTOS",
+          "constant": {
+                  "body": "warmes Orange / Kupfer",
+                  "armor": "Schwarz / Graphit / Metall",
+                  "energyLines": "Cyan / Neon-Blau",
+                  "eyes": "Cyan",
+                  "background": "dunkle Schmiede / FPGA-Labor"
+          }
+    },
+    "librarian": {
+          "name": "KARIN",
+          "role": "Bibliothekarin / Wissens- und Dokumentationslayer"
+    },
+    "steps": [
+          { "step": 1, "id": "python", "emoji": "🐍", "title": "Python Claude", "accent": "#2D9CFF", "meaning": "Denken, Referenz, Software-Start", "image": "app-assets/images/01_Python Code.png" },
+          { "step": 2, "id": "golden-python", "emoji": "📋", "title": "Golden Python Claude", "accent": "#FFD166", "meaning": "Wahrheit, Oracle, Referenzstandard", "image": "app-assets/images/02_Golden Python.png" },
+          { "step": 3, "id": "testbench", "emoji": "🧪", "title": "Testbench Claude", "accent": "#4DFF88", "meaning": "Pruefung, Testvektoren, Validierung", "image": "app-assets/images/03_Testbench" },
+          { "step": 4, "id": "verilog", "emoji": "⚙️", "title": "Verilog Claude", "accent": "#8EA6B8", "meaning": "Hardwarebeschreibung, nuechtern, technisch", "image": "app-assets/images/04_Verilog.png" },
+          { "step": 5, "id": "rtl", "emoji": "🔷", "title": "RTL Claude", "accent": "#00B7FF", "meaning": "Simulation, Signale, Taktverlaeufe", "image": "app-assets/images/05_RTL.png" },
+          { "step": 6, "id": "vivado", "emoji": "🛠", "title": "Vivado Claude", "accent": "#FF8A00", "meaning": "Bauen, Synthese, Implementation", "image": "app-assets/images/06_Vivado.png" },
+          { "step": 7, "id": "timing", "emoji": "⏱", "title": "Timing Claude", "accent": "#FF3B5C", "meaning": "kritisch, Nanosekunden, Timing Closure", "image": "app-assets/images/07_Timing.png" },
+          { "step": 8, "id": "bitstream", "emoji": "📦", "title": "Bitstream Claude", "accent": "#9B5CFF", "meaning": "kompiliertes Ergebnis, Bitstream", "image": "app-assets/images/08_Bitstream.png" },
+          { "step": 9, "id": "flash", "emoji": "⬇️", "title": "Flash Claude", "accent": "#FFE600", "meaning": "Laden, Energie, JTAG/USB", "image": "app-assets/images/09_Flash.png" },
+          { "step": 10, "id": "saleae", "emoji": "🔬", "title": "Saleae Claude", "accent": "#00FF9C", "meaning": "echte Messung, Signal sauber, Beweis", "image": "app-assets/images/10_Saleae.png" },
+          { "step": 11, "id": "documentation", "emoji": "📑", "title": "Documentation Claude", "accent": "#6EA8FF", "meaning": "Ordnung, Patentmappe, Dokumentation", "image": "app-assets/images/11_Dokumentation.png" },
+          { "step": 12, "id": "deploy", "emoji": "🚀", "title": "Deploy Claude", "accent": "#FFCC4D", "meaning": "Auslieferung, Fertigstellung, Produkt", "image": "app-assets/images/12_Deployment.png" }
+    ]
+}
