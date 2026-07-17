@@ -1,5 +1,5 @@
 1:"$Sreact.fragment"
-2:I[39756,["/FPGA-Claude-Landingpage-Hub/shop/_next/static/chunks/2clv_8pxd6yk4.js","/FPGA-Claude-Landingpage-Hub/shop/_next/static/chunks/14mrh2-p_w84d.js"],"default"]
-3:I[37457,["/FPGA-Claude-Landingpage-Hub/shop/_next/static/chunks/2clv_8pxd6yk4.js","/FPGA-Claude-Landingpage-Hub/shop/_next/static/chunks/14mrh2-p_w84d.js"],"default"]
+2:I[39756,["/shop/_next/static/chunks/2clv_8pxd6yk4.js","/shop/_next/static/chunks/14mrh2-p_w84d.js"],"default"]
+3:I[37457,["/shop/_next/static/chunks/2clv_8pxd6yk4.js","/shop/_next/static/chunks/14mrh2-p_w84d.js"],"default"]
 4:[]
-0:{"rsc":["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]]}],"isPartial":false,"staleTime":300,"varyParams":"$W4","buildId":"b9-28ERZzkOO1g5b8hsBx"}
+0:{"rsc":["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]]}],"isPartial":false,"staleTime":300,"varyParams":"$W4","buildId":"b2WgEfdRNEx7iEUW_pSNE"}
