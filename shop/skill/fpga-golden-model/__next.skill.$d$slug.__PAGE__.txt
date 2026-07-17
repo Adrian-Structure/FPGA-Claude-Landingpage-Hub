@@ -1,6 +1,6 @@
 1:"$Sreact.fragment"
-2:I[50997,["/shop/_next/static/chunks/2clv_8pxd6yk4.js","/shop/_next/static/chunks/14mrh2-p_w84d.js","/shop/_next/static/chunks/2pbzj60dymkfu.js"],"default"]
-3:I[97367,["/shop/_next/static/chunks/2clv_8pxd6yk4.js","/shop/_next/static/chunks/14mrh2-p_w84d.js"],"OutletBoundary"]
+2:I[50997,["/shop/_next/static/chunks/0k3rivo-ijf0r.js","/shop/_next/static/chunks/14mrh2-p_w84d.js","/shop/_next/static/chunks/2xk7li3p2kawu.js","/shop/_next/static/chunks/2osh9qtqf75to.js"],"default"]
+3:I[97367,["/shop/_next/static/chunks/0k3rivo-ijf0r.js","/shop/_next/static/chunks/14mrh2-p_w84d.js"],"OutletBoundary"]
 4:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"slug":"fpga-golden-model"}],[["$","script","script-0",{"src":"/shop/_next/static/chunks/2pbzj60dymkfu.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"CiPgG-sMIMNj7B0neOFdJ"}
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"slug":"fpga-golden-model"}],[["$","script","script-0",{"src":"/shop/_next/static/chunks/2xk7li3p2kawu.js","async":true}],["$","script","script-1",{"src":"/shop/_next/static/chunks/2osh9qtqf75to.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"ZR8y4F4QUKz4a8BaUsZN6"}
 5:null
