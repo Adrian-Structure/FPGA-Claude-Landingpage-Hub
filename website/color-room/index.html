@@ -216,11 +216,24 @@
     max-width:44ch;
   }
   .hero-aside{
-    border-left:1px solid rgba(244,237,228,0.35);
-    padding-left:28px;
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+  }
+  .hero-portrait{
+    width:100%;
+    height:auto;
+    aspect-ratio:1/1;
+    object-fit:cover;
+    border-radius:4px;
+    display:block;
+    box-shadow:0 24px 60px -24px rgba(30,15,10,0.6);
   }
   .hero-aside p{
     font-size:0.92rem;
+    border-left:1px solid rgba(244,237,228,0.35);
+    padding-left:28px;
+    margin:0;
   }
   .scroll-cue{
     display:inline-flex;
@@ -239,7 +252,7 @@
 
   @media (max-width:820px){
     .hero .wrap{ grid-template-columns:1fr; }
-    .hero-aside{ border-left:none; border-top:1px solid rgba(244,237,228,0.35); padding-left:0; padding-top:24px; }
+    .hero-aside p{ border-left:none; border-top:1px solid rgba(244,237,228,0.35); padding-left:0; padding-top:24px; }
   }
 
   /* ---------- Buttons / links as gallery labels ---------- */
@@ -570,6 +583,7 @@
         <a class="scroll-cue" href="#galerie">Zur Galerie <span class="arrow" aria-hidden="true">↓</span></a>
       </div>
       <div class="hero-aside reveal">
+        <img class="hero-portrait" src="./images/hero-portrait.jpg" alt="Farbstudie in Terrakotta — monochrome Rauminszenierung" loading="lazy" width="900" height="900">
         <p>Freischaffende Fotografin und Malerin mit Fokus auf Farbe, Licht und Stille — tätig seit [Jahr] in [Stadt].</p>
       </div>
     </div>
