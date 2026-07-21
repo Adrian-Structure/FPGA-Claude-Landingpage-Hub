@@ -396,8 +396,11 @@
   }
   .portrait-frame{ overflow:hidden; border:1px solid rgba(28,26,23,0.15); }
   .portrait-swatch{
-    aspect-ratio:3/4;
-    background-image:linear-gradient(165deg,#efe3cf,#B5472B 130%);
+    display:block;
+    width:100%;
+    height:auto;
+    aspect-ratio:4/5;
+    object-fit:cover;
     transition:transform 1.2s ease;
   }
   .portrait-frame:hover .portrait-swatch{ transform:scale(1.03); }
@@ -710,7 +713,7 @@
     <div class="wrap">
       <div class="about-grid">
         <div class="portrait-frame reveal">
-          <div class="portrait-swatch" role="img" aria-label="Platzhalterbild: Porträt von [Name] im Atelier"></div>
+          <img class="portrait-swatch" src="./images/atelier-portrait.jpg" alt="Porträt im Atelier — monochrome Farbstudie in Terrakotta" loading="lazy" width="800" height="1000">
         </div>
         <div class="about-text reveal">
           <span class="section-kicker" style="color:var(--terracotta-dark);">Atelier</span>
@@ -826,7 +829,7 @@
       </nav>
     </div>
     <div class="footer-bottom">
-      <span>© [JJJJ] Adrian-Structure. Alle Rechte vorbehalten.</span>
+      <span>© 2026 Adrian-Structure. Alle Rechte vorbehalten. · Bildmotive KI-generiert (OpenAI).</span>
       <nav aria-label="Rechtliche Hinweise">
         <ul class="legal-nav">
           <li><a href="../../impressum.html">Impressum</a></li>
