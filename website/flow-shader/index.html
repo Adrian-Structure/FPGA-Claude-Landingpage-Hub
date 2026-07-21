@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adrian-Structure — Adaptive Shader-Engine für Echtzeit-Rendering</title>
+<meta name="description" content="Adrian-Structure: adaptive Shader-Engine für Echtzeit-Rendering mit niedriger Latenz, hoher Uptime und vollem API-Zugriff. Jetzt Live-Demo anfragen.">
+<style>
+  :root{
+    --bg-base:#06080F;
+    --bg-surface:#10182A;
+    --teal:#46E8C9;
+    --coral:#FF6F52;
+    --ink:#EEF2F8;
+    --border-glass: rgba(238,242,248,0.10);
+    --border-glass-strong: rgba(238,242,248,0.16);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg-base);
+    color:var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-weight:400;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4{
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-weight:800;
+    letter-spacing:-0.02em;
+    margin:0 0 0.5em 0;
+    color:var(--ink);
+  }
+  a{color:inherit;}
+  img{max-width:100%; display:block;}
+  .container{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+  section{position:relative; padding:96px 0;}
+  .eyebrow{
+    display:inline-block;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--teal);
+    margin-bottom:14px;
+  }
+  .section-head{max-width:640px; margin:0 auto 56px auto; text-align:center;}
+  .section-head p{color:rgba(238,242,248,0.72); font-size:17px;}
+
+  /* ===== animated flow background ===== */
+  .flow-bg{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    overflow:hidden;
+    pointer-events:none;
+  }
+  .flow-bg::before,
+  .flow-bg::after{
+    content:"";
+    position:absolute;
+    width:140%;
+    height:140%;
+    left:-20%;
+    top:-20%;
+    border-radius:45%;
+    filter:blur(80px);
+    opacity:0.55;
+    animation: drift 34s ease-in-out infinite;
+  }
+  .flow-bg::before{
+    background: radial-gradient(circle at 30% 30%, var(--teal), transparent 60%);
+    animation-duration:38s;
+  }
+  .flow-bg::after{
+    background: radial-gradient(circle at 70% 70%, var(--coral), transparent 60%);
+    animation-duration:29s;
+    animation-direction:reverse;
+  }
+  @keyframes drift{
+    0%{ transform: translate(0,0) rotate(0deg) scale(1); }
+    33%{ transform: translate(4%, 6%) rotate(6deg) scale(1.08); }
+    66%{ transform: translate(-5%, -3%) rotate(-5deg) scale(0.96); }
+    100%{ transform: translate(0,0) rotate(0deg) scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .flow-bg::before, .flow-bg::after{ animation: none; }
+  }
+
+  /* ===== glass surfaces ===== */
+  .glass{
+    background: linear-gradient(180deg, rgba(16,24,42,0.72), rgba(16,24,42,0.55));
+    border:1px solid var(--border-glass);
+    border-radius:20px;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 20px 60px -30px rgba(70,232,201,0.18), 0 20px 60px -30px rgba(255,111,82,0.10);
+  }
+
+  /* ===== nav ===== */
+  header.nav-wrap{
+    position:fixed;
+    top:16px;
+    left:0; right:0;
+    z-index:100;
+    display:flex;
+    justify-content:center;
+    padding:0 16px;
+  }
+  nav.pill{
+    width:100%;
+    max-width:1080px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:12px 18px;
+    border-radius:999px;
+    background: rgba(16,24,42,0.55);
+    border:1px solid var(--border-glass-strong);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .logo{
+    font-weight:800;
+    font-size:18px;
+    letter-spacing:-0.01em;
+    white-space:nowrap;
+  }
+  .logo .dot{ color: var(--teal); }
+  .nav-links{
+    display:flex;
+    gap:22px;
+    list-style:none;
+    margin:0; padding:0;
+    font-size:14px;
+    font-weight:500;
+  }
+  .nav-links a{
+    text-decoration:none;
+    color: rgba(238,242,248,0.85);
+    transition: color .2s ease;
+  }
+  .nav-links a:hover{ color: var(--teal); }
+  .nav-cta-slot{ display:flex; align-items:center; }
+  .burger{
+    display:none;
+    background:none;
+    border:1px solid var(--border-glass-strong);
+    border-radius:10px;
+    width:40px; height:40px;
+    color:var(--ink);
+    font-size:18px;
+    cursor:pointer;
+  }
+  #nav-toggle{ display:none; }
+
+  /* ===== buttons ===== */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:13px 26px;
+    border-radius:999px;
+    font-weight:700;
+    font-size:14.5px;
+    text-decoration:none;
+    cursor:pointer;
+    border:none;
+    transition: transform .3s ease-out, box-shadow .3s ease-out;
+    white-space:nowrap;
+  }
+  .btn-primary{
+    background: linear-gradient(120deg, var(--teal), var(--coral));
+    background-size:200% 200%;
+    color:#06080F;
+    animation: sheen 8s ease infinite;
+  }
+  @keyframes sheen{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+  }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 14px 30px -12px rgba(70,232,201,0.45); }
+  .btn-ghost{
+    background:transparent;
+    color:var(--ink);
+    border:1px solid var(--border-glass-strong);
+  }
+  .btn-ghost:hover{ border-color:var(--teal); box-shadow:0 0 0 3px rgba(70,232,201,0.12); transform:translateY(-2px);}
+  .btn-sm{ padding:10px 20px; font-size:13.5px; }
+  .btn-block{ width:100%; }
+
+  /* ===== hero ===== */
+  .hero{
+    padding:190px 0 120px 0;
+    text-align:center;
+  }
+  .hero h1{
+    font-size:64px;
+    line-height:1.06;
+    max-width:820px;
+    margin:0 auto 22px auto;
+  }
+  .hero .grad-word{
+    background: linear-gradient(100deg, var(--teal), var(--coral));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero p.sub{
+    max-width:560px;
+    margin:0 auto 38px auto;
+    font-size:18px;
+    color:rgba(238,242,248,0.75);
+  }
+  .hero-ctas{
+    display:flex;
+    gap:16px;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+  .hero-visual{
+    margin:70px auto 0 auto;
+    max-width:920px;
+    height:320px;
+    border-radius:24px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-visual .flow-bg::before,
+  .hero-visual .flow-bg::after{ opacity:0.75; }
+  .hero-visual .grid-overlay{
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(238,242,248,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(238,242,248,0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .hero-visual .caption-chip{
+    position:absolute;
+    bottom:18px; left:18px;
+    font-size:12px;
+    font-weight:600;
+    padding:8px 14px;
+    border-radius:999px;
+    background:rgba(6,8,15,0.55);
+    border:1px solid var(--border-glass-strong);
+    z-index:2;
+  }
+
+  /* ===== trust bar ===== */
+  .trust{
+    padding:36px 0;
+    border-top:1px solid var(--border-glass);
+    border-bottom:1px solid var(--border-glass);
+  }
+  .trust p{
+    text-align:center;
+    font-size:13px;
+    letter-spacing:0.04em;
+    color:rgba(238,242,248,0.55);
+    margin-bottom:26px;
+    text-transform:uppercase;
+  }
+  .trust-logos{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:14px;
+  }
+  .trust-logos span{
+    padding:10px 20px;
+    border-radius:12px;
+    border:1px solid var(--border-glass);
+    font-weight:700;
+    font-size:14px;
+    color:rgba(238,242,248,0.65);
+  }
+
+  /* ===== stats ===== */
+  .stats-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+  }
+  .stat-card{
+    padding:34px 24px;
+    text-align:center;
+  }
+  .stat-num{
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-weight:800;
+    font-size:42px;
+    letter-spacing:-0.02em;
+    background: linear-gradient(100deg, var(--teal), var(--coral));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    margin-bottom:8px;
+  }
+  .stat-label{ font-size:14px; color:rgba(238,242,248,0.68); }
+
+  /* ===== features ===== */
+  .features-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+  }
+  .feature-card{
+    padding:30px 26px;
+    transition: transform .35s ease-out, box-shadow .35s ease-out, border-color .35s ease-out;
+  }
+  .feature-card:hover{
+    transform:translateY(-6px);
+    border-color: rgba(70,232,201,0.4);
+    box-shadow: 0 24px 50px -22px rgba(70,232,201,0.30);
+  }
+  .feature-icon{
+    width:46px; height:46px;
+    border-radius:14px;
+    display:flex; align-items:center; justify-content:center;
+    background: linear-gradient(135deg, rgba(70,232,201,0.22), rgba(255,111,82,0.22));
+    border:1px solid var(--border-glass-strong);
+    margin-bottom:18px;
+    font-size:20px;
+  }
+  .feature-card h3{ font-size:19px; margin-bottom:8px; }
+  .feature-card p{ font-size:15px; color:rgba(238,242,248,0.72); margin:0; }
+
+  /* ===== pricing ===== */
+  .pricing-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+    align-items:stretch;
+  }
+  .price-card{
+    padding:34px 28px;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+  }
+  .price-card.popular{
+    border-color: rgba(70,232,201,0.55);
+    box-shadow: 0 30px 70px -30px rgba(70,232,201,0.35);
+    transform:scale(1.03);
+  }
+  .badge-popular{
+    position:absolute;
+    top:-14px; left:50%; transform:translateX(-50%);
+    background: linear-gradient(120deg, var(--teal), var(--coral));
+    color:#06080F;
+    font-size:12px;
+    font-weight:800;
+    padding:6px 16px;
+    border-radius:999px;
+    letter-spacing:0.02em;
+  }
+  .price-card h3{ font-size:20px; margin-bottom:6px; }
+  .price-amount{
+    font-size:38px;
+    font-weight:800;
+    margin:10px 0 22px 0;
+  }
+  .price-amount span{ font-size:15px; font-weight:500; color:rgba(238,242,248,0.6);}
+  .price-card ul{
+    list-style:none;
+    margin:0 0 28px 0;
+    padding:0;
+    flex:1;
+  }
+  .price-card li{
+    font-size:14.5px;
+    padding:9px 0;
+    border-bottom:1px solid var(--border-glass);
+    color:rgba(238,242,248,0.82);
+    display:flex;
+    gap:10px;
+  }
+  .price-card li::before{ content:"✓"; color:var(--teal); font-weight:800; }
+  .price-card li:last-child{ border-bottom:none; }
+
+  /* ===== integrations ===== */
+  .integrations-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:16px;
+  }
+  .integration-tile{
+    padding:24px 12px;
+    text-align:center;
+    font-weight:700;
+    font-size:14px;
+    color:rgba(238,242,248,0.75);
+  }
+  .integration-tile .integration-icon{
+    width:38px; height:38px;
+    margin:0 auto 10px auto;
+    border-radius:10px;
+    background: linear-gradient(135deg, rgba(70,232,201,0.25), rgba(255,111,82,0.25));
+    border:1px solid var(--border-glass-strong);
+  }
+
+  /* ===== docs ===== */
+  .docs-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+  }
+  .doc-card{
+    padding:28px 24px;
+  }
+  .doc-card h3{ font-size:17px; margin-bottom:8px; }
+  .doc-card p{ font-size:14px; color:rgba(238,242,248,0.7); margin:0 0 18px 0; }
+  .doc-link{
+    font-size:14px;
+    font-weight:700;
+    color:var(--teal);
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  .doc-link:hover{ text-decoration:underline; }
+
+  /* ===== contact ===== */
+  .contact-wrap{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+    align-items:center;
+  }
+  .contact-copy h2{ font-size:36px; }
+  .contact-copy p{ color:rgba(238,242,248,0.75); font-size:16px; max-width:420px; }
+  form.contact-form{
+    padding:32px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .field label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:6px;
+    color:rgba(238,242,248,0.8);
+  }
+  .field input,
+  .field textarea{
+    width:100%;
+    padding:12px 14px;
+    border-radius:12px;
+    border:1px solid var(--border-glass-strong);
+    background: rgba(6,8,15,0.4);
+    color:var(--ink);
+    font-family:inherit;
+    font-size:14.5px;
+    resize:vertical;
+  }
+  .field input:focus,
+  .field textarea:focus{
+    outline:none;
+    border-color:var(--teal);
+    box-shadow:0 0 0 3px rgba(70,232,201,0.15);
+  }
+  .field textarea{ min-height:110px; }
+  .mailto-note{ font-size:13px; color:rgba(238,242,248,0.55); }
+
+  /* ===== footer ===== */
+  footer{
+    border-top:1px solid var(--border-glass);
+    padding:56px 0 32px 0;
+  }
+  .footer-top{
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr;
+    gap:32px;
+    margin-bottom:36px;
+  }
+  .footer-brand p{
+    color:rgba(238,242,248,0.6);
+    font-size:14px;
+    max-width:280px;
+  }
+  footer h4{ font-size:14px; margin-bottom:14px; color:rgba(238,242,248,0.9); }
+  footer ul{ list-style:none; margin:0; padding:0; }
+  footer li{ margin-bottom:10px; }
+  footer a{
+    text-decoration:none;
+    font-size:14px;
+    color:rgba(238,242,248,0.65);
+  }
+  footer a:hover{ color:var(--teal); }
+  .footer-bottom{
+    border-top:1px solid var(--border-glass);
+    padding-top:22px;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+    font-size:13px;
+    color:rgba(238,242,248,0.5);
+  }
+
+  /* ===== responsive ===== */
+  @media (max-width:900px){
+    .stats-grid{ grid-template-columns:repeat(2,1fr); }
+    .features-grid{ grid-template-columns:repeat(2,1fr); }
+    .pricing-grid{ grid-template-columns:1fr; }
+    .price-card.popular{ transform:none; }
+    .integrations-grid{ grid-template-columns:repeat(3,1fr); }
+    .docs-grid{ grid-template-columns:repeat(2,1fr); }
+    .contact-wrap{ grid-template-columns:1fr; }
+    .footer-top{ grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width:720px){
+    .nav-links{
+      position:fixed;
+      top:74px; left:16px; right:16px;
+      flex-direction:column;
+      background: rgba(16,24,42,0.92);
+      border:1px solid var(--border-glass-strong);
+      border-radius:18px;
+      padding:18px;
+      backdrop-filter: blur(20px);
+      display:none;
+      gap:14px;
+    }
+    #nav-toggle:checked ~ .nav-links{ display:flex; }
+    .burger{ display:flex; align-items:center; justify-content:center; }
+    .hero h1{ font-size:40px; }
+    .hero{ padding-top:160px; }
+    .stats-grid{ grid-template-columns:1fr 1fr; }
+    .features-grid{ grid-template-columns:1fr; }
+    .integrations-grid{ grid-template-columns:repeat(2,1fr); }
+    .docs-grid{ grid-template-columns:1fr; }
+    .footer-top{ grid-template-columns:1fr; }
+  }
+
+  /* ===== theme awareness (design commits to dark, but respect explicit light override) ===== */
+  :root[data-theme="light"] body{
+    background: var(--bg-base);
+    color: var(--ink);
+  }
+</style>
+</head>
+<body>
+
+<header class="nav-wrap">
+  <nav class="pill" aria-label="Hauptnavigation">
+    <a href="#top" class="logo" aria-label="Adrian-Structure Startseite">Adrian<span class="dot">Structure</span></a>
+    <input type="checkbox" id="nav-toggle" aria-hidden="true">
+    <ul class="nav-links">
+      <li><a href="#statistik">Statistik</a></li>
+      <li><a href="#preise">Preise</a></li>
+      <li><a href="#integrationen">Integrationen</a></li>
+      <li><a href="#doku">Doku</a></li>
+      <li><a href="#kontakt">Kontakt</a></li>
+    </ul>
+    <div class="nav-cta-slot">
+      <a href="#kontakt" class="btn btn-primary btn-sm">Demo anfragen</a>
+      <label for="nav-toggle" class="burger" aria-label="Menü öffnen/schließen" role="button" tabindex="0" style="margin-left:10px;" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('nav-toggle').checked=!document.getElementById('nav-toggle').checked;}">☰</label>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <span class="eyebrow">Next-Gen Rendering Infrastructure</span>
+      <h1>Shader-Licht, das sich <span class="grad-word">in Echtzeit</span> formt</h1>
+      <p class="sub">Adrian-Structure ist die adaptive Shader-Engine für Teams, die Rendering nicht dem Zufall überlassen — flüssig, latenzarm, produktionsreif.</p>
+      <div class="hero-ctas">
+        <a href="#kontakt" class="btn btn-primary">Live-Demo starten</a>
+        <a href="#doku" class="btn btn-ghost">Doku ansehen</a>
+      </div>
+      <div class="hero-visual glass">
+        <div class="flow-bg" aria-hidden="true"></div>
+        <div class="grid-overlay" aria-hidden="true"></div>
+        <span class="caption-chip">Live-Vorschau · adaptive Shader-Pipeline</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST BAR -->
+  <section class="trust" style="padding-top:0;">
+    <div class="container">
+      <p>Vertraut von Teams bei [Firma A], [Firma B] und [Firma C]</p>
+      <div class="trust-logos">
+        <span>[Firma A]</span>
+        <span>[Firma B]</span>
+        <span>[Firma C]</span>
+        <span>[Firma D]</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATISTIK -->
+  <section id="statistik">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Zahlen statt Behauptungen</span>
+        <h2>Technische Überlegenheit, messbar</h2>
+        <p>Kennzahlen aus unserer Referenzumgebung — beim Onboarding richten wir sie auf eure realen Messwerte ein.</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card glass">
+          <div class="stat-num">[XX]%</div>
+          <div class="stat-label">schnellere Renderzeit</div>
+        </div>
+        <div class="stat-card glass">
+          <div class="stat-num">[X] Mio.</div>
+          <div class="stat-label">Aufrufe pro Tag</div>
+        </div>
+        <div class="stat-card glass">
+          <div class="stat-num">[XX] ms</div>
+          <div class="stat-label">durchschnittliche Latenz</div>
+        </div>
+        <div class="stat-card glass">
+          <div class="stat-num">[XX]%</div>
+          <div class="stat-label">Uptime im SLA-Zeitraum</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Kernfähigkeiten</span>
+        <h2>Was unter der Oberfläche fließt</h2>
+        <p>Sechs Bausteine, die zusammen die Rendering-Pipeline eures Produkts tragen.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card glass">
+          <div class="feature-icon" aria-hidden="true">◎</div>
+          <h3>Echtzeit-Rendering</h3>
+          <p>Frames werden im laufenden Betrieb neu berechnet, ohne spürbaren Bruch im Bild.</p>
+        </div>
+        <div class="feature-card glass">
+          <div class="feature-icon" aria-hidden="true">◈</div>
+          <h3>Adaptive Shader-Engine</h3>
+          <p>Shader passen sich an Gerät und Last an, statt starr vorberechnet zu sein.</p>
+        </div>
+        <div class="feature-card glass">
+          <div class="feature-icon" aria-hidden="true">⟳</div>
+          <h3>Cloud-Sync</h3>
+          <p>Projektzustände synchronisieren geräteübergreifend, ohne manuellen Export.</p>
+        </div>
+        <div class="feature-card glass">
+          <div class="feature-icon" aria-hidden="true">⌁</div>
+          <h3>API-Zugriff</h3>
+          <p>Volle programmatische Kontrolle über Render-Jobs, Presets und Ergebnisse.</p>
+        </div>
+        <div class="feature-card glass">
+          <div class="feature-icon" aria-hidden="true">◐</div>
+          <h3>Farb- &amp; Lichtsteuerung</h3>
+          <p>Feingranulare Kontrolle über Duotone-Verläufe, Glow und Belichtung pro Szene.</p>
+        </div>
+        <div class="feature-card glass">
+          <div class="feature-icon" aria-hidden="true">▦</div>
+          <h3>Team-Workspaces</h3>
+          <p>Geteilte Umgebungen mit Versionsständen, damit Teams parallel arbeiten können.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="preise">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Preise</span>
+        <h2>Ein Tarif für jede Projektgröße</h2>
+        <p>Richtwerte für den Einstieg — eure endgültigen Konditionen legen wir gemeinsam im Vertrag fest.</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="price-card glass">
+          <h3>Starter</h3>
+          <div class="price-amount">[XX] € <span>/ Monat</span></div>
+          <ul>
+            <li>1 Render-Workspace</li>
+            <li>Bis zu [X] Render-Jobs / Monat</li>
+            <li>Community-Support</li>
+            <li>Standard-Shader-Bibliothek</li>
+          </ul>
+          <a href="#kontakt" class="btn btn-ghost btn-block">Demo anfragen</a>
+        </div>
+        <div class="price-card glass popular">
+          <span class="badge-popular">Beliebt</span>
+          <h3>Pro</h3>
+          <div class="price-amount">[XX] € <span>/ Monat</span></div>
+          <ul>
+            <li>Unbegrenzte Workspaces</li>
+            <li>Bis zu [X] Render-Jobs / Monat</li>
+            <li>Priorisierter Support</li>
+            <li>Adaptive Shader-Engine inklusive</li>
+            <li>API-Vollzugriff</li>
+          </ul>
+          <a href="#kontakt" class="btn btn-primary btn-block">Demo anfragen</a>
+        </div>
+        <div class="price-card glass">
+          <h3>Enterprise</h3>
+          <div class="price-amount">[Individuell]</div>
+          <ul>
+            <li>Dedizierte Infrastruktur</li>
+            <li>Individuelles SLA</li>
+            <li>Dediziertes Onboarding</li>
+            <li>Single Sign-On</li>
+            <li>Persönlicher Ansprechpartner</li>
+          </ul>
+          <a href="#kontakt" class="btn btn-ghost btn-block">Kontakt aufnehmen</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTEGRATIONEN -->
+  <section id="integrationen">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Ökosystem</span>
+        <h2>Fügt sich in euren Stack ein</h2>
+        <p>Adrian-Structure verbindet sich mit den Werkzeugen, die euer Team schon nutzt.</p>
+      </div>
+      <div class="integrations-grid">
+        <div class="integration-tile glass"><div class="integration-icon" role="img" aria-label="[Tool 1] Logo-Platzhalter"></div>[Tool 1]</div>
+        <div class="integration-tile glass"><div class="integration-icon" role="img" aria-label="[Tool 2] Logo-Platzhalter"></div>[Tool 2]</div>
+        <div class="integration-tile glass"><div class="integration-icon" role="img" aria-label="[Tool 3] Logo-Platzhalter"></div>[Tool 3]</div>
+        <div class="integration-tile glass"><div class="integration-icon" role="img" aria-label="[Tool 4] Logo-Platzhalter"></div>[Tool 4]</div>
+        <div class="integration-tile glass"><div class="integration-icon" role="img" aria-label="[Tool 5] Logo-Platzhalter"></div>[Tool 5]</div>
+        <div class="integration-tile glass"><div class="integration-icon" role="img" aria-label="[Tool 6] Logo-Platzhalter"></div>[Tool 6]</div>
+        <div class="integration-tile glass"><div class="integration-icon" role="img" aria-label="[Tool 7] Logo-Platzhalter"></div>[Tool 7]</div>
+        <div class="integration-tile glass"><div class="integration-icon" role="img" aria-label="[Tool 8] Logo-Platzhalter"></div>[Tool 8]</div>
+        <div class="integration-tile glass"><div class="integration-icon" role="img" aria-label="[Tool 9] Logo-Platzhalter"></div>[Tool 9]</div>
+        <div class="integration-tile glass"><div class="integration-icon" role="img" aria-label="[Tool 10] Logo-Platzhalter"></div>[Tool 10]</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOKU -->
+  <section id="doku">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Für Entwickler</span>
+        <h2>Dokumentation, die etwas hergibt</h2>
+        <p>Direkter Einstieg für technische Teams — vom ersten Aufruf bis zum Deep-Dive.</p>
+      </div>
+      <div class="docs-grid">
+        <div class="doc-card glass">
+          <h3>Schnellstart</h3>
+          <p>In wenigen Minuten vom ersten Aufruf zum ersten gerenderten Frame.</p>
+          <a href="#" class="doc-link">Zur Doku →</a>
+        </div>
+        <div class="doc-card glass">
+          <h3>API-Referenz</h3>
+          <p>Alle Endpunkte, Parameter und Antwortformate im Detail.</p>
+          <a href="#" class="doc-link">Zur Doku →</a>
+        </div>
+        <div class="doc-card glass">
+          <h3>Guides</h3>
+          <p>Praxisnahe Anleitungen für Shader-Presets, Sync und Deployment.</p>
+          <a href="#" class="doc-link">Zur Doku →</a>
+        </div>
+        <div class="doc-card glass">
+          <h3>Changelog</h3>
+          <p>Alle Versionsänderungen und Migrationen chronologisch.</p>
+          <a href="#" class="doc-link">Zur Doku →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KONTAKT -->
+  <section id="kontakt">
+    <div class="container">
+      <div class="contact-wrap">
+        <div class="contact-copy">
+          <span class="eyebrow">Bereit loszulegen?</span>
+          <h2>Sprecht mit uns über euren Rendering-Bedarf</h2>
+          <p>Kurze Nachricht genügt — wir melden uns mit einem Demo-Termin zurück.</p>
+          <p class="mailto-note">Oder direkt per Mail: <a href="mailto:roberto.adrian@adrian-structure.com">roberto.adrian@adrian-structure.com</a></p>
+        </div>
+        <form class="contact-form glass" action="mailto:roberto.adrian@adrian-structure.com" method="post" enctype="text/plain">
+          <div class="field">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="[Ihr Name]" autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="email">E-Mail</label>
+            <input type="email" id="email" name="email" placeholder="roberto.adrian@adrian-structure.com" autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="message">Nachricht</label>
+            <textarea id="message" name="message" placeholder="[Ihre Nachricht]"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Demo anfragen</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#top" class="logo" aria-label="Adrian-Structure Startseite">Adrian<span class="dot">Structure</span></a>
+        <p>Ein Produkt von Adrian-Structure. Rendering-Infrastruktur für Teams, die Licht ernst nehmen.</p>
+      </div>
+      <div>
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#statistik">Statistik</a></li>
+          <li><a href="#preise">Preise</a></li>
+          <li><a href="#integrationen">Integrationen</a></li>
+          <li><a href="#doku">Doku</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Rechtliches</h4>
+        <ul>
+          <li><a href="../../impressum.html">Impressum</a></li>
+          <li><a href="../../datenschutz.html">Datenschutz</a></li>
+          <li><a href="mailto:roberto.adrian@adrian-structure.com">roberto.adrian@adrian-structure.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© [20XX] Adrian-Structure. Alle Rechte vorbehalten.</span>
+      <span>Diese Seite ist ein Mockup zu Demonstrationszwecken.</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
