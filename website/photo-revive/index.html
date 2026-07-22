@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adrian-Structure — KI-Fotorestauration & Kolorierung: alte Fotos, neues Leben</title>
+<meta name="description" content="Adrian-Structure haucht alten und verblassten Fotos neues Leben ein: Schwarzweiß wird koloriert, Details geschärft, verlorene Gesichter kommen wieder klar zum Vorschein. Bring deine Erinnerungen zurück ins Licht.">
+<style>
+  :root{
+    --bg-base:#06080F;
+    --bg-surface:#10182A;
+    --teal:#46E8C9;
+    --coral:#FF6F52;
+    --ink:#EEF2F8;
+    --border-glass: rgba(238,242,248,0.10);
+    --border-glass-strong: rgba(238,242,248,0.16);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg-base);
+    color:var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-weight:400;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4{
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-weight:800;
+    letter-spacing:-0.02em;
+    margin:0 0 0.5em 0;
+    color:var(--ink);
+  }
+  a{color:inherit;}
+  img{max-width:100%; display:block;}
+  .container{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+  section{position:relative; padding:96px 0;}
+  .eyebrow{
+    display:inline-block;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--teal);
+    margin-bottom:14px;
+  }
+  .section-head{max-width:640px; margin:0 auto 56px auto; text-align:center;}
+  .section-head p{color:rgba(238,242,248,0.72); font-size:17px;}
+
+  /* ===== animated flow background ===== */
+  .flow-bg{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    overflow:hidden;
+    pointer-events:none;
+  }
+  .flow-bg::before,
+  .flow-bg::after{
+    content:"";
+    position:absolute;
+    width:140%;
+    height:140%;
+    left:-20%;
+    top:-20%;
+    border-radius:45%;
+    filter:blur(80px);
+    opacity:0.55;
+    animation: drift 34s ease-in-out infinite;
+  }
+  .flow-bg::before{
+    background: radial-gradient(circle at 30% 30%, var(--teal), transparent 60%);
+    animation-duration:38s;
+  }
+  .flow-bg::after{
+    background: radial-gradient(circle at 70% 70%, var(--coral), transparent 60%);
+    animation-duration:29s;
+    animation-direction:reverse;
+  }
+  @keyframes drift{
+    0%{ transform: translate(0,0) rotate(0deg) scale(1); }
+    33%{ transform: translate(4%, 6%) rotate(6deg) scale(1.08); }
+    66%{ transform: translate(-5%, -3%) rotate(-5deg) scale(0.96); }
+    100%{ transform: translate(0,0) rotate(0deg) scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .flow-bg::before, .flow-bg::after{ animation: none; }
+  }
+
+  /* ===== glass surfaces ===== */
+  .glass{
+    background: linear-gradient(180deg, rgba(16,24,42,0.72), rgba(16,24,42,0.55));
+    border:1px solid var(--border-glass);
+    border-radius:20px;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 20px 60px -30px rgba(70,232,201,0.18), 0 20px 60px -30px rgba(255,111,82,0.10);
+  }
+
+  /* ===== nav ===== */
+  header.nav-wrap{
+    position:fixed;
+    top:16px;
+    left:0; right:0;
+    z-index:100;
+    display:flex;
+    justify-content:center;
+    padding:0 16px;
+  }
+  nav.pill{
+    width:100%;
+    max-width:1080px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:12px 18px;
+    border-radius:999px;
+    background: rgba(16,24,42,0.55);
+    border:1px solid var(--border-glass-strong);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .logo{
+    font-weight:800;
+    font-size:18px;
+    letter-spacing:-0.01em;
+    white-space:nowrap;
+  }
+  .logo .dot{ color: var(--teal); }
+  .nav-links{
+    display:flex;
+    gap:22px;
+    list-style:none;
+    margin:0; padding:0;
+    font-size:14px;
+    font-weight:500;
+  }
+  .nav-links a{
+    text-decoration:none;
+    color: rgba(238,242,248,0.85);
+    transition: color .2s ease;
+  }
+  .nav-links a:hover{ color: var(--teal); }
+  .nav-cta-slot{ display:flex; align-items:center; }
+  .burger{
+    display:none;
+    background:none;
+    border:1px solid var(--border-glass-strong);
+    border-radius:10px;
+    width:40px; height:40px;
+    color:var(--ink);
+    font-size:18px;
+    cursor:pointer;
+  }
+  #nav-toggle{ display:none; }
+
+  /* ===== buttons ===== */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:13px 26px;
+    border-radius:999px;
+    font-weight:700;
+    font-size:14.5px;
+    text-decoration:none;
+    cursor:pointer;
+    border:none;
+    transition: transform .3s ease-out, box-shadow .3s ease-out;
+    white-space:nowrap;
+  }
+  .btn-primary{
+    background: linear-gradient(120deg, var(--teal), var(--coral));
+    background-size:200% 200%;
+    color:#06080F;
+    animation: sheen 8s ease infinite;
+  }
+  @keyframes sheen{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+  }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 14px 30px -12px rgba(70,232,201,0.45); }
+  .btn-ghost{
+    background:transparent;
+    color:var(--ink);
+    border:1px solid var(--border-glass-strong);
+  }
+  .btn-ghost:hover{ border-color:var(--teal); box-shadow:0 0 0 3px rgba(70,232,201,0.12); transform:translateY(-2px);}
+  .btn-sm{ padding:10px 20px; font-size:13.5px; }
+  .btn-block{ width:100%; }
+
+  /* ===== hero ===== */
+  .hero{
+    padding:190px 0 120px 0;
+    text-align:center;
+  }
+  .hero h1{
+    font-size:64px;
+    line-height:1.06;
+    max-width:820px;
+    margin:0 auto 22px auto;
+  }
+  .hero .grad-word{
+    background: linear-gradient(100deg, var(--teal), var(--coral));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero p.sub{
+    max-width:560px;
+    margin:0 auto 38px auto;
+    font-size:18px;
+    color:rgba(238,242,248,0.75);
+  }
+  .hero-ctas{
+    display:flex;
+    gap:16px;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+  .hero-visual{
+    margin:70px auto 0 auto;
+    max-width:920px;
+    height:320px;
+    border-radius:24px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-visual .flow-bg::before,
+  .hero-visual .flow-bg::after{ opacity:0.75; }
+  .hero-visual .grid-overlay{
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(238,242,248,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(238,242,248,0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .hero-visual .caption-chip{
+    position:absolute;
+    bottom:18px; left:18px;
+    font-size:12px;
+    font-weight:600;
+    padding:8px 14px;
+    border-radius:999px;
+    background:rgba(6,8,15,0.55);
+    border:1px solid var(--border-glass-strong);
+    z-index:2;
+  }
+  .hero-visual-img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:1;
+  }
+
+  /* ===== trust bar ===== */
+  .trust{
+    padding:36px 0;
+    border-top:1px solid var(--border-glass);
+    border-bottom:1px solid var(--border-glass);
+  }
+  .trust p{
+    text-align:center;
+    font-size:13px;
+    letter-spacing:0.04em;
+    color:rgba(238,242,248,0.55);
+    margin-bottom:26px;
+    text-transform:uppercase;
+  }
+  .trust-logos{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:14px;
+  }
+  .trust-logos span{
+    padding:10px 20px;
+    border-radius:12px;
+    border:1px solid var(--border-glass);
+    font-weight:700;
+    font-size:14px;
+    color:rgba(238,242,248,0.65);
+  }
+
+  /* ===== stats ===== */
+  .stats-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+  }
+  .stat-card{
+    padding:34px 24px;
+    text-align:center;
+  }
+  .stat-num{
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-weight:800;
+    font-size:42px;
+    letter-spacing:-0.02em;
+    background: linear-gradient(100deg, var(--teal), var(--coral));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    margin-bottom:8px;
+  }
+  .stat-label{ font-size:14px; color:rgba(238,242,248,0.68); }
+  .showcase-tile{ padding:14px; margin:0; text-align:center; }
+  .showcase-img{ aspect-ratio:1/1; border-radius:14px; overflow:hidden;
+    background:linear-gradient(135deg, rgba(70,232,201,0.18), rgba(255,111,82,0.16));
+    display:flex; align-items:center; justify-content:center; }
+  .showcase-img img{ width:100%; height:100%; object-fit:cover; }
+  .showcase-img[data-label]:empty::before{ content:attr(data-label);
+    color:rgba(238,242,248,0.6); font-size:12px; letter-spacing:0.04em; text-align:center; padding:0 10px; }
+  .showcase-tile figcaption{ margin-top:12px; font-size:14px; color:rgba(238,242,248,0.82); font-weight:600; }
+  .step-num{ font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;
+    font-weight:800; font-size:22px;
+    background:linear-gradient(100deg,var(--teal),var(--coral)); -webkit-background-clip:text;
+    background-clip:text; color:transparent; margin-bottom:8px; }
+  .integration-tile small{ display:block; margin-top:8px; font-weight:400; font-size:13px;
+    color:rgba(238,242,248,0.66); line-height:1.5; }
+
+  /* ===== features ===== */
+  .features-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+  }
+  .feature-card{
+    padding:30px 26px;
+    transition: transform .35s ease-out, box-shadow .35s ease-out, border-color .35s ease-out;
+  }
+  .feature-card:hover{
+    transform:translateY(-6px);
+    border-color: rgba(70,232,201,0.4);
+    box-shadow: 0 24px 50px -22px rgba(70,232,201,0.30);
+  }
+  .feature-icon{
+    width:46px; height:46px;
+    border-radius:14px;
+    display:flex; align-items:center; justify-content:center;
+    background: linear-gradient(135deg, rgba(70,232,201,0.22), rgba(255,111,82,0.22));
+    border:1px solid var(--border-glass-strong);
+    margin-bottom:18px;
+    font-size:20px;
+  }
+  .feature-card h3{ font-size:19px; margin-bottom:8px; }
+  .feature-card p{ font-size:15px; color:rgba(238,242,248,0.72); margin:0; }
+
+  /* ===== pricing ===== */
+  .pricing-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+    align-items:stretch;
+  }
+  .price-card{
+    padding:34px 28px;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+  }
+  .price-card.popular{
+    border-color: rgba(70,232,201,0.55);
+    box-shadow: 0 30px 70px -30px rgba(70,232,201,0.35);
+    transform:scale(1.03);
+  }
+  .badge-popular{
+    position:absolute;
+    top:-14px; left:50%; transform:translateX(-50%);
+    background: linear-gradient(120deg, var(--teal), var(--coral));
+    color:#06080F;
+    font-size:12px;
+    font-weight:800;
+    padding:6px 16px;
+    border-radius:999px;
+    letter-spacing:0.02em;
+  }
+  .price-card h3{ font-size:20px; margin-bottom:6px; }
+  .price-amount{
+    font-size:38px;
+    font-weight:800;
+    margin:10px 0 22px 0;
+  }
+  .price-amount span{ font-size:15px; font-weight:500; color:rgba(238,242,248,0.6);}
+  .price-card ul{
+    list-style:none;
+    margin:0 0 28px 0;
+    padding:0;
+    flex:1;
+  }
+  .price-card li{
+    font-size:14.5px;
+    padding:9px 0;
+    border-bottom:1px solid var(--border-glass);
+    color:rgba(238,242,248,0.82);
+    display:flex;
+    gap:10px;
+  }
+  .price-card li::before{ content:"✓"; color:var(--teal); font-weight:800; }
+  .price-card li:last-child{ border-bottom:none; }
+
+  /* ===== integrations ===== */
+  .integrations-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:16px;
+  }
+  .integration-tile{
+    padding:24px 12px;
+    text-align:center;
+    font-weight:700;
+    font-size:14px;
+    color:rgba(238,242,248,0.75);
+  }
+  .integration-tile .integration-icon{
+    width:38px; height:38px;
+    margin:0 auto 10px auto;
+    border-radius:10px;
+    background: linear-gradient(135deg, rgba(70,232,201,0.25), rgba(255,111,82,0.25));
+    border:1px solid var(--border-glass-strong);
+  }
+
+  /* ===== docs ===== */
+  .docs-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+  }
+  .doc-card{
+    padding:28px 24px;
+  }
+  .doc-card h3{ font-size:17px; margin-bottom:8px; }
+  .doc-card p{ font-size:14px; color:rgba(238,242,248,0.7); margin:0 0 18px 0; }
+  .doc-link{
+    font-size:14px;
+    font-weight:700;
+    color:var(--teal);
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  .doc-link:hover{ text-decoration:underline; }
+
+  /* ===== contact ===== */
+  .contact-wrap{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+    align-items:center;
+  }
+  .contact-copy h2{ font-size:36px; }
+  .contact-copy p{ color:rgba(238,242,248,0.75); font-size:16px; max-width:420px; }
+  form.contact-form{
+    padding:32px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .field label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:6px;
+    color:rgba(238,242,248,0.8);
+  }
+  .field input,
+  .field textarea{
+    width:100%;
+    padding:12px 14px;
+    border-radius:12px;
+    border:1px solid var(--border-glass-strong);
+    background: rgba(6,8,15,0.4);
+    color:var(--ink);
+    font-family:inherit;
+    font-size:14.5px;
+    resize:vertical;
+  }
+  .field input:focus,
+  .field textarea:focus{
+    outline:none;
+    border-color:var(--teal);
+    box-shadow:0 0 0 3px rgba(70,232,201,0.15);
+  }
+  .field textarea{ min-height:110px; }
+  .mailto-note{ font-size:13px; color:rgba(238,242,248,0.55); }
+
+  /* ===== footer ===== */
+  footer{
+    border-top:1px solid var(--border-glass);
+    padding:56px 0 32px 0;
+  }
+  .footer-top{
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr;
+    gap:32px;
+    margin-bottom:36px;
+  }
+  .footer-brand p{
+    color:rgba(238,242,248,0.6);
+    font-size:14px;
+    max-width:280px;
+  }
+  footer h4{ font-size:14px; margin-bottom:14px; color:rgba(238,242,248,0.9); }
+  footer ul{ list-style:none; margin:0; padding:0; }
+  footer li{ margin-bottom:10px; }
+  footer a{
+    text-decoration:none;
+    font-size:14px;
+    color:rgba(238,242,248,0.65);
+  }
+  footer a:hover{ color:var(--teal); }
+  .footer-bottom{
+    border-top:1px solid var(--border-glass);
+    padding-top:22px;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+    font-size:13px;
+    color:rgba(238,242,248,0.5);
+  }
+
+  /* ===== responsive ===== */
+  @media (max-width:900px){
+    .stats-grid{ grid-template-columns:repeat(2,1fr); }
+    .features-grid{ grid-template-columns:repeat(2,1fr); }
+    .pricing-grid{ grid-template-columns:1fr; }
+    .price-card.popular{ transform:none; }
+    .integrations-grid{ grid-template-columns:repeat(3,1fr); }
+    .docs-grid{ grid-template-columns:repeat(2,1fr); }
+    .contact-wrap{ grid-template-columns:1fr; }
+    .footer-top{ grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width:720px){
+    .nav-links{
+      position:fixed;
+      top:74px; left:16px; right:16px;
+      flex-direction:column;
+      background: rgba(16,24,42,0.92);
+      border:1px solid var(--border-glass-strong);
+      border-radius:18px;
+      padding:18px;
+      backdrop-filter: blur(20px);
+      display:none;
+      gap:14px;
+    }
+    #nav-toggle:checked ~ .nav-links{ display:flex; }
+    .burger{ display:flex; align-items:center; justify-content:center; }
+    .hero h1{ font-size:40px; }
+    .hero{ padding-top:160px; }
+    .stats-grid{ grid-template-columns:1fr 1fr; }
+    .features-grid{ grid-template-columns:1fr; }
+    .integrations-grid{ grid-template-columns:repeat(2,1fr); }
+    .docs-grid{ grid-template-columns:1fr; }
+    .footer-top{ grid-template-columns:1fr; }
+  }
+
+  /* ===== theme awareness (design commits to dark, but respect explicit light override) ===== */
+  :root[data-theme="light"] body{
+    background: var(--bg-base);
+    color: var(--ink);
+  }
+
+  /* ===== language switch ===== */
+  .lang-switch{ display:flex; gap:2px; align-items:center; white-space:nowrap; }
+  .lang-switch button{ background:none; border:none; font-family:inherit; font-size:0.64rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink); opacity:0.5; cursor:pointer; padding:4px 6px; border-radius:3px; transition:opacity 0.25s ease; }
+  .lang-switch button:hover{ opacity:0.9; }
+  .lang-switch button.is-active{ opacity:1; border-bottom:1px solid currentColor; }
+  .lang-switch .lg-abbr{ display:none; }
+  @media (max-width:720px){
+    .lang-switch{ gap:1px; }
+    .lang-switch button{ padding:4px 5px; font-size:0.62rem; letter-spacing:0.06em; }
+  }
+  @media (max-width:560px){
+    .lang-switch .lg-full{ display:none; }
+    .lang-switch .lg-abbr{ display:inline; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav-wrap">
+  <nav class="pill" aria-label="Hauptnavigation">
+    <a href="#top" class="logo" aria-label="Adrian-Structure Startseite">Adrian<span class="dot">Structure</span></a>
+    <input type="checkbox" id="nav-toggle" aria-hidden="true">
+    <ul class="nav-links">
+      <li><a href="#statistik" data-i18n="nav_examples">Beispiele</a></li>
+      <li><a href="#preise" data-i18n="nav_pricing">Preise</a></li>
+      <li><a href="#integrationen" data-i18n="nav_process">Ablauf</a></li>
+      <li><a href="#doku" data-i18n="nav_faq">FAQ</a></li>
+      <li><a href="#kontakt" data-i18n="nav_contact">Kontakt</a></li>
+    </ul>
+    <div class="nav-cta-slot">
+      <div class="lang-switch" id="lang-switch" aria-label="Sprache / Language">
+        <button type="button" data-lang="de">DE</button>
+        <button type="button" data-lang="en">EN</button>
+        <button type="button" data-lang="ja"><span class="lg-full">日本語</span><span class="lg-abbr">日</span></button>
+        <button type="button" data-lang="zh"><span class="lg-full">中文</span><span class="lg-abbr">中</span></button>
+      </div>
+      <a href="#kontakt" class="btn btn-primary btn-sm" data-i18n="nav_cta" style="margin-left:14px;">Demo anfragen</a>
+      <label for="nav-toggle" class="burger" aria-label="Menü öffnen/schließen" role="button" tabindex="0" style="margin-left:10px;" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('nav-toggle').checked=!document.getElementById('nav-toggle').checked;}">☰</label>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <span class="eyebrow" data-i18n="hero_eyebrow">KI-Fotorestauration &amp; Kolorierung</span>
+      <h1><span data-i18n="hero_title_1">Alte Fotos, </span><span class="grad-word" data-i18n="hero_title_2">neues Leben</span></h1>
+      <p class="sub" data-i18n="hero_sub">Adrian-Structure haucht verblassten und alten Aufnahmen neues Leben ein: Schwarzweiß wird koloriert, Details werden geschärft, verlorene Gesichter kommen wieder klar zum Vorschein — die Menschen, die dir wichtig sind, in Farbe und Würde zurück.</p>
+      <div class="hero-ctas">
+        <a href="#kontakt" class="btn btn-primary" data-i18n="hero_cta1">Foto restaurieren lassen</a>
+        <a href="#features" class="btn btn-ghost" data-i18n="hero_cta2">So funktioniert's</a>
+      </div>
+      <div class="hero-visual glass">
+        <img class="hero-visual-img" src="./images/hero-shader.jpg" alt="Vorher-Nachher-Vorschau einer KI-Fotorestauration — fließende Teal-und-Koral-Lichtbänder auf dunklem Grund">
+        <div class="grid-overlay" aria-hidden="true"></div>
+        <span class="caption-chip" data-i18n="hero_caption">Adrian-Structure · KI-Bildengine</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST BAR -->
+  <section class="trust" style="padding-top:0;">
+    <div class="container">
+      <p data-i18n="trust_intro">Was Adrian-Structure aus deinen Fotos holt</p>
+      <div class="trust-logos">
+        <span data-i18n="trust_1">Schwarzweiß → Farbe</span>
+        <span data-i18n="trust_2">Schäden entfernt</span>
+        <span data-i18n="trust_3">Details geschärft</span>
+        <span data-i18n="trust_4">Privat &amp; sicher</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATISTIK -->
+  <section id="statistik">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow" data-i18n="examples_eyebrow">Beispiele</span>
+        <h2 data-i18n="examples_title">Aus verblasst wird lebendig</h2>
+        <p data-i18n="examples_intro">Was aus alten Aufnahmen wird — koloriert, restauriert, geschärft. Beispielbilder; im Template gegen eigene Ergebnisse tauschbar.</p>
+      </div>
+      <div class="stats-grid">
+        <figure class="showcase-tile glass">
+          <div class="showcase-img" data-label="Porträt · Beispielbild" data-i18n-label="examples_placeholder_1"></div>
+          <figcaption data-i18n="examples_1_caption">Koloriertes Porträt</figcaption>
+        </figure>
+        <figure class="showcase-tile glass">
+          <div class="showcase-img" data-label="Familienfoto · Beispielbild" data-i18n-label="examples_placeholder_2"></div>
+          <figcaption data-i18n="examples_2_caption">Restauriertes Familienfoto</figcaption>
+        </figure>
+        <figure class="showcase-tile glass">
+          <div class="showcase-img" data-label="Detail · Beispielbild" data-i18n-label="examples_placeholder_3"></div>
+          <figcaption data-i18n="examples_3_caption">Geschärftes Detail</figcaption>
+        </figure>
+        <figure class="showcase-tile glass">
+          <div class="showcase-img" data-label="Szene · Beispielbild" data-i18n-label="examples_placeholder_4"></div>
+          <figcaption data-i18n="examples_4_caption">Wiederbelebte Szene</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow" data-i18n="features_eyebrow">Was die KI kann</span>
+        <h2 data-i18n="features_title">Aus alt wird lebendig</h2>
+        <p data-i18n="features_intro">Sechs Schritte, die aus einer verblassten Aufnahme wieder ein lebendiges Bild machen.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card glass">
+          <div class="feature-icon" aria-hidden="true">◐</div>
+          <h3 data-i18n="features_1_title">Kolorieren</h3>
+          <p data-i18n="features_1_text">Schwarzweiß bekommt natürliche, stimmige Farben — Haut, Kleidung und Umgebung wirken echt.</p>
+        </div>
+        <div class="feature-card glass">
+          <div class="feature-icon" aria-hidden="true">✦</div>
+          <h3 data-i18n="features_2_title">Restaurieren</h3>
+          <p data-i18n="features_2_text">Kratzer, Risse, Flecken und Knicke verschwinden, ohne dass das Bild künstlich wirkt.</p>
+        </div>
+        <div class="feature-card glass">
+          <div class="feature-icon" aria-hidden="true">◎</div>
+          <h3 data-i18n="features_3_title">Schärfen &amp; Entrauschen</h3>
+          <p data-i18n="features_3_text">Verwaschene, körnige Aufnahmen werden wieder klar und ruhig.</p>
+        </div>
+        <div class="feature-card glass">
+          <div class="feature-icon" aria-hidden="true">☺</div>
+          <h3 data-i18n="features_4_title">Gesichter behutsam zurückholen</h3>
+          <p data-i18n="features_4_text">Verlorene Züge kommen sanft wieder zum Vorschein — nah am Original, ohne zu erfinden.</p>
+        </div>
+        <div class="feature-card glass">
+          <div class="feature-icon" aria-hidden="true">☀</div>
+          <h3 data-i18n="features_5_title">Licht &amp; Farbstich korrigieren</h3>
+          <p data-i18n="features_5_text">Vergilbte, zu dunkle oder ausgebleichte Bilder werden wieder ausgewogen.</p>
+        </div>
+        <div class="feature-card glass">
+          <div class="feature-icon" aria-hidden="true">♥</div>
+          <h3 data-i18n="features_6_title">In Würde bewahren</h3>
+          <p data-i18n="features_6_text">Deine Fotos bleiben deine. Sorgsam verarbeitet, sicher, nichts geht verloren.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="preise">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow" data-i18n="pricing_eyebrow">Preise</span>
+        <h2 data-i18n="pricing_title">Pro Foto oder im Paket</h2>
+        <p data-i18n="pricing_intro">Richtwerte — im Template leicht an deine eigenen Preise anpassbar.</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="price-card glass">
+          <h3 data-i18n="pricing_1_title">Einzelfoto</h3>
+          <div class="price-amount">[9] € <span data-i18n="pricing_1_unit">/ Foto</span></div>
+          <ul>
+            <li data-i18n="pricing_1_feat1">1 Foto koloriert &amp; restauriert</li>
+            <li data-i18n="pricing_1_feat2">Kratzer &amp; Flecken entfernt</li>
+            <li data-i18n="pricing_1_feat3">Ergebnis in hoher Auflösung</li>
+            <li data-i18n="pricing_1_feat4">Download als JPG &amp; PNG</li>
+          </ul>
+          <a href="#kontakt" class="btn btn-ghost btn-block" data-i18n="pricing_1_cta">Foto senden</a>
+        </div>
+        <div class="price-card glass popular">
+          <span class="badge-popular" data-i18n="pricing_popular_badge">Beliebt</span>
+          <h3 data-i18n="pricing_2_title">Album</h3>
+          <div class="price-amount">[39] € <span data-i18n="pricing_2_unit">/ 10 Fotos</span></div>
+          <ul>
+            <li data-i18n="pricing_2_feat1">10 Fotos, alles aus „Einzelfoto"</li>
+            <li data-i18n="pricing_2_feat2">Bevorzugte Bearbeitung</li>
+            <li data-i18n="pricing_2_feat3">Kleine Retuschen inklusive</li>
+            <li data-i18n="pricing_2_feat4">Einheitlicher Bildlook</li>
+            <li data-i18n="pricing_2_feat5">Als ZIP gebündelt</li>
+          </ul>
+          <a href="#kontakt" class="btn btn-primary btn-block" data-i18n="pricing_2_cta">Fotos senden</a>
+        </div>
+        <div class="price-card glass">
+          <h3 data-i18n="pricing_3_title">Sammlung</h3>
+          <div class="price-amount">[Individuell]</div>
+          <ul>
+            <li data-i18n="pricing_3_feat1">Ganze Alben &amp; Schachteln</li>
+            <li data-i18n="pricing_3_feat2">Auch stark beschädigte Bilder</li>
+            <li data-i18n="pricing_3_feat3">Persönliche Absprache</li>
+            <li data-i18n="pricing_3_feat4">Fester Ansprechpartner</li>
+            <li data-i18n="pricing_3_feat5">Termin nach Wunsch</li>
+          </ul>
+          <a href="#kontakt" class="btn btn-ghost btn-block" data-i18n="pricing_3_cta">Kontakt aufnehmen</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTEGRATIONEN -->
+  <section id="integrationen">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow" data-i18n="steps_eyebrow">Ablauf</span>
+        <h2 data-i18n="steps_title">In drei Schritten fertig</h2>
+        <p data-i18n="steps_intro">Vom alten Foto zum lebendigen Bild — ganz ohne Technikwissen.</p>
+      </div>
+      <div class="integrations-grid" style="grid-template-columns:repeat(3,1fr);">
+        <div class="integration-tile glass">
+          <div class="step-num">1</div><span data-i18n="steps_1_title">Hochladen</span>
+          <small data-i18n="steps_1_text">Altes Foto scannen oder abfotografieren und hochladen — JPG oder PNG genügt.</small>
+        </div>
+        <div class="integration-tile glass">
+          <div class="step-num">2</div><span data-i18n="steps_2_title">KI restauriert</span>
+          <small data-i18n="steps_2_text">Kolorieren, Schäden entfernen, schärfen — automatisch, in wenigen Minuten.</small>
+        </div>
+        <div class="integration-tile glass">
+          <div class="step-num">3</div><span data-i18n="steps_3_title">Herunterladen</span>
+          <small data-i18n="steps_3_text">Fertiges Bild in hoher Auflösung ansehen und speichern. Fertig.</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOKU -->
+  <section id="doku">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow" data-i18n="faq_eyebrow">FAQ</span>
+        <h2 data-i18n="faq_title">Häufige Fragen</h2>
+        <p data-i18n="faq_intro">Das Wichtigste kurz beantwortet.</p>
+      </div>
+      <div class="docs-grid">
+        <div class="doc-card glass">
+          <h3 data-i18n="faq_1_q">Welche Fotos gehen?</h3>
+          <p data-i18n="faq_1_a">Gescannte Abzüge oder Handyfotos von alten Bildern, als JPG oder PNG. Je schärfer die Vorlage, desto besser das Ergebnis.</p>
+          <a href="#kontakt" class="doc-link"><span data-i18n="faq_1_link">Foto senden</span> <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="doc-card glass">
+          <h3 data-i18n="faq_2_q">Bleiben meine Fotos privat?</h3>
+          <p data-i18n="faq_2_a">Ja. Sie werden ausschließlich zur Bearbeitung genutzt und nicht weitergegeben.</p>
+          <a href="#kontakt" class="doc-link"><span data-i18n="faq_2_link">Mehr fragen</span> <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="doc-card glass">
+          <h3 data-i18n="faq_3_q">Wie lange dauert es?</h3>
+          <p data-i18n="faq_3_a">Meist wenige Minuten pro Foto. Ganze Sammlungen nach Absprache.</p>
+          <a href="#kontakt" class="doc-link"><span data-i18n="faq_3_link">Anfragen</span> <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="doc-card glass">
+          <h3 data-i18n="faq_4_q">Sind Änderungen möglich?</h3>
+          <p data-i18n="faq_4_a">Ja, kleine Korrekturen an Farbe oder Ausschnitt sind inklusive.</p>
+          <a href="#kontakt" class="doc-link"><span data-i18n="faq_4_link">Kontakt</span> <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KONTAKT -->
+  <section id="kontakt">
+    <div class="container">
+      <div class="contact-wrap">
+        <div class="contact-copy">
+          <span class="eyebrow" data-i18n="contact_eyebrow">Bereit?</span>
+          <h2 data-i18n="contact_title">Schick uns dein erstes Foto</h2>
+          <p data-i18n="contact_intro">Eine kurze Nachricht mit deinem Foto genügt — wir melden uns mit dem Ergebnis zurück.</p>
+          <p class="mailto-note"><span data-i18n="contact_mailto_prefix">Oder direkt per Mail: </span><a href="mailto:roberto.adrian@adrian-structure.com">roberto.adrian@adrian-structure.com</a></p>
+        </div>
+        <form class="contact-form glass" action="mailto:roberto.adrian@adrian-structure.com" method="post" enctype="text/plain">
+          <div class="field">
+            <label for="name" data-i18n="form_name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Ihr Name" data-i18n-ph="form_name_ph" autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="email" data-i18n="form_email">E-Mail</label>
+            <input type="email" id="email" name="email" placeholder="roberto.adrian@adrian-structure.com" autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="message" data-i18n="form_message">Nachricht</label>
+            <textarea id="message" name="message" placeholder="Ihre Nachricht" data-i18n-ph="form_message_ph"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" data-i18n="form_submit">Demo anfragen</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#top" class="logo" aria-label="Adrian-Structure Startseite">Adrian<span class="dot">Structure</span></a>
+        <p data-i18n="footer_brand">Ein Produkt von Adrian-Structure. Alte Fotos wieder zum Leben erwecken — koloriert, restauriert, in Würde.</p>
+      </div>
+      <div>
+        <h4 data-i18n="footer_nav_heading">Navigation</h4>
+        <ul>
+          <li><a href="#statistik" data-i18n="nav_examples">Beispiele</a></li>
+          <li><a href="#preise" data-i18n="nav_pricing">Preise</a></li>
+          <li><a href="#integrationen" data-i18n="nav_process">Ablauf</a></li>
+          <li><a href="#doku" data-i18n="nav_faq">FAQ</a></li>
+          <li><a href="#kontakt" data-i18n="nav_contact">Kontakt</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="footer_legal_heading">Rechtliches</h4>
+        <ul>
+          <li><a href="../../impressum.html" data-i18n="legal_imprint">Impressum</a></li>
+          <li><a href="../../datenschutz.html" data-i18n="legal_privacy">Datenschutz</a></li>
+          <li><a href="mailto:roberto.adrian@adrian-structure.com">roberto.adrian@adrian-structure.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span data-i18n="footer_copyright">© [20XX] Adrian-Structure. Alle Rechte vorbehalten.</span>
+      <span data-i18n="footer_mockup_note">Diese Seite ist ein Mockup zu Demonstrationszwecken.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+var PR_I18N = {"de": {"nav_examples": "Beispiele", "nav_pricing": "Preise", "nav_process": "Ablauf", "nav_faq": "FAQ", "nav_contact": "Kontakt", "nav_cta": "Demo anfragen", "hero_eyebrow": "KI-Fotorestauration & Kolorierung", "hero_title_1": "Alte Fotos, ", "hero_title_2": "neues Leben", "hero_sub": "Adrian-Structure haucht verblassten und alten Aufnahmen neues Leben ein: Schwarzweiß wird koloriert, Details werden geschärft, verlorene Gesichter kommen wieder klar zum Vorschein — die Menschen, die dir wichtig sind, in Farbe und Würde zurück.", "hero_cta1": "Foto restaurieren lassen", "hero_cta2": "So funktioniert's", "hero_caption": "Adrian-Structure · KI-Bildengine", "trust_intro": "Was Adrian-Structure aus deinen Fotos holt", "trust_1": "Schwarzweiß → Farbe", "trust_2": "Schäden entfernt", "trust_3": "Details geschärft", "trust_4": "Privat & sicher", "examples_eyebrow": "Beispiele", "examples_title": "Aus verblasst wird lebendig", "examples_intro": "Was aus alten Aufnahmen wird — koloriert, restauriert, geschärft. Beispielbilder; im Template gegen eigene Ergebnisse tauschbar.", "examples_1_caption": "Koloriertes Porträt", "examples_2_caption": "Restauriertes Familienfoto", "examples_3_caption": "Geschärftes Detail", "examples_4_caption": "Wiederbelebte Szene", "examples_placeholder_1": "Porträt · Beispielbild", "examples_placeholder_2": "Familienfoto · Beispielbild", "examples_placeholder_3": "Detail · Beispielbild", "examples_placeholder_4": "Szene · Beispielbild", "features_eyebrow": "Was die KI kann", "features_title": "Aus alt wird lebendig", "features_intro": "Sechs Schritte, die aus einer verblassten Aufnahme wieder ein lebendiges Bild machen.", "features_1_title": "Kolorieren", "features_1_text": "Schwarzweiß bekommt natürliche, stimmige Farben — Haut, Kleidung und Umgebung wirken echt.", "features_2_title": "Restaurieren", "features_2_text": "Kratzer, Risse, Flecken und Knicke verschwinden, ohne dass das Bild künstlich wirkt.", "features_3_title": "Schärfen & Entrauschen", "features_3_text": "Verwaschene, körnige Aufnahmen werden wieder klar und ruhig.", "features_4_title": "Gesichter behutsam zurückholen", "features_4_text": "Verlorene Züge kommen sanft wieder zum Vorschein — nah am Original, ohne zu erfinden.", "features_5_title": "Licht & Farbstich korrigieren", "features_5_text": "Vergilbte, zu dunkle oder ausgebleichte Bilder werden wieder ausgewogen.", "features_6_title": "In Würde bewahren", "features_6_text": "Deine Fotos bleiben deine. Sorgsam verarbeitet, sicher, nichts geht verloren.", "pricing_eyebrow": "Preise", "pricing_title": "Pro Foto oder im Paket", "pricing_intro": "Richtwerte — im Template leicht an deine eigenen Preise anpassbar.", "pricing_1_title": "Einzelfoto", "pricing_1_unit": "/ Foto", "pricing_1_feat1": "1 Foto koloriert & restauriert", "pricing_1_feat2": "Kratzer & Flecken entfernt", "pricing_1_feat3": "Ergebnis in hoher Auflösung", "pricing_1_feat4": "Download als JPG & PNG", "pricing_1_cta": "Foto senden", "pricing_popular_badge": "Beliebt", "pricing_2_title": "Album", "pricing_2_unit": "/ 10 Fotos", "pricing_2_feat1": "10 Fotos, alles aus „Einzelfoto“", "pricing_2_feat2": "Bevorzugte Bearbeitung", "pricing_2_feat3": "Kleine Retuschen inklusive", "pricing_2_feat4": "Einheitlicher Bildlook", "pricing_2_feat5": "Als ZIP gebündelt", "pricing_2_cta": "Fotos senden", "pricing_3_title": "Sammlung", "pricing_3_feat1": "Ganze Alben & Schachteln", "pricing_3_feat2": "Auch stark beschädigte Bilder", "pricing_3_feat3": "Persönliche Absprache", "pricing_3_feat4": "Fester Ansprechpartner", "pricing_3_feat5": "Termin nach Wunsch", "pricing_3_cta": "Kontakt aufnehmen", "steps_eyebrow": "Ablauf", "steps_title": "In drei Schritten fertig", "steps_intro": "Vom alten Foto zum lebendigen Bild — ganz ohne Technikwissen.", "steps_1_title": "Hochladen", "steps_1_text": "Altes Foto scannen oder abfotografieren und hochladen — JPG oder PNG genügt.", "steps_2_title": "KI restauriert", "steps_2_text": "Kolorieren, Schäden entfernen, schärfen — automatisch, in wenigen Minuten.", "steps_3_title": "Herunterladen", "steps_3_text": "Fertiges Bild in hoher Auflösung ansehen und speichern. Fertig.", "faq_eyebrow": "FAQ", "faq_title": "Häufige Fragen", "faq_intro": "Das Wichtigste kurz beantwortet.", "faq_1_q": "Welche Fotos gehen?", "faq_1_a": "Gescannte Abzüge oder Handyfotos von alten Bildern, als JPG oder PNG. Je schärfer die Vorlage, desto besser das Ergebnis.", "faq_1_link": "Foto senden", "faq_2_q": "Bleiben meine Fotos privat?", "faq_2_a": "Ja. Sie werden ausschließlich zur Bearbeitung genutzt und nicht weitergegeben.", "faq_2_link": "Mehr fragen", "faq_3_q": "Wie lange dauert es?", "faq_3_a": "Meist wenige Minuten pro Foto. Ganze Sammlungen nach Absprache.", "faq_3_link": "Anfragen", "faq_4_q": "Sind Änderungen möglich?", "faq_4_a": "Ja, kleine Korrekturen an Farbe oder Ausschnitt sind inklusive.", "faq_4_link": "Kontakt", "contact_eyebrow": "Bereit?", "contact_title": "Schick uns dein erstes Foto", "contact_intro": "Eine kurze Nachricht mit deinem Foto genügt — wir melden uns mit dem Ergebnis zurück.", "contact_mailto_prefix": "Oder direkt per Mail: ", "form_name": "Name", "form_name_ph": "Ihr Name", "form_email": "E-Mail", "form_message": "Nachricht", "form_message_ph": "Ihre Nachricht", "form_submit": "Demo anfragen", "footer_brand": "Ein Produkt von Adrian-Structure. Alte Fotos wieder zum Leben erwecken — koloriert, restauriert, in Würde.", "footer_nav_heading": "Navigation", "footer_legal_heading": "Rechtliches", "legal_imprint": "Impressum", "legal_privacy": "Datenschutz", "footer_copyright": "© [20XX] Adrian-Structure. Alle Rechte vorbehalten.", "footer_mockup_note": "Diese Seite ist ein Mockup zu Demonstrationszwecken.", "meta_title": "Adrian-Structure — KI-Fotorestauration & Kolorierung: alte Fotos, neues Leben", "meta_description": "Adrian-Structure haucht alten und verblassten Fotos neues Leben ein: Schwarzweiß wird koloriert, Details geschärft, verlorene Gesichter kommen wieder klar zum Vorschein. Bring deine Erinnerungen zurück ins Licht."}, "en": {"nav_examples": "Examples", "nav_pricing": "Pricing", "nav_process": "Process", "nav_faq": "FAQ", "nav_contact": "Contact", "nav_cta": "Request a demo", "hero_eyebrow": "AI Photo Restoration & Colorization", "hero_title_1": "Old photos, ", "hero_title_2": "new life", "hero_sub": "Adrian-Structure breathes new life into faded and old photographs: black and white becomes color, details are sharpened, lost faces come back into clear view — the people who matter to you, back in color and dignity.", "hero_cta1": "Get your photo restored", "hero_cta2": "See how it works", "hero_caption": "Adrian-Structure · AI image engine", "trust_intro": "What Adrian-Structure brings out of your photos", "trust_1": "Black & white → color", "trust_2": "Damage removed", "trust_3": "Details sharpened", "trust_4": "Private & secure", "examples_eyebrow": "Examples", "examples_title": "From faded to vivid", "examples_intro": "What old photographs become — colorized, restored, sharpened. Sample images; swap in your own results in the template.", "examples_1_caption": "Colorized portrait", "examples_2_caption": "Restored family photo", "examples_3_caption": "Sharpened detail", "examples_4_caption": "Revived scene", "examples_placeholder_1": "Portrait · sample image", "examples_placeholder_2": "Family photo · sample image", "examples_placeholder_3": "Detail · sample image", "examples_placeholder_4": "Scene · sample image", "features_eyebrow": "What the AI can do", "features_title": "From old to alive", "features_intro": "Six steps that turn a faded photograph back into a living image.", "features_1_title": "Colorize", "features_1_text": "Black and white gains natural, harmonious color — skin, clothing, and surroundings look real.", "features_2_title": "Restore", "features_2_text": "Scratches, tears, stains, and creases disappear, without the image looking artificial.", "features_3_title": "Sharpen & denoise", "features_3_text": "Blurry, grainy shots become clear and calm again.", "features_4_title": "Bring back faces, gently", "features_4_text": "Lost features re-emerge softly — close to the original, without inventing anything.", "features_5_title": "Correct light & color cast", "features_5_text": "Yellowed, too-dark, or faded images are balanced again.", "features_6_title": "Preserved with dignity", "features_6_text": "Your photos stay yours. Handled with care, kept secure, nothing is lost.", "pricing_eyebrow": "Pricing", "pricing_title": "Per photo or as a package", "pricing_intro": "Reference prices — easy to adjust to your own rates in the template.", "pricing_1_title": "Single photo", "pricing_1_unit": "/ photo", "pricing_1_feat1": "1 photo colorized & restored", "pricing_1_feat2": "Scratches & stains removed", "pricing_1_feat3": "Result in high resolution", "pricing_1_feat4": "Download as JPG & PNG", "pricing_1_cta": "Send a photo", "pricing_popular_badge": "Popular", "pricing_2_title": "Album", "pricing_2_unit": "/ 10 photos", "pricing_2_feat1": "10 photos, everything from “Single photo”", "pricing_2_feat2": "Priority processing", "pricing_2_feat3": "Small retouches included", "pricing_2_feat4": "Consistent image look", "pricing_2_feat5": "Bundled as a ZIP", "pricing_2_cta": "Send photos", "pricing_3_title": "Collection", "pricing_3_feat1": "Whole albums & boxes", "pricing_3_feat2": "Even heavily damaged photos", "pricing_3_feat3": "Personal consultation", "pricing_3_feat4": "Dedicated contact person", "pricing_3_feat5": "Appointment on request", "pricing_3_cta": "Get in touch", "steps_eyebrow": "Process", "steps_title": "Done in three steps", "steps_intro": "From old photo to living image — no technical knowledge required.", "steps_1_title": "Upload", "steps_1_text": "Scan or photograph the old photo and upload it — JPG or PNG is enough.", "steps_2_title": "AI restores", "steps_2_text": "Colorizing, removing damage, sharpening — automatically, in just a few minutes.", "steps_3_title": "Download", "steps_3_text": "View and save the finished image in high resolution. Done.", "faq_eyebrow": "FAQ", "faq_title": "Frequently asked questions", "faq_intro": "The essentials, answered briefly.", "faq_1_q": "Which photos work?", "faq_1_a": "Scanned prints or phone photos of old pictures, as JPG or PNG. The sharper the original, the better the result.", "faq_1_link": "Send a photo", "faq_2_q": "Do my photos stay private?", "faq_2_a": "Yes. They are used solely for processing and never passed on.", "faq_2_link": "Ask more", "faq_3_q": "How long does it take?", "faq_3_a": "Usually just a few minutes per photo. Whole collections by arrangement.", "faq_3_link": "Get in touch", "faq_4_q": "Are revisions possible?", "faq_4_a": "Yes, small corrections to color or crop are included.", "faq_4_link": "Contact", "contact_eyebrow": "Ready?", "contact_title": "Send us your first photo", "contact_intro": "A short message with your photo is all it takes — we'll get back to you with the result.", "contact_mailto_prefix": "Or directly by email: ", "form_name": "Name", "form_name_ph": "Your name", "form_email": "Email", "form_message": "Message", "form_message_ph": "Your message", "form_submit": "Request a demo", "footer_brand": "A product by Adrian-Structure. Bringing old photos back to life — colorized, restored, with dignity.", "footer_nav_heading": "Navigation", "footer_legal_heading": "Legal", "legal_imprint": "Imprint", "legal_privacy": "Privacy Policy", "footer_copyright": "© [20XX] Adrian-Structure. All rights reserved.", "footer_mockup_note": "This page is a mockup for demonstration purposes.", "meta_title": "Adrian-Structure — AI Photo Restoration & Colorization: old photos, new life", "meta_description": "Adrian-Structure breathes new life into old and faded photos: black and white becomes color, details are sharpened, lost faces come back into clear view. Bring your memories back into the light."}, "ja": {"nav_examples": "作例", "nav_pricing": "料金", "nav_process": "流れ", "nav_faq": "FAQ", "nav_contact": "お問い合わせ", "nav_cta": "デモを依頼", "hero_eyebrow": "AIフォト復元・カラー化", "hero_title_1": "古い写真に、", "hero_title_2": "新しい命を", "hero_sub": "Adrian-Structureは、色あせた古い写真に新しい命を吹き込みます。白黒はカラーになり、ディテールはくっきりと蘇り、失われた面影も再びはっきりと浮かび上がります——あなたにとって大切な人々を、色と尊厳とともに取り戻します。", "hero_cta1": "写真の復元を依頼する", "hero_cta2": "仕組みを見る", "hero_caption": "Adrian-Structure · AI画像エンジン", "trust_intro": "Adrian-Structureがあなたの写真から引き出すもの", "trust_1": "白黒 → カラー", "trust_2": "傷みを除去", "trust_3": "ディテールを鮮明に", "trust_4": "プライベートかつ安全", "examples_eyebrow": "作例", "examples_title": "色あせた写真が、生き生きとよみがえる", "examples_intro": "古い写真がどう生まれ変わるか——カラー化、修復、シャープ化。サンプル画像です。テンプレートではご自身の作例に差し替えられます。", "examples_1_caption": "カラー化されたポートレート", "examples_2_caption": "修復された家族写真", "examples_3_caption": "鮮明化されたディテール", "examples_4_caption": "よみがえったワンシーン", "examples_placeholder_1": "ポートレート・サンプル画像", "examples_placeholder_2": "家族写真・サンプル画像", "examples_placeholder_3": "ディテール・サンプル画像", "examples_placeholder_4": "シーン・サンプル画像", "features_eyebrow": "AIにできること", "features_title": "古い写真が、生き生きとよみがえる", "features_intro": "色あせた一枚の写真を、再び生き生きとした画像へと変える6つのステップ。", "features_1_title": "カラー化", "features_1_text": "白黒写真に自然で調和のとれた色が加わります——肌、衣服、背景がリアルに見えるように。", "features_2_title": "修復", "features_2_text": "傷、破れ、シミ、折れ跡が、不自然に見えることなく取り除かれます。", "features_3_title": "シャープ化・ノイズ除去", "features_3_text": "ぼやけて粒子の粗い写真が、再びクリアで落ち着いた印象に戻ります。", "features_4_title": "面影をやさしく取り戻す", "features_4_text": "失われた面影がそっと蘇ります——オリジナルに忠実に、新たに作り出すことなく。", "features_5_title": "光とカラーキャストを補正", "features_5_text": "黄ばんだ写真、暗すぎる写真、色あせた写真のバランスを整えます。", "features_6_title": "尊厳とともに残す", "features_6_text": "あなたの写真は、あなたのものであり続けます。丁寧に、安全に扱い、何も失われません。", "pricing_eyebrow": "料金", "pricing_title": "1枚ごと、またはパッケージで", "pricing_intro": "目安の価格です——テンプレートではご自身の料金に簡単に調整できます。", "pricing_1_title": "写真1枚", "pricing_1_unit": "／ 1枚", "pricing_1_feat1": "写真1枚をカラー化・復元", "pricing_1_feat2": "傷・シミの除去", "pricing_1_feat3": "高解像度での仕上がり", "pricing_1_feat4": "JPG・PNGでダウンロード", "pricing_1_cta": "写真を送る", "pricing_popular_badge": "人気", "pricing_2_title": "アルバム", "pricing_2_unit": "／ 10枚", "pricing_2_feat1": "写真10枚——「写真1枚」の内容をすべて含む", "pricing_2_feat2": "優先処理", "pricing_2_feat3": "簡単なレタッチ込み", "pricing_2_feat4": "統一感のある仕上がり", "pricing_2_feat5": "ZIP形式でまとめて納品", "pricing_2_cta": "写真を送る", "pricing_3_title": "コレクション", "pricing_3_feat1": "アルバムや箱いっぱいの写真", "pricing_3_feat2": "大きく傷んだ写真にも対応", "pricing_3_feat3": "個別のご相談", "pricing_3_feat4": "専任の担当者", "pricing_3_feat5": "ご希望の日程で対応", "pricing_3_cta": "お問い合わせ", "steps_eyebrow": "流れ", "steps_title": "3ステップで完了", "steps_intro": "古い写真から生き生きとした画像へ——専門知識は一切不要です。", "steps_1_title": "アップロード", "steps_1_text": "古い写真をスキャンまたは撮影してアップロード——JPGまたはPNGで十分です。", "steps_2_title": "AIが復元", "steps_2_text": "カラー化、傷みの除去、鮮明化を自動で——わずか数分で完了します。", "steps_3_title": "ダウンロード", "steps_3_text": "完成した高解像度の画像を確認して保存するだけ。これで完了です。", "faq_eyebrow": "FAQ", "faq_title": "よくある質問", "faq_intro": "重要なポイントを簡潔にお答えします。", "faq_1_q": "どの写真に対応していますか？", "faq_1_a": "古い写真のスキャンやスマートフォンでの撮影データ、JPGまたはPNG形式に対応しています。元の写真が鮮明であるほど、仕上がりも良くなります。", "faq_1_link": "写真を送る", "faq_2_q": "写真のプライバシーは守られますか？", "faq_2_a": "はい。写真は加工の目的にのみ使用され、第三者に渡ることはありません。", "faq_2_link": "さらに質問する", "faq_3_q": "どのくらい時間がかかりますか？", "faq_3_a": "1枚あたり通常数分程度です。まとまったコレクションについては個別にご相談ください。", "faq_3_link": "お問い合わせ", "faq_4_q": "修正は可能ですか？", "faq_4_a": "はい、色味やトリミングの簡単な修正は料金に含まれています。", "faq_4_link": "お問い合わせ", "contact_eyebrow": "準備はいいですか？", "contact_title": "最初の一枚を送ってください", "contact_intro": "お写真を添えた短いメッセージをお送りいただくだけで結構です——仕上がりとともにご連絡いたします。", "contact_mailto_prefix": "またはメールで直接: ", "form_name": "お名前", "form_name_ph": "お名前をご入力ください", "form_email": "メールアドレス", "form_message": "メッセージ", "form_message_ph": "メッセージをご入力ください", "form_submit": "デモを依頼", "footer_brand": "Adrian-Structureが提供するサービスです。古い写真に再び命を——カラー化、修復、そして尊厳をもって。", "footer_nav_heading": "ナビゲーション", "footer_legal_heading": "法的情報", "legal_imprint": "インプリント", "legal_privacy": "プライバシーポリシー", "footer_copyright": "© [20XX] Adrian-Structure. 無断複写・転載を禁じます。", "footer_mockup_note": "このページはデモンストレーション用のモックアップです。", "meta_title": "Adrian-Structure — AIフォト復元・カラー化：古い写真に、新しい命を", "meta_description": "Adrian-Structureは、色あせた古い写真に新しい命を吹き込みます。白黒はカラーになり、ディテールはくっきりと蘇り、失われた面影も再びはっきりと浮かび上がります。あなたの思い出を、再び光の中へ。"}, "zh": {"nav_examples": "案例", "nav_pricing": "价格", "nav_process": "流程", "nav_faq": "FAQ", "nav_contact": "联系", "nav_cta": "申请演示", "hero_eyebrow": "AI照片修复与上色", "hero_title_1": "旧照片，", "hero_title_2": "焕发新生", "hero_sub": "Adrian-Structure 为褪色的老照片注入新的生命：黑白转为彩色，细节被清晰锐化，模糊不清的面容重新变得清晰——把对你而言重要的人，以色彩与尊严带回眼前。", "hero_cta1": "让照片重焕新生", "hero_cta2": "了解工作原理", "hero_caption": "Adrian-Structure · AI 图像引擎", "trust_intro": "Adrian-Structure 能为你的照片带来什么", "trust_1": "黑白 → 彩色", "trust_2": "去除损伤", "trust_3": "细节锐化", "trust_4": "私密且安全", "examples_eyebrow": "案例", "examples_title": "从褪色到鲜活", "examples_intro": "老照片会变成什么样——上色、修复、锐化。示例图片；模板中可替换为你自己的成果。", "examples_1_caption": "上色人像", "examples_2_caption": "修复的全家福", "examples_3_caption": "锐化的细节", "examples_4_caption": "重现的场景", "examples_placeholder_1": "人像·示例图片", "examples_placeholder_2": "全家福·示例图片", "examples_placeholder_3": "细节·示例图片", "examples_placeholder_4": "场景·示例图片", "features_eyebrow": "AI 能做什么", "features_title": "从陈旧到鲜活", "features_intro": "六个步骤，让一张褪色的老照片重新焕发生机。", "features_1_title": "上色", "features_1_text": "黑白照片获得自然协调的色彩——肌肤、衣物与背景都显得真实自然。", "features_2_title": "修复", "features_2_text": "划痕、破损、污渍与折痕被去除，画面不会显得失真。", "features_3_title": "锐化与降噪", "features_3_text": "模糊、粗糙的照片重新变得清晰、干净。", "features_4_title": "温柔找回面容", "features_4_text": "模糊不清的五官被轻柔地重新找回——贴近原貌，绝不凭空捏造。", "features_5_title": "校正光线与色偏", "features_5_text": "泛黄、过暗或褪色的照片重新恢复平衡。", "features_6_title": "以尊严珍藏", "features_6_text": "你的照片始终属于你。悉心处理，安全保存，绝不丢失。", "pricing_eyebrow": "价格", "pricing_title": "单张计费或套餐优惠", "pricing_intro": "以下为参考价格——模板中可轻松调整为你自己的定价。", "pricing_1_title": "单张照片", "pricing_1_unit": "／ 张", "pricing_1_feat1": "1张照片上色并修复", "pricing_1_feat2": "去除划痕与污渍", "pricing_1_feat3": "高分辨率成品", "pricing_1_feat4": "提供 JPG 与 PNG 下载", "pricing_1_cta": "发送照片", "pricing_popular_badge": "热门", "pricing_2_title": "相册套餐", "pricing_2_unit": "／ 10张", "pricing_2_feat1": "10张照片，涵盖「单张照片」全部服务", "pricing_2_feat2": "优先处理", "pricing_2_feat3": "包含简单修饰", "pricing_2_feat4": "统一的画面风格", "pricing_2_feat5": "打包为 ZIP 文件", "pricing_2_cta": "发送照片", "pricing_3_title": "整批收藏", "pricing_3_feat1": "整本相册或整箱照片", "pricing_3_feat2": "严重受损的照片同样适用", "pricing_3_feat3": "一对一沟通", "pricing_3_feat4": "专属联系人", "pricing_3_feat5": "按需预约时间", "pricing_3_cta": "取得联系", "steps_eyebrow": "流程", "steps_title": "三步即可完成", "steps_intro": "从旧照片到鲜活影像——完全无需技术知识。", "steps_1_title": "上传", "steps_1_text": "扫描或拍摄旧照片并上传——JPG 或 PNG 格式即可。", "steps_2_title": "AI 进行修复", "steps_2_text": "上色、去除损伤、锐化——全自动完成，仅需数分钟。", "steps_3_title": "下载", "steps_3_text": "查看并保存高分辨率成品图像。大功告成。", "faq_eyebrow": "FAQ", "faq_title": "常见问题", "faq_intro": "简明回答最重要的问题。", "faq_1_q": "哪些照片可以处理？", "faq_1_a": "扫描的老照片或手机翻拍的照片均可，支持 JPG 或 PNG 格式。原图越清晰，效果越好。", "faq_1_link": "发送照片", "faq_2_q": "我的照片会保密吗？", "faq_2_a": "会的。照片仅用于处理，绝不会转交给第三方。", "faq_2_link": "了解更多", "faq_3_q": "需要多长时间？", "faq_3_a": "通常每张照片只需几分钟。整批收藏的处理时间另行商定。", "faq_3_link": "取得联系", "faq_4_q": "可以修改吗？", "faq_4_a": "可以，色彩或裁切的小幅调整已包含在服务内。", "faq_4_link": "联系", "contact_eyebrow": "准备好了吗？", "contact_title": "把你的第一张照片发给我们", "contact_intro": "只需附上照片发一条简短消息——我们会带着处理结果与你联系。", "contact_mailto_prefix": "或直接发邮件至：", "form_name": "姓名", "form_name_ph": "您的姓名", "form_email": "邮箱", "form_message": "留言", "form_message_ph": "您的留言", "form_submit": "申请演示", "footer_brand": "Adrian-Structure 出品。让老照片重焕新生——上色、修复，并以尊严珍藏。", "footer_nav_heading": "导航", "footer_legal_heading": "法律信息", "legal_imprint": "版权信息", "legal_privacy": "隐私政策", "footer_copyright": "© [20XX] Adrian-Structure. 保留所有权利。", "footer_mockup_note": "本页面为演示用途的模型页面。", "meta_title": "Adrian-Structure — AI照片修复与上色：旧照片，焕发新生", "meta_description": "Adrian-Structure 为老旧褪色的照片注入新生命：黑白转为彩色，细节被清晰锐化，模糊的面容重新变得清晰。让你的回忆重回光明。"}};
+(function(){
+  "use strict";
+  var KEY = "prLang";
+  var supported = ["de","en","ja","zh"];
+  function apply(lang){
+    var dict = PR_I18N[lang] || PR_I18N.de;
+    document.querySelectorAll("[data-i18n]").forEach(function(el){
+      var k = el.getAttribute("data-i18n");
+      if (dict[k] != null) el.textContent = dict[k];
+    });
+    document.querySelectorAll("[data-i18n-ph]").forEach(function(el){
+      var k = el.getAttribute("data-i18n-ph");
+      if (dict[k] != null) el.setAttribute("placeholder", dict[k]);
+    });
+    document.querySelectorAll("[data-i18n-label]").forEach(function(el){
+      var k = el.getAttribute("data-i18n-label");
+      if (dict[k] != null) el.setAttribute("data-label", dict[k]);
+    });
+    if (dict.meta_title) document.title = dict.meta_title;
+    var md = document.querySelector('meta[name="description"]');
+    if (md && dict.meta_description) md.setAttribute("content", dict.meta_description);
+    document.documentElement.setAttribute("lang", lang);
+    var sw = document.getElementById("lang-switch");
+    if (sw) sw.querySelectorAll("button").forEach(function(b){
+      b.classList.toggle("is-active", b.getAttribute("data-lang") === lang);
+    });
+    try { localStorage.setItem(KEY, lang); } catch(e){}
+  }
+  function init(){
+    var saved = null;
+    try { saved = localStorage.getItem(KEY); } catch(e){}
+    var lang = (saved && supported.indexOf(saved) >= 0) ? saved : "de";
+    var sw = document.getElementById("lang-switch");
+    if (sw) sw.addEventListener("click", function(e){
+      var b = e.target.closest("button[data-lang]");
+      if (b) apply(b.getAttribute("data-lang"));
+    });
+    apply(lang);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();
+</script>
+
+</body>
+</html>
