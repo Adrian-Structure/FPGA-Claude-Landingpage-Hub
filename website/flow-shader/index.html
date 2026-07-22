@@ -258,6 +258,33 @@
   }
   .hero-visual-img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:1; }
 
+  /* ===== hero variant gallery ===== */
+  .variant-grid{
+    max-width:920px;
+    margin:22px auto 0 auto;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+  }
+  .variant-tile{ margin:0; padding:10px; text-align:left; }
+  .variant-tile img{
+    width:100%;
+    aspect-ratio:3/2;
+    object-fit:cover;
+    border-radius:14px;
+    display:block;
+  }
+  .variant-tile figcaption{
+    margin-top:10px;
+    padding:0 4px;
+    font-size:13px;
+    font-weight:700;
+    color:rgba(238,242,248,0.85);
+  }
+  @media (max-width:720px){
+    .variant-grid{ grid-template-columns:1fr; }
+  }
+
   /* ===== trust bar ===== */
   .trust{
     padding:36px 0;
@@ -613,6 +640,25 @@
         <div class="flow-bg" aria-hidden="true"></div>
         <div class="grid-overlay" aria-hidden="true"></div>
         <span class="caption-chip" data-i18n="hero_caption">Live-Vorschau · adaptive Shader-Pipeline</span>
+      </div>
+
+      <div class="variant-grid">
+        <figure class="variant-tile glass">
+          <img src="./images/variante-1-gpu.jpg" alt="Variante 1 — GPU-Power für immersive Visuals" loading="lazy">
+          <figcaption>GPU</figcaption>
+        </figure>
+        <figure class="variant-tile glass">
+          <img src="./images/variante-2-fpga.jpg" alt="Variante 2 — Programmierbare FPGA-Hardware" loading="lazy">
+          <figcaption>FPGA</figcaption>
+        </figure>
+        <figure class="variant-tile glass">
+          <img src="./images/variante-3-pipeline.jpg" alt="Variante 3 — Die Shader-Pipeline verwandelt Daten in Licht" loading="lazy">
+          <figcaption>Shader-Pipeline</figcaption>
+        </figure>
+        <figure class="variant-tile glass">
+          <img src="./images/variante-4-webapp.jpg" alt="Variante 4 — Von der Hardware zum Erlebnis: der Chip erzeugt die Webseite" loading="lazy">
+          <figcaption>Flow Shader Web-App</figcaption>
+        </figure>
       </div>
     </div>
   </section>
