@@ -397,21 +397,43 @@
 </head>
 <body>
 
+<style>
+  .lang-switch{ display:flex; gap:2px; align-items:center; white-space:nowrap; }
+  .lang-switch button{ background:none; border:none; font-family:var(--sans); font-size:0.64rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--sand); opacity:0.55; cursor:pointer; padding:4px 6px; border-radius:3px; transition:opacity 0.25s ease; }
+  .lang-switch button:hover{ opacity:0.9; }
+  .lang-switch button.is-active{ opacity:1; color:var(--amber); border-bottom:1px solid currentColor; }
+  .lang-switch .lg-abbr{ display:none; }
+  @media (max-width:860px){
+    .lang-switch{ gap:1px; }
+    .lang-switch button{ padding:4px 5px; font-size:0.62rem; letter-spacing:0.06em; }
+  }
+  @media (max-width:560px){
+    .header-inner{ gap:12px; }
+    .lang-switch .lg-full{ display:none; }
+    .lang-switch .lg-abbr{ display:inline; }
+  }
+</style>
 <header class="site-header">
   <div class="header-inner">
     <a href="#top" class="wordmark"><span class="sun" aria-hidden="true"></span>Adrian-Structure</a>
     <nav class="main-nav" id="main-nav" aria-label="Hauptnavigation">
-      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="main-nav-list">☰ <span class="visually-hidden">Menü öffnen</span></button>
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="main-nav-list">☰ <span class="visually-hidden" data-i18n="nav_toggle_label">Menü öffnen</span></button>
       <ul id="main-nav-list">
-        <li><a href="#philosophie">Philosophie</a></li>
-        <li><a href="#ziele">Ziele</a></li>
-        <li><a href="#erlebnisse">Erlebnisse</a></li>
-        <li><a href="#galerie">Galerie</a></li>
-        <li><a href="#stimmen">Stimmen</a></li>
-        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#philosophie" data-i18n="nav_philosophy">Philosophie</a></li>
+        <li><a href="#ziele" data-i18n="nav_destinations">Ziele</a></li>
+        <li><a href="#erlebnisse" data-i18n="nav_experiences">Erlebnisse</a></li>
+        <li><a href="#galerie" data-i18n="nav_gallery">Galerie</a></li>
+        <li><a href="#stimmen" data-i18n="nav_testimonials">Stimmen</a></li>
+        <li><a href="#faq" data-i18n="nav_faq">FAQ</a></li>
       </ul>
     </nav>
-    <a href="#kontakt" class="btn btn-primary header-cta">Jetzt anfragen</a>
+    <div class="lang-switch" id="lang-switch" aria-label="Sprache / Language">
+      <button type="button" data-lang="de">DE</button>
+      <button type="button" data-lang="en">EN</button>
+      <button type="button" data-lang="ja"><span class="lg-full">日本語</span><span class="lg-abbr">日</span></button>
+      <button type="button" data-lang="zh"><span class="lg-full">中文</span><span class="lg-abbr">中</span></button>
+    </div>
+    <a href="#kontakt" class="btn btn-primary header-cta" data-i18n="nav_cta">Jetzt anfragen</a>
   </div>
 </header>
 
@@ -420,28 +442,28 @@
   <!-- HERO -->
   <section class="hero" id="hero">
     <div class="container hero-inner">
-      <p class="overline reveal">Boutique-Reisen · Golden Hour</p>
-      <h1 class="reveal">Luxus, der <em>flüstert</em>, nicht schreit.</h1>
-      <p class="lead reveal">Adrian-Structure kuratiert stille, persönlich begleitete Reisen zu den schönsten Sonnenuntergängen der Welt — für alle, die Ruhe, Geschmack und Exklusivität mehr schätzen als Prospekte.</p>
+      <p class="overline reveal" data-i18n="hero_overline">Boutique-Reisen · Golden Hour</p>
+      <h1 class="reveal"><span data-i18n="hero_title_pre">Luxus, der </span><em data-i18n="hero_title_em">flüstert</em><span data-i18n="hero_title_post">, nicht schreit.</span></h1>
+      <p class="lead reveal" data-i18n="hero_lead">Adrian-Structure kuratiert stille, persönlich begleitete Reisen zu den schönsten Sonnenuntergängen der Welt — für alle, die Ruhe, Geschmack und Exklusivität mehr schätzen als Prospekte.</p>
       <div class="hero-actions reveal">
-        <a href="#kontakt" class="btn btn-primary">Reise planen</a>
-        <a href="#ziele" class="btn btn-secondary">Ziele entdecken</a>
+        <a href="#kontakt" class="btn btn-primary" data-i18n="hero_cta_primary">Reise planen</a>
+        <a href="#ziele" class="btn btn-secondary" data-i18n="hero_cta_secondary">Ziele entdecken</a>
       </div>
     </div>
     <div class="horizon-deco" aria-hidden="true">
       <span class="sun-big"></span>
       <span class="line" style="bottom:32%"></span>
     </div>
-    <span class="scroll-hint" aria-hidden="true"><span class="dash"></span> Scrollen</span>
+    <span class="scroll-hint" aria-hidden="true"><span class="dash"></span> <span data-i18n="hero_scroll">Scrollen</span></span>
   </section>
 
   <!-- PHILOSOPHIE -->
   <section class="philosophy" id="philosophie">
     <div class="container reveal">
       <div class="divider-sun" aria-hidden="true"></div>
-      <p class="overline">Unsere Philosophie</p>
-      <h2>Nicht mehr Reisen zeigen — die richtigen</h2>
-      <p>Adrian-Structure wählt jedes Ziel und jedes Haus persönlich aus, bevor es je vorgeschlagen wird. Wir glauben an kuratierte Auswahl statt endloser Kataloge, an ruhige Beratung statt Verkaufsdruck, und an das Detail, das aus einer Reise eine Erinnerung macht. Jede Anfrage wird von einem festen Ansprechpartner begleitet — von der ersten Idee bis zur Rückkehr.</p>
+      <p class="overline" data-i18n="philo_overline">Unsere Philosophie</p>
+      <h2 data-i18n="philo_title">Nicht mehr Reisen zeigen — die richtigen</h2>
+      <p data-i18n="philo_text">Adrian-Structure wählt jedes Ziel und jedes Haus persönlich aus, bevor es je vorgeschlagen wird. Wir glauben an kuratierte Auswahl statt endloser Kataloge, an ruhige Beratung statt Verkaufsdruck, und an das Detail, das aus einer Reise eine Erinnerung macht. Jede Anfrage wird von einem festen Ansprechpartner begleitet — von der ersten Idee bis zur Rückkehr.</p>
     </div>
   </section>
 
@@ -449,52 +471,52 @@
   <section class="destinations" id="ziele">
     <div class="container">
       <div class="section-head reveal">
-        <p class="overline">Reiseziele</p>
-        <h2>Kuratierte Ziele, keine Kataloge</h2>
-        <p>Eine bewusst kleine Auswahl an Orten, die wir selbst kennen, geprüft und für gut befunden haben.</p>
+        <p class="overline" data-i18n="dest_overline">Reiseziele</p>
+        <h2 data-i18n="dest_title">Kuratierte Ziele, keine Kataloge</h2>
+        <p data-i18n="dest_intro">Eine bewusst kleine Auswahl an Orten, die wir selbst kennen, geprüft und für gut befunden haben.</p>
       </div>
       <div class="grid-cards">
 
         <article class="card reveal">
           <div class="card-media dest1"><span class="horizon-line" aria-hidden="true"></span><span class="sun-dot" aria-hidden="true"></span></div>
-          <h3>Santorin, Griechenland</h3>
-          <p>Weiß getünchte Terrassen über der Caldera, private Weinproben bei Sonnenuntergang.</p>
-          <a href="#kontakt" class="card-link">Mehr erfahren</a>
+          <h3 data-i18n="dest1_name">Santorin, Griechenland</h3>
+          <p data-i18n="dest1_desc">Weiß getünchte Terrassen über der Caldera, private Weinproben bei Sonnenuntergang.</p>
+          <a href="#kontakt" class="card-link" data-i18n="dest_link">Mehr erfahren</a>
         </article>
 
         <article class="card reveal">
           <div class="card-media dest2"><span class="horizon-line" aria-hidden="true"></span><span class="sun-dot" aria-hidden="true"></span></div>
-          <h3>Amalfiküste, Italien</h3>
-          <p>Zitronenhaine, versteckte Buchten und ruhige Abende auf privaten Terrassen.</p>
-          <a href="#kontakt" class="card-link">Mehr erfahren</a>
+          <h3 data-i18n="dest2_name">Amalfiküste, Italien</h3>
+          <p data-i18n="dest2_desc">Zitronenhaine, versteckte Buchten und ruhige Abende auf privaten Terrassen.</p>
+          <a href="#kontakt" class="card-link" data-i18n="dest_link">Mehr erfahren</a>
         </article>
 
         <article class="card reveal">
           <div class="card-media dest3"><span class="horizon-line" aria-hidden="true"></span><span class="sun-dot" aria-hidden="true"></span></div>
-          <h3>Bali, Indonesien</h3>
-          <p>Reisterrassen, private Villen und Zeremonien zur goldenen Stunde am Reisfeldrand.</p>
-          <a href="#kontakt" class="card-link">Mehr erfahren</a>
+          <h3 data-i18n="dest3_name">Bali, Indonesien</h3>
+          <p data-i18n="dest3_desc">Reisterrassen, private Villen und Zeremonien zur goldenen Stunde am Reisfeldrand.</p>
+          <a href="#kontakt" class="card-link" data-i18n="dest_link">Mehr erfahren</a>
         </article>
 
         <article class="card reveal">
           <div class="card-media dest4"><span class="horizon-line" aria-hidden="true"></span><span class="sun-dot" aria-hidden="true"></span></div>
-          <h3>Kapregion, Südafrika</h3>
-          <p>Weinberge, Tafelberg-Panoramen und private Safari-Erweiterungen.</p>
-          <a href="#kontakt" class="card-link">Mehr erfahren</a>
+          <h3 data-i18n="dest4_name">Kapregion, Südafrika</h3>
+          <p data-i18n="dest4_desc">Weinberge, Tafelberg-Panoramen und private Safari-Erweiterungen.</p>
+          <a href="#kontakt" class="card-link" data-i18n="dest_link">Mehr erfahren</a>
         </article>
 
         <article class="card reveal">
           <div class="card-media dest5"><span class="horizon-line" aria-hidden="true"></span><span class="sun-dot" aria-hidden="true"></span></div>
-          <h3>Baja California, Mexiko</h3>
-          <p>Wüste trifft Pazifik — private Bootstouren und stille Strandabende.</p>
-          <a href="#kontakt" class="card-link">Mehr erfahren</a>
+          <h3 data-i18n="dest5_name">Baja California, Mexiko</h3>
+          <p data-i18n="dest5_desc">Wüste trifft Pazifik — private Bootstouren und stille Strandabende.</p>
+          <a href="#kontakt" class="card-link" data-i18n="dest_link">Mehr erfahren</a>
         </article>
 
         <article class="card reveal">
           <div class="card-media dest6"><span class="horizon-line" aria-hidden="true"></span><span class="sun-dot" aria-hidden="true"></span></div>
-          <h3>Kyoto, Japan</h3>
-          <p>Tempelgärten im Abendlicht, private Teezeremonien, leise Eleganz.</p>
-          <a href="#kontakt" class="card-link">Mehr erfahren</a>
+          <h3 data-i18n="dest6_name">Kyoto, Japan</h3>
+          <p data-i18n="dest6_desc">Tempelgärten im Abendlicht, private Teezeremonien, leise Eleganz.</p>
+          <a href="#kontakt" class="card-link" data-i18n="dest_link">Mehr erfahren</a>
         </article>
 
       </div>
@@ -505,42 +527,42 @@
   <section class="experiences" id="erlebnisse">
     <div class="container">
       <div class="section-head reveal">
-        <p class="overline">Erlebnisse</p>
-        <h2>Wir verkaufen das Erlebnis, nicht nur den Ort</h2>
-        <p>Ausgewählte Momente, die jede Reise zu etwas Persönlichem machen.</p>
+        <p class="overline" data-i18n="exp_overline">Erlebnisse</p>
+        <h2 data-i18n="exp_title">Wir verkaufen das Erlebnis, nicht nur den Ort</h2>
+        <p data-i18n="exp_intro">Ausgewählte Momente, die jede Reise zu etwas Persönlichem machen.</p>
       </div>
       <div class="exp-grid">
 
         <article class="exp-card reveal">
           <p class="num">01</p>
-          <h3>Private Sunset-Segeltour</h3>
-          <p>Ein Boot, ein Skipper, keine Fremden — nur Wasser, Licht und Stille.</p>
+          <h3 data-i18n="exp1_title">Private Sunset-Segeltour</h3>
+          <p data-i18n="exp1_desc">Ein Boot, ein Skipper, keine Fremden — nur Wasser, Licht und Stille.</p>
           <ul>
-            <li>Exklusiv gecharterte Yacht</li>
-            <li>Champagner &amp; leichte Küche an Bord</li>
-            <li>Route auf die goldene Stunde abgestimmt</li>
+            <li data-i18n="exp1_li1">Exklusiv gecharterte Yacht</li>
+            <li data-i18n="exp1_li2">Champagner &amp; leichte Küche an Bord</li>
+            <li data-i18n="exp1_li3">Route auf die goldene Stunde abgestimmt</li>
           </ul>
         </article>
 
         <article class="exp-card reveal">
           <p class="num">02</p>
-          <h3>Spa-Retreat im Abendlicht</h3>
-          <p>Ruhe als Programm: Behandlungen, die dem Tageslicht folgen.</p>
+          <h3 data-i18n="exp2_title">Spa-Retreat im Abendlicht</h3>
+          <p data-i18n="exp2_desc">Ruhe als Programm: Behandlungen, die dem Tageslicht folgen.</p>
           <ul>
-            <li>Private Treatment-Suite</li>
-            <li>Zeremonie statt Zeitplan</li>
-            <li>Abschluss mit Blick auf den Horizont</li>
+            <li data-i18n="exp2_li1">Private Treatment-Suite</li>
+            <li data-i18n="exp2_li2">Zeremonie statt Zeitplan</li>
+            <li data-i18n="exp2_li3">Abschluss mit Blick auf den Horizont</li>
           </ul>
         </article>
 
         <article class="exp-card reveal">
           <p class="num">03</p>
-          <h3>Kulinarisches Sunset-Dinner</h3>
-          <p>Ein Tisch, ein Koch, eine Aussicht — für zwei oder eine kleine Gruppe.</p>
+          <h3 data-i18n="exp3_title">Kulinarisches Sunset-Dinner</h3>
+          <p data-i18n="exp3_desc">Ein Tisch, ein Koch, eine Aussicht — für zwei oder eine kleine Gruppe.</p>
           <ul>
-            <li>Individuell komponiertes Menü</li>
-            <li>Lokale Zutaten, persönlicher Service</li>
-            <li>Ort exklusiv für Sie reserviert</li>
+            <li data-i18n="exp3_li1">Individuell komponiertes Menü</li>
+            <li data-i18n="exp3_li2">Lokale Zutaten, persönlicher Service</li>
+            <li data-i18n="exp3_li3">Ort exklusiv für Sie reserviert</li>
           </ul>
         </article>
 
@@ -552,17 +574,17 @@
   <section class="gallery" id="galerie">
     <div class="container">
       <div class="section-head reveal">
-        <p class="overline">Galerie</p>
-        <h2>Golden-Hour-Stimmungen</h2>
-        <p>Eine visuelle Annäherung an die Atmosphäre unserer Reisen — Licht, Ruhe und Farben, wie sie jede Golden-Hour-Reise begleiten.</p>
+        <p class="overline" data-i18n="gallery_overline">Galerie</p>
+        <h2 data-i18n="gallery_title">Golden-Hour-Stimmungen</h2>
+        <p data-i18n="gallery_intro">Eine visuelle Annäherung an die Atmosphäre unserer Reisen — Licht, Ruhe und Farben, wie sie jede Golden-Hour-Reise begleiten.</p>
       </div>
       <div class="mosaic reveal">
-        <div class="tile t1" role="img" aria-label="Warmes Dämmerlicht über einer Caldera, Amber- und Plum-Verlauf, Platzhalter für Reisefoto"><span class="cap">Caldera, Abendlicht</span></div>
-        <div class="tile t2" role="img" aria-label="Sanfter Korall- und Amberverlauf wie Sonnenlicht auf Wasser, Platzhalter für Reisefoto"><span class="cap">Küstenlicht</span></div>
-        <div class="tile t3" role="img" aria-label="Dunkler Plum-Verlauf wie eine Bucht in der Dämmerung, Platzhalter für Reisefoto"><span class="cap">Stille Bucht</span></div>
-        <div class="tile t4" role="img" aria-label="Amberlicht über dunklem Grund wie Terrassen im Abendrot, Platzhalter für Reisefoto"><span class="cap">Terrassenlicht</span></div>
-        <div class="tile t5" role="img" aria-label="Breiter Horizontverlauf von Plum über Amber zu Koralle, Platzhalter für Reisefoto"><span class="cap">Horizont</span></div>
-        <div class="tile t6" role="img" aria-label="Kühler Dämmerungsverlauf mit warmem Kern, Platzhalter für Reisefoto"><span class="cap">Letztes Licht</span></div>
+        <div class="tile t1" role="img" aria-label="Warmes Dämmerlicht über einer Caldera, Amber- und Plum-Verlauf, Platzhalter für Reisefoto"><span class="cap" data-i18n="gallery_cap1">Caldera, Abendlicht</span></div>
+        <div class="tile t2" role="img" aria-label="Sanfter Korall- und Amberverlauf wie Sonnenlicht auf Wasser, Platzhalter für Reisefoto"><span class="cap" data-i18n="gallery_cap2">Küstenlicht</span></div>
+        <div class="tile t3" role="img" aria-label="Dunkler Plum-Verlauf wie eine Bucht in der Dämmerung, Platzhalter für Reisefoto"><span class="cap" data-i18n="gallery_cap3">Stille Bucht</span></div>
+        <div class="tile t4" role="img" aria-label="Amberlicht über dunklem Grund wie Terrassen im Abendrot, Platzhalter für Reisefoto"><span class="cap" data-i18n="gallery_cap4">Terrassenlicht</span></div>
+        <div class="tile t5" role="img" aria-label="Breiter Horizontverlauf von Plum über Amber zu Koralle, Platzhalter für Reisefoto"><span class="cap" data-i18n="gallery_cap5">Horizont</span></div>
+        <div class="tile t6" role="img" aria-label="Kühler Dämmerungsverlauf mit warmem Kern, Platzhalter für Reisefoto"><span class="cap" data-i18n="gallery_cap6">Letztes Licht</span></div>
       </div>
     </div>
   </section>
@@ -570,10 +592,10 @@
   <!-- STATS -->
   <section class="stats">
     <div class="container stats-grid reveal">
-      <div class="stat"><b>12+</b><span>Jahre Erfahrung</span></div>
-      <div class="stat"><b>24</b><span>Kuratierte Ziele</span></div>
-      <div class="stat"><b>98%</b><span>Gästezufriedenheit</span></div>
-      <div class="stat"><b>1:1</b><span>Persönliche Betreuung</span></div>
+      <div class="stat"><b>12+</b><span data-i18n="stats_label1">Jahre Erfahrung</span></div>
+      <div class="stat"><b>24</b><span data-i18n="stats_label2">Kuratierte Ziele</span></div>
+      <div class="stat"><b>98%</b><span data-i18n="stats_label3">Gästezufriedenheit</span></div>
+      <div class="stat"><b>1:1</b><span data-i18n="stats_label4">Persönliche Betreuung</span></div>
     </div>
   </section>
 
@@ -581,27 +603,27 @@
   <section class="testimonials" id="stimmen">
     <div class="container">
       <div class="section-head reveal">
-        <p class="overline">Stimmen unserer Gäste</p>
-        <h2>Erzählt statt beworben</h2>
+        <p class="overline" data-i18n="test_overline">Stimmen unserer Gäste</p>
+        <h2 data-i18n="test_title">Erzählt statt beworben</h2>
       </div>
       <div class="test-grid">
 
         <blockquote class="test-card reveal" style="border:none;">
           <div class="stars" aria-hidden="true">★★★★★</div>
-          <p>„Wir mussten uns um nichts kümmern — jedes Detail war schon gedacht, bevor wir gefragt haben."</p>
-          <footer><b>A. Bergmann</b>, München</footer>
+          <p data-i18n="test1_quote">„Wir mussten uns um nichts kümmern — jedes Detail war schon gedacht, bevor wir gefragt haben."</p>
+          <footer><b data-i18n="test1_name">A. Bergmann</b>, <span data-i18n="test1_city">München</span></footer>
         </blockquote>
 
         <blockquote class="test-card reveal" style="border:none;">
           <div class="stars" aria-hidden="true">★★★★★</div>
-          <p>„Das erste Mal, dass sich eine gebuchte Reise wie eine persönliche Empfehlung angefühlt hat."</p>
-          <footer><b>S. Fontana</b>, Zürich</footer>
+          <p data-i18n="test2_quote">„Das erste Mal, dass sich eine gebuchte Reise wie eine persönliche Empfehlung angefühlt hat."</p>
+          <footer><b data-i18n="test2_name">S. Fontana</b>, <span data-i18n="test2_city">Zürich</span></footer>
         </blockquote>
 
         <blockquote class="test-card reveal" style="border:none;">
           <div class="stars" aria-hidden="true">★★★★★</div>
-          <p>„Ruhig, unaufdringlich, außergewöhnlich gut organisiert. Genau die Art Luxus, die wir schätzen."</p>
-          <footer><b>M. Keller</b>, Wien</footer>
+          <p data-i18n="test3_quote">„Ruhig, unaufdringlich, außergewöhnlich gut organisiert. Genau die Art Luxus, die wir schätzen."</p>
+          <footer><b data-i18n="test3_name">M. Keller</b>, <span data-i18n="test3_city">Wien</span></footer>
         </blockquote>
 
       </div>
@@ -612,34 +634,34 @@
   <section class="faq" id="faq">
     <div class="container">
       <div class="section-head reveal">
-        <p class="overline">Häufige Fragen</p>
-        <h2>Bevor Sie anfragen</h2>
+        <p class="overline" data-i18n="faq_overline">Häufige Fragen</p>
+        <h2 data-i18n="faq_title">Bevor Sie anfragen</h2>
       </div>
       <div class="faq-list reveal">
 
         <details class="faq-item">
-          <summary>Wie läuft eine Buchung bei Adrian-Structure ab?</summary>
-          <p>Nach Ihrer Anfrage meldet sich ein persönlicher Ansprechpartner, um Ziel, Zeitraum und Wünsche zu besprechen. Sie erhalten einen individuellen Reisevorschlag, den wir gemeinsam verfeinern, bevor etwas gebucht wird.</p>
+          <summary data-i18n="faq1_q">Wie läuft eine Buchung bei Adrian-Structure ab?</summary>
+          <p data-i18n="faq1_a">Nach Ihrer Anfrage meldet sich ein persönlicher Ansprechpartner, um Ziel, Zeitraum und Wünsche zu besprechen. Sie erhalten einen individuellen Reisevorschlag, den wir gemeinsam verfeinern, bevor etwas gebucht wird.</p>
         </details>
 
         <details class="faq-item">
-          <summary>Kann ich eine Reise stornieren oder umbuchen?</summary>
-          <p>Stornierungs- und Umbuchungsbedingungen richten sich nach dem jeweiligen Angebot und werden Ihnen vor der verbindlichen Buchung transparent mitgeteilt — meist mit gestaffelten Fristen und, je nach Haus, einer kostenfreien Umbuchung bis wenige Wochen vor Anreise.</p>
+          <summary data-i18n="faq2_q">Kann ich eine Reise stornieren oder umbuchen?</summary>
+          <p data-i18n="faq2_a">Stornierungs- und Umbuchungsbedingungen richten sich nach dem jeweiligen Angebot und werden Ihnen vor der verbindlichen Buchung transparent mitgeteilt — meist mit gestaffelten Fristen und, je nach Haus, einer kostenfreien Umbuchung bis wenige Wochen vor Anreise.</p>
         </details>
 
         <details class="faq-item">
-          <summary>Sind Reisen für Familien oder Gruppen möglich?</summary>
-          <p>Ja. Neben Paar-Reisen kuratieren wir auch kleine Gruppen- und Familienreisen — mit angepasstem Tempo, Unterkünften und Erlebnissen.</p>
+          <summary data-i18n="faq3_q">Sind Reisen für Familien oder Gruppen möglich?</summary>
+          <p data-i18n="faq3_a">Ja. Neben Paar-Reisen kuratieren wir auch kleine Gruppen- und Familienreisen — mit angepasstem Tempo, Unterkünften und Erlebnissen.</p>
         </details>
 
         <details class="faq-item">
-          <summary>Lässt sich eine Reise individuell anpassen?</summary>
-          <p>Individuelle Anpassung ist der Regelfall, nicht die Ausnahme. Jeder Vorschlag ist ein Ausgangspunkt für ein persönliches Gespräch.</p>
+          <summary data-i18n="faq4_q">Lässt sich eine Reise individuell anpassen?</summary>
+          <p data-i18n="faq4_a">Individuelle Anpassung ist der Regelfall, nicht die Ausnahme. Jeder Vorschlag ist ein Ausgangspunkt für ein persönliches Gespräch.</p>
         </details>
 
         <details class="faq-item">
-          <summary>Wie schnell erhalte ich eine Antwort auf meine Anfrage?</summary>
-          <p>In der Regel antworten wir innerhalb von zwei Werktagen mit einem ersten persönlichen Vorschlag.</p>
+          <summary data-i18n="faq5_q">Wie schnell erhalte ich eine Antwort auf meine Anfrage?</summary>
+          <p data-i18n="faq5_a">In der Regel antworten wir innerhalb von zwei Werktagen mit einem ersten persönlichen Vorschlag.</p>
         </details>
 
       </div>
@@ -651,41 +673,41 @@
     <div class="container contact-grid">
 
       <div class="contact-info reveal">
-        <p class="overline">Kontakt &amp; Anfrage</p>
-        <h2>Beginnen wir mit einem Gespräch</h2>
-        <p>Beschreiben Sie kurz Ihre Wünsche — Ziel, Zeitraum, Anlass. Wir melden uns persönlich mit einem ersten Vorschlag.</p>
+        <p class="overline" data-i18n="contact_overline">Kontakt &amp; Anfrage</p>
+        <h2 data-i18n="contact_title">Beginnen wir mit einem Gespräch</h2>
+        <p data-i18n="contact_intro">Beschreiben Sie kurz Ihre Wünsche — Ziel, Zeitraum, Anlass. Wir melden uns persönlich mit einem ersten Vorschlag.</p>
         <div class="contact-detail">
-          <span>E-Mail: <b>roberto.adrian@adrian-structure.com</b></span>
-          <span>Telefon: <b>+49 30 1234 567</b></span>
-          <span>Erreichbar: Mo–Fr, 9–18 Uhr</span>
+          <span><span data-i18n="contact_email_label">E-Mail</span>: <b>roberto.adrian@adrian-structure.com</b></span>
+          <span><span data-i18n="contact_phone_label">Telefon</span>: <b>+49 30 1234 567</b></span>
+          <span data-i18n="contact_hours">Erreichbar: Mo–Fr, 9–18 Uhr</span>
         </div>
-        <span class="mockup-flag">Mockup — Formular sendet in dieser Vorlage nicht wirklich</span>
+        <span class="mockup-flag" data-i18n="contact_mockup_flag">Mockup — Formular sendet in dieser Vorlage nicht wirklich</span>
       </div>
 
       <form class="booking-form reveal" onsubmit="return false;" aria-label="Anfrageformular (Mockup, ohne Funktion)">
         <div class="field">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" placeholder="Ihr Name" autocomplete="off">
+          <label for="name" data-i18n="form_name">Name</label>
+          <input type="text" id="name" name="name" placeholder="Ihr Name" data-i18n-ph="form_name_ph" autocomplete="off">
         </div>
         <div class="field">
-          <label for="email">E-Mail</label>
-          <input type="email" id="email" name="email" placeholder="ihre@email-adresse.de" autocomplete="off">
+          <label for="email" data-i18n="form_email">E-Mail</label>
+          <input type="email" id="email" name="email" placeholder="ihre@email-adresse.de" data-i18n-ph="form_email_ph" autocomplete="off">
         </div>
         <div class="field-row">
           <div class="field">
-            <label for="ziel">Wunschziel</label>
-            <input type="text" id="ziel" name="ziel" placeholder="z. B. Santorin" autocomplete="off">
+            <label for="ziel" data-i18n="form_dest">Wunschziel</label>
+            <input type="text" id="ziel" name="ziel" placeholder="z. B. Santorin" data-i18n-ph="form_dest_ph" autocomplete="off">
           </div>
           <div class="field">
-            <label for="zeitraum">Reisezeitraum</label>
-            <input type="text" id="zeitraum" name="zeitraum" placeholder="z. B. September 2026" autocomplete="off">
+            <label for="zeitraum" data-i18n="form_period">Reisezeitraum</label>
+            <input type="text" id="zeitraum" name="zeitraum" placeholder="z. B. September 2026" data-i18n-ph="form_period_ph" autocomplete="off">
           </div>
         </div>
         <div class="field">
-          <label for="nachricht">Nachricht</label>
-          <textarea id="nachricht" name="nachricht" rows="4" placeholder="Erzählen Sie uns von Ihrer Wunschreise…"></textarea>
+          <label for="nachricht" data-i18n="form_message">Nachricht</label>
+          <textarea id="nachricht" name="nachricht" rows="4" placeholder="Erzählen Sie uns von Ihrer Wunschreise…" data-i18n-ph="form_message_ph"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary" disabled aria-disabled="true">Anfrage senden (Mockup)</button>
+        <button type="submit" class="btn btn-primary" disabled aria-disabled="true" data-i18n="form_submit">Anfrage senden (Mockup)</button>
       </form>
 
     </div>
@@ -695,13 +717,13 @@
   <section class="newsletter">
     <div class="container">
       <div>
-        <h2>Exklusive Angebote zuerst erfahren</h2>
-        <p>Kein Spam — nur ausgewählte Reisen und Erlebnisse, selten versendet.</p>
+        <h2 data-i18n="news_title">Exklusive Angebote zuerst erfahren</h2>
+        <p data-i18n="news_text">Kein Spam — nur ausgewählte Reisen und Erlebnisse, selten versendet.</p>
       </div>
       <form class="newsletter-form" onsubmit="return false;" aria-label="Newsletter-Anmeldung (Mockup, ohne Funktion)">
-        <label for="newsletter-email" class="visually-hidden">E-Mail-Adresse für Newsletter</label>
-        <input type="email" id="newsletter-email" placeholder="ihre@email-adresse.de" autocomplete="off">
-        <button type="submit" disabled aria-disabled="true">Anmelden (Mockup)</button>
+        <label for="newsletter-email" class="visually-hidden" data-i18n="news_email_label">E-Mail-Adresse für Newsletter</label>
+        <input type="email" id="newsletter-email" placeholder="ihre@email-adresse.de" data-i18n-ph="news_email_ph" autocomplete="off">
+        <button type="submit" disabled aria-disabled="true" data-i18n="news_submit">Anmelden (Mockup)</button>
       </form>
     </div>
   </section>
@@ -713,7 +735,7 @@
     <div class="footer-grid">
       <div class="brand-col">
         <a href="#top" class="wordmark"><span class="sun" aria-hidden="true"></span>Adrian-Structure</a>
-        <p>Boutique-Reisen zur goldenen Stunde — kuratiert, persönlich, still statt laut.</p>
+        <p data-i18n="footer_tagline">Boutique-Reisen zur goldenen Stunde — kuratiert, persönlich, still statt laut.</p>
         <div class="social-row">
           <a href="#" aria-label="Adrian-Structure auf Instagram (Platzhalter-Link)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1"/></svg>
@@ -727,36 +749,36 @@
         </div>
       </div>
       <div>
-        <h4>Entdecken</h4>
+        <h4 data-i18n="footer_h_discover">Entdecken</h4>
         <ul>
-          <li><a href="#ziele">Reiseziele</a></li>
-          <li><a href="#erlebnisse">Erlebnisse</a></li>
-          <li><a href="#galerie">Galerie</a></li>
+          <li><a href="#ziele" data-i18n="footer_link_destinations">Reiseziele</a></li>
+          <li><a href="#erlebnisse" data-i18n="footer_link_experiences">Erlebnisse</a></li>
+          <li><a href="#galerie" data-i18n="footer_link_gallery">Galerie</a></li>
         </ul>
       </div>
       <div>
-        <h4>Über uns</h4>
+        <h4 data-i18n="footer_h_about">Über uns</h4>
         <ul>
-          <li><a href="#philosophie">Philosophie</a></li>
-          <li><a href="#stimmen">Stimmen der Gäste</a></li>
-          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#philosophie" data-i18n="footer_link_philosophy">Philosophie</a></li>
+          <li><a href="#stimmen" data-i18n="footer_link_testimonials">Stimmen der Gäste</a></li>
+          <li><a href="#faq" data-i18n="footer_link_faq">FAQ</a></li>
         </ul>
       </div>
       <div>
-        <h4>Kontakt</h4>
+        <h4 data-i18n="footer_h_contact">Kontakt</h4>
         <ul>
-          <li><a href="#kontakt">Reise anfragen</a></li>
+          <li><a href="#kontakt" data-i18n="footer_link_inquiry">Reise anfragen</a></li>
           <li><a href="#">roberto.adrian@adrian-structure.com</a></li>
           <li><a href="#">+49 30 1234 567</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Adrian-Structure. Alle Rechte vorbehalten. · Bildmotive KI-generiert.</span>
+      <span data-i18n="footer_copyright">© 2026 Adrian-Structure. Alle Rechte vorbehalten. · Bildmotive KI-generiert.</span>
       <ul class="legal-links">
-        <li><a href="../../impressum.html">Impressum</a></li>
-        <li><a href="../../datenschutz.html">Datenschutz</a></li>
-        <li><a href="#">AGB</a></li>
+        <li><a href="../../impressum.html" data-i18n="footer_legal_imprint">Impressum</a></li>
+        <li><a href="../../datenschutz.html" data-i18n="footer_legal_privacy">Datenschutz</a></li>
+        <li><a href="#" data-i18n="footer_legal_terms">AGB</a></li>
       </ul>
     </div>
   </div>
@@ -797,6 +819,48 @@
       items.forEach(function(el){ el.classList.add('is-visible'); });
     }
   })();
+</script>
+
+<script>
+var ST_I18N = {"de": {"nav_toggle_label": "Menü öffnen", "nav_philosophy": "Philosophie", "nav_destinations": "Ziele", "nav_experiences": "Erlebnisse", "nav_gallery": "Galerie", "nav_testimonials": "Stimmen", "nav_faq": "FAQ", "nav_cta": "Jetzt anfragen", "hero_overline": "Boutique-Reisen · Golden Hour", "hero_title_pre": "Luxus, der ", "hero_title_em": "flüstert", "hero_title_post": ", nicht schreit.", "hero_lead": "Adrian-Structure kuratiert stille, persönlich begleitete Reisen zu den schönsten Sonnenuntergängen der Welt — für alle, die Ruhe, Geschmack und Exklusivität mehr schätzen als Prospekte.", "hero_cta_primary": "Reise planen", "hero_cta_secondary": "Ziele entdecken", "hero_scroll": "Scrollen", "philo_overline": "Unsere Philosophie", "philo_title": "Nicht mehr Reisen zeigen — die richtigen", "philo_text": "Adrian-Structure wählt jedes Ziel und jedes Haus persönlich aus, bevor es je vorgeschlagen wird. Wir glauben an kuratierte Auswahl statt endloser Kataloge, an ruhige Beratung statt Verkaufsdruck, und an das Detail, das aus einer Reise eine Erinnerung macht. Jede Anfrage wird von einem festen Ansprechpartner begleitet — von der ersten Idee bis zur Rückkehr.", "dest_overline": "Reiseziele", "dest_title": "Kuratierte Ziele, keine Kataloge", "dest_intro": "Eine bewusst kleine Auswahl an Orten, die wir selbst kennen, geprüft und für gut befunden haben.", "dest_link": "Mehr erfahren", "dest1_name": "Santorin, Griechenland", "dest1_desc": "Weiß getünchte Terrassen über der Caldera, private Weinproben bei Sonnenuntergang.", "dest2_name": "Amalfiküste, Italien", "dest2_desc": "Zitronenhaine, versteckte Buchten und ruhige Abende auf privaten Terrassen.", "dest3_name": "Bali, Indonesien", "dest3_desc": "Reisterrassen, private Villen und Zeremonien zur goldenen Stunde am Reisfeldrand.", "dest4_name": "Kapregion, Südafrika", "dest4_desc": "Weinberge, Tafelberg-Panoramen und private Safari-Erweiterungen.", "dest5_name": "Baja California, Mexiko", "dest5_desc": "Wüste trifft Pazifik — private Bootstouren und stille Strandabende.", "dest6_name": "Kyoto, Japan", "dest6_desc": "Tempelgärten im Abendlicht, private Teezeremonien, leise Eleganz.", "exp_overline": "Erlebnisse", "exp_title": "Wir verkaufen das Erlebnis, nicht nur den Ort", "exp_intro": "Ausgewählte Momente, die jede Reise zu etwas Persönlichem machen.", "exp1_title": "Private Sunset-Segeltour", "exp1_desc": "Ein Boot, ein Skipper, keine Fremden — nur Wasser, Licht und Stille.", "exp1_li1": "Exklusiv gecharterte Yacht", "exp1_li2": "Champagner & leichte Küche an Bord", "exp1_li3": "Route auf die goldene Stunde abgestimmt", "exp2_title": "Spa-Retreat im Abendlicht", "exp2_desc": "Ruhe als Programm: Behandlungen, die dem Tageslicht folgen.", "exp2_li1": "Private Treatment-Suite", "exp2_li2": "Zeremonie statt Zeitplan", "exp2_li3": "Abschluss mit Blick auf den Horizont", "exp3_title": "Kulinarisches Sunset-Dinner", "exp3_desc": "Ein Tisch, ein Koch, eine Aussicht — für zwei oder eine kleine Gruppe.", "exp3_li1": "Individuell komponiertes Menü", "exp3_li2": "Lokale Zutaten, persönlicher Service", "exp3_li3": "Ort exklusiv für Sie reserviert", "gallery_overline": "Galerie", "gallery_title": "Golden-Hour-Stimmungen", "gallery_intro": "Eine visuelle Annäherung an die Atmosphäre unserer Reisen — Licht, Ruhe und Farben, wie sie jede Golden-Hour-Reise begleiten.", "gallery_cap1": "Caldera, Abendlicht", "gallery_cap2": "Küstenlicht", "gallery_cap3": "Stille Bucht", "gallery_cap4": "Terrassenlicht", "gallery_cap5": "Horizont", "gallery_cap6": "Letztes Licht", "stats_label1": "Jahre Erfahrung", "stats_label2": "Kuratierte Ziele", "stats_label3": "Gästezufriedenheit", "stats_label4": "Persönliche Betreuung", "test_overline": "Stimmen unserer Gäste", "test_title": "Erzählt statt beworben", "test1_quote": "„Wir mussten uns um nichts kümmern — jedes Detail war schon gedacht, bevor wir gefragt haben.“", "test1_name": "A. Bergmann", "test1_city": "München", "test2_quote": "„Das erste Mal, dass sich eine gebuchte Reise wie eine persönliche Empfehlung angefühlt hat.“", "test2_name": "S. Fontana", "test2_city": "Zürich", "test3_quote": "„Ruhig, unaufdringlich, außergewöhnlich gut organisiert. Genau die Art Luxus, die wir schätzen.“", "test3_name": "M. Keller", "test3_city": "Wien", "faq_overline": "Häufige Fragen", "faq_title": "Bevor Sie anfragen", "faq1_q": "Wie läuft eine Buchung bei Adrian-Structure ab?", "faq1_a": "Nach Ihrer Anfrage meldet sich ein persönlicher Ansprechpartner, um Ziel, Zeitraum und Wünsche zu besprechen. Sie erhalten einen individuellen Reisevorschlag, den wir gemeinsam verfeinern, bevor etwas gebucht wird.", "faq2_q": "Kann ich eine Reise stornieren oder umbuchen?", "faq2_a": "Stornierungs- und Umbuchungsbedingungen richten sich nach dem jeweiligen Angebot und werden Ihnen vor der verbindlichen Buchung transparent mitgeteilt — meist mit gestaffelten Fristen und, je nach Haus, einer kostenfreien Umbuchung bis wenige Wochen vor Anreise.", "faq3_q": "Sind Reisen für Familien oder Gruppen möglich?", "faq3_a": "Ja. Neben Paar-Reisen kuratieren wir auch kleine Gruppen- und Familienreisen — mit angepasstem Tempo, Unterkünften und Erlebnissen.", "faq4_q": "Lässt sich eine Reise individuell anpassen?", "faq4_a": "Individuelle Anpassung ist der Regelfall, nicht die Ausnahme. Jeder Vorschlag ist ein Ausgangspunkt für ein persönliches Gespräch.", "faq5_q": "Wie schnell erhalte ich eine Antwort auf meine Anfrage?", "faq5_a": "In der Regel antworten wir innerhalb von zwei Werktagen mit einem ersten persönlichen Vorschlag.", "contact_overline": "Kontakt & Anfrage", "contact_title": "Beginnen wir mit einem Gespräch", "contact_intro": "Beschreiben Sie kurz Ihre Wünsche — Ziel, Zeitraum, Anlass. Wir melden uns persönlich mit einem ersten Vorschlag.", "contact_email_label": "E-Mail", "contact_phone_label": "Telefon", "contact_hours": "Erreichbar: Mo–Fr, 9–18 Uhr", "contact_mockup_flag": "Mockup — Formular sendet in dieser Vorlage nicht wirklich", "form_name": "Name", "form_name_ph": "Ihr Name", "form_email": "E-Mail", "form_email_ph": "ihre@email-adresse.de", "form_dest": "Wunschziel", "form_dest_ph": "z. B. Santorin", "form_period": "Reisezeitraum", "form_period_ph": "z. B. September 2026", "form_message": "Nachricht", "form_message_ph": "Erzählen Sie uns von Ihrer Wunschreise…", "form_submit": "Anfrage senden (Mockup)", "news_title": "Exklusive Angebote zuerst erfahren", "news_text": "Kein Spam — nur ausgewählte Reisen und Erlebnisse, selten versendet.", "news_email_label": "E-Mail-Adresse für Newsletter", "news_email_ph": "ihre@email-adresse.de", "news_submit": "Anmelden (Mockup)", "footer_tagline": "Boutique-Reisen zur goldenen Stunde — kuratiert, persönlich, still statt laut.", "footer_h_discover": "Entdecken", "footer_h_about": "Über uns", "footer_h_contact": "Kontakt", "footer_link_destinations": "Reiseziele", "footer_link_experiences": "Erlebnisse", "footer_link_gallery": "Galerie", "footer_link_philosophy": "Philosophie", "footer_link_testimonials": "Stimmen der Gäste", "footer_link_faq": "FAQ", "footer_link_inquiry": "Reise anfragen", "footer_copyright": "© 2026 Adrian-Structure. Alle Rechte vorbehalten. · Bildmotive KI-generiert.", "footer_legal_imprint": "Impressum", "footer_legal_privacy": "Datenschutz", "footer_legal_terms": "AGB", "meta_title": "Adrian-Structure — Boutique-Reisen zur goldenen Stunde", "meta_description": "Adrian-Structure kuratiert stille, boutique-geführte Reisen zur goldenen Stunde: ausgewählte Ziele, persönliche Erlebnisse, Luxus, der flüstert statt schreit."}, "en": {"nav_toggle_label": "Open menu", "nav_philosophy": "Philosophy", "nav_destinations": "Destinations", "nav_experiences": "Experiences", "nav_gallery": "Gallery", "nav_testimonials": "Voices", "nav_faq": "FAQ", "nav_cta": "Enquire now", "hero_overline": "Boutique Travel · Golden Hour", "hero_title_pre": "Luxury that ", "hero_title_em": "whispers", "hero_title_post": ", not shouts.", "hero_lead": "Adrian-Structure curates quiet, personally accompanied journeys to the world's most beautiful sunsets — for those who value calm, taste, and exclusivity over brochures.", "hero_cta_primary": "Plan your journey", "hero_cta_secondary": "Discover destinations", "hero_scroll": "Scroll", "philo_overline": "Our Philosophy", "philo_title": "Not more journeys — the right ones", "philo_text": "Adrian-Structure personally selects every destination and every property before it is ever proposed. We believe in curated choice over endless catalogues, quiet advice over sales pressure, and the detail that turns a trip into a memory. Every enquiry is accompanied by a single, dedicated advisor — from the first idea to the return home.", "dest_overline": "Destinations", "dest_title": "Curated destinations, not catalogues", "dest_intro": "A deliberately small selection of places we know ourselves, have tested, and found worthy.", "dest_link": "Learn more", "dest1_name": "Santorini, Greece", "dest1_desc": "Whitewashed terraces above the caldera, private wine tastings at sunset.", "dest2_name": "Amalfi Coast, Italy", "dest2_desc": "Lemon groves, hidden coves, and quiet evenings on private terraces.", "dest3_name": "Bali, Indonesia", "dest3_desc": "Rice terraces, private villas, and golden-hour ceremonies at the edge of the paddies.", "dest4_name": "Cape Region, South Africa", "dest4_desc": "Vineyards, Table Mountain panoramas, and private safari extensions.", "dest5_name": "Baja California, Mexico", "dest5_desc": "Desert meets Pacific — private boat tours and quiet evenings on the beach.", "dest6_name": "Kyoto, Japan", "dest6_desc": "Temple gardens in evening light, private tea ceremonies, quiet elegance.", "exp_overline": "Experiences", "exp_title": "We sell the experience, not just the place", "exp_intro": "Selected moments that make every journey personal.", "exp1_title": "Private sunset sail", "exp1_desc": "One boat, one skipper, no strangers — just water, light, and silence.", "exp1_li1": "Exclusively chartered yacht", "exp1_li2": "Champagne & light cuisine on board", "exp1_li3": "Route timed to the golden hour", "exp2_title": "Spa retreat in evening light", "exp2_desc": "Stillness as the programme: treatments that follow the daylight.", "exp2_li1": "Private treatment suite", "exp2_li2": "Ceremony, not a schedule", "exp2_li3": "Ending with a view of the horizon", "exp3_title": "Culinary sunset dinner", "exp3_desc": "One table, one chef, one view — for two or a small group.", "exp3_li1": "Individually composed menu", "exp3_li2": "Local ingredients, personal service", "exp3_li3": "Location reserved exclusively for you", "gallery_overline": "Gallery", "gallery_title": "Golden hour moods", "gallery_intro": "A visual approach to the atmosphere of our journeys — light, calm, and color, as they accompany every golden-hour trip.", "gallery_cap1": "Caldera at dusk", "gallery_cap2": "Coastal light", "gallery_cap3": "Quiet cove", "gallery_cap4": "Terrace light", "gallery_cap5": "Horizon", "gallery_cap6": "Last light", "stats_label1": "Years of experience", "stats_label2": "Curated destinations", "stats_label3": "Guest satisfaction", "stats_label4": "Personal care", "test_overline": "Voices of our guests", "test_title": "Told, not advertised", "test1_quote": "“We didn't have to think about a thing — every detail had already been considered before we even asked.”", "test1_name": "A. Bergmann", "test1_city": "Munich", "test2_quote": "“The first time a booked trip felt like a personal recommendation.”", "test2_name": "S. Fontana", "test2_city": "Zurich", "test3_quote": "“Calm, unobtrusive, exceptionally well organized. Exactly the kind of luxury we value.”", "test3_name": "M. Keller", "test3_city": "Vienna", "faq_overline": "Frequently asked questions", "faq_title": "Before you enquire", "faq1_q": "How does booking with Adrian-Structure work?", "faq1_a": "After your enquiry, a personal advisor will get in touch to discuss destination, timing, and wishes. You'll receive an individual travel proposal, which we refine together before anything is booked.", "faq2_q": "Can I cancel or rebook a trip?", "faq2_a": "Cancellation and rebooking terms depend on the specific offer and will be communicated to you transparently before your booking becomes binding — usually with tiered deadlines and, depending on the property, a free rebooking option up to a few weeks before arrival.", "faq3_q": "Are trips available for families or groups?", "faq3_a": "Yes. Alongside trips for couples, we also curate small group and family journeys — with a pace, accommodation, and experiences tailored accordingly.", "faq4_q": "Can a trip be customized?", "faq4_a": "Individual customization is the rule, not the exception. Every proposal is a starting point for a personal conversation.", "faq5_q": "How quickly will I receive a response to my enquiry?", "faq5_a": "As a rule, we respond within two business days with a first personal proposal.", "contact_overline": "Contact & Enquiry", "contact_title": "Let's start with a conversation", "contact_intro": "Briefly describe your wishes — destination, timing, occasion. We'll get back to you personally with a first proposal.", "contact_email_label": "Email", "contact_phone_label": "Phone", "contact_hours": "Available: Mon–Fri, 9am–6pm", "contact_mockup_flag": "Mockup — this template's form doesn't actually send", "form_name": "Name", "form_name_ph": "Your name", "form_email": "Email", "form_email_ph": "your@email-address.com", "form_dest": "Preferred destination", "form_dest_ph": "e.g. Santorini", "form_period": "Travel period", "form_period_ph": "e.g. September 2026", "form_message": "Message", "form_message_ph": "Tell us about your dream trip…", "form_submit": "Send enquiry (mockup)", "news_title": "Be the first to hear about exclusive offers", "news_text": "No spam — just selected trips and experiences, sent rarely.", "news_email_label": "Email address for newsletter", "news_email_ph": "your@email-address.com", "news_submit": "Subscribe (mockup)", "footer_tagline": "Boutique travel to the golden hour — curated, personal, quiet rather than loud.", "footer_h_discover": "Discover", "footer_h_about": "About us", "footer_h_contact": "Contact", "footer_link_destinations": "Destinations", "footer_link_experiences": "Experiences", "footer_link_gallery": "Gallery", "footer_link_philosophy": "Philosophy", "footer_link_testimonials": "Guest voices", "footer_link_faq": "FAQ", "footer_link_inquiry": "Enquire about a trip", "footer_copyright": "© 2026 Adrian-Structure. All rights reserved. · Imagery AI-generated.", "footer_legal_imprint": "Imprint", "footer_legal_privacy": "Privacy Policy", "footer_legal_terms": "Terms", "meta_title": "Adrian-Structure — Boutique Travel to the Golden Hour", "meta_description": "Adrian-Structure curates quiet, boutique-led journeys to the golden hour: selected destinations, personal experiences, luxury that whispers rather than shouts."}, "ja": {"nav_toggle_label": "メニューを開く", "nav_philosophy": "理念", "nav_destinations": "旅先", "nav_experiences": "体験", "nav_gallery": "ギャラリー", "nav_testimonials": "お客様の声", "nav_faq": "よくある質問", "nav_cta": "今すぐお問い合わせ", "hero_overline": "ブティックトラベル・ゴールデンアワー", "hero_title_pre": "叫ぶのではなく、静かに", "hero_title_em": "囁く", "hero_title_post": "ような贅沢。", "hero_lead": "Adrian-Structureは、世界でもっとも美しい夕陽へと向かう、静かで個人的な旅を一つひとつ厳選してご案内します——パンフレットよりも、静けさと洗練、そして特別感を大切にされる方のために。", "hero_cta_primary": "旅を計画する", "hero_cta_secondary": "旅先を見る", "hero_scroll": "スクロール", "philo_overline": "私たちの理念", "philo_title": "多くの旅を見せるのではなく——ふさわしい旅だけを", "philo_text": "Adrian-Structureは、ご提案する前に、すべての旅先とすべての宿を私たち自身の目で選び抜いています。果てしないカタログではなく厳選された選択を、営業的な圧力ではなく静かなご相談を、そして旅を思い出に変えるディテールを大切にしています。すべてのお問い合わせには、最初のご相談から帰国まで、専属の担当者が付き添います。", "dest_overline": "旅先", "dest_title": "カタログではなく、厳選された旅先", "dest_intro": "私たち自身が知り、実際に確かめ、これはと思える場所だけを、あえて少数に絞ってご紹介します。", "dest_link": "詳しく見る", "dest1_name": "サントリーニ島、ギリシャ", "dest1_desc": "カルデラを見下ろす白亜のテラス、夕陽の中でのプライベートワインテイスティング。", "dest2_name": "アマルフィ海岸、イタリア", "dest2_desc": "レモン畑、隠れた入り江、プライベートテラスで過ごす静かな夕べ。", "dest3_name": "バリ島、インドネシア", "dest3_desc": "棚田の景観、プライベートヴィラ、そして田んぼのほとりで行うゴールデンアワーのセレモニー。", "dest4_name": "ケープ地方、南アフリカ", "dest4_desc": "ワイナリー、テーブルマウンテンを望むパノラマ、プライベートサファリの延泊オプション。", "dest5_name": "バハ・カリフォルニア、メキシコ", "dest5_desc": "砂漠が太平洋と出会う場所——プライベートボートツアーと静かなビーチの夕べ。", "dest6_name": "京都、日本", "dest6_desc": "夕暮れの光に包まれた寺院の庭園、プライベートな茶会、静かなたたずまいの美。", "exp_overline": "体験", "exp_title": "私たちが提供するのは、場所だけでなく体験そのものです", "exp_intro": "一つひとつの旅を、特別な思い出に変える厳選された瞬間。", "exp1_title": "プライベート・サンセットセーリング", "exp1_desc": "一艘の船、一人のスキッパー、見知らぬ人はいない——水と光と静寂だけ。", "exp1_li1": "貸切のプライベートヨット", "exp1_li2": "船上でのシャンパンと軽食", "exp1_li3": "ゴールデンアワーに合わせたルート設計", "exp2_title": "夕暮れのスパ・リトリート", "exp2_desc": "静けさそのものがプログラム——陽の光の移ろいに寄り添うトリートメント。", "exp2_li1": "プライベートトリートメントスイート", "exp2_li2": "スケジュールではなく、儀式として", "exp2_li3": "水平線を望みながらの締めくくり", "exp3_title": "美食のサンセット・ディナー", "exp3_desc": "ひとつのテーブル、一人のシェフ、ひとつの景色——お二人でも、少人数のグループでも。", "exp3_li1": "お客様だけのために組み立てるメニュー", "exp3_li2": "地元の食材、パーソナルなサービス", "exp3_li3": "会場はお客様のために貸切", "gallery_overline": "ギャラリー", "gallery_title": "ゴールデンアワーの情景", "gallery_intro": "私たちの旅の空気感への、視覚的なひとつの入り口——どのゴールデンアワーの旅にも寄り添う、光と静けさと色彩。", "gallery_cap1": "カルデラ、夕暮れ", "gallery_cap2": "海辺の光", "gallery_cap3": "静かな入り江", "gallery_cap4": "テラスの光", "gallery_cap5": "水平線", "gallery_cap6": "最後の光", "stats_label1": "年の経験", "stats_label2": "厳選された旅先", "stats_label3": "顧客満足度", "stats_label4": "パーソナルな対応", "test_overline": "お客様の声", "test_title": "宣伝ではなく、語られた言葉", "test1_quote": "「私たちは何も心配する必要がありませんでした——尋ねる前から、すべてのディテールがすでに考え抜かれていたのです。」", "test1_name": "A. Bergmann", "test1_city": "ミュンヘン", "test2_quote": "「予約した旅行が、まるで個人的な勧めのように感じられたのは、これが初めてでした。」", "test2_name": "S. Fontana", "test2_city": "チューリッヒ", "test3_quote": "「静かで、控えめで、驚くほどよく整えられている。まさに私たちが大切にしたいと思う贅沢の形でした。」", "test3_name": "M. Keller", "test3_city": "ウィーン", "faq_overline": "よくあるご質問", "faq_title": "お問い合わせの前に", "faq1_q": "Adrian-Structureでのご予約の流れを教えてください。", "faq1_a": "お問い合わせをいただいた後、専属の担当者よりご連絡し、旅先やご希望の時期、ご要望についてお伺いします。個別のご提案を作成し、実際にご予約いただく前に、一緒に内容を練り上げていきます。", "faq2_q": "旅行のキャンセルや変更は可能ですか？", "faq2_a": "キャンセルや変更の条件はそれぞれのプランによって異なり、正式なご予約の前に必ず明確にご案内いたします。多くの場合、段階的な期限が設けられており、宿泊先によっては、到着の数週間前まで無料での変更が可能です。", "faq3_q": "ご家族やグループでの旅行は可能ですか？", "faq3_a": "はい。カップル向けの旅だけでなく、少人数のグループ旅行やご家族での旅行もご用意しています——ペース配分、宿泊先、体験の内容もそれぞれに合わせて調整いたします。", "faq4_q": "旅の内容を個別にカスタマイズすることはできますか？", "faq4_a": "個別のカスタマイズは、例外ではなく基本の在り方です。すべてのご提案は、あくまで個人的な対話の出発点にすぎません。", "faq5_q": "お問い合わせへの返信はどのくらいで届きますか？", "faq5_a": "通常、2営業日以内に、最初のご提案を添えてご返信いたします。", "contact_overline": "お問い合わせ", "contact_title": "まずは、対話から始めましょう", "contact_intro": "ご希望を簡単にお聞かせください——旅先、時期、ご旅行の目的など。担当者より、最初のご提案とともに個別にご連絡いたします。", "contact_email_label": "メールアドレス", "contact_phone_label": "電話", "contact_hours": "対応時間：月〜金、9:00〜18:00", "contact_mockup_flag": "モックアップ——このテンプレートのフォームは実際には送信されません", "form_name": "お名前", "form_name_ph": "お名前をご入力ください", "form_email": "メールアドレス", "form_email_ph": "your@email-address.com", "form_dest": "ご希望の旅先", "form_dest_ph": "例：サントリーニ島", "form_period": "ご旅行時期", "form_period_ph": "例：2026年9月", "form_message": "メッセージ", "form_message_ph": "叶えたい旅について、お聞かせください……", "form_submit": "お問い合わせを送信（モックアップ）", "news_title": "特別なオファーをいち早くお届けします", "news_text": "スパムはお送りしません——厳選された旅と体験のみを、まれにお届けします。", "news_email_label": "ニュースレター用メールアドレス", "news_email_ph": "your@email-address.com", "news_submit": "登録する（モックアップ）", "footer_tagline": "ゴールデンアワーへ誘う、ブティックトラベル——厳選され、パーソナルで、声高よりも静けさを大切に。", "footer_h_discover": "探す", "footer_h_about": "私たちについて", "footer_h_contact": "お問い合わせ", "footer_link_destinations": "旅先", "footer_link_experiences": "体験", "footer_link_gallery": "ギャラリー", "footer_link_philosophy": "理念", "footer_link_testimonials": "お客様の声", "footer_link_faq": "よくあるご質問", "footer_link_inquiry": "旅について問い合わせる", "footer_copyright": "© 2026 Adrian-Structure. 無断複写・転載を禁じます。· 画像はAIにより生成。", "footer_legal_imprint": "インプリント", "footer_legal_privacy": "プライバシーポリシー", "footer_legal_terms": "利用規約", "meta_title": "Adrian-Structure — ゴールデンアワーへのブティックトラベル", "meta_description": "Adrian-Structureは、ゴールデンアワーへと誘う静かなブティック仕立ての旅を厳選してご案内します——選び抜かれた旅先、パーソナルな体験、そして声高に語らない贅沢。"}, "zh": {"nav_toggle_label": "打开菜单", "nav_philosophy": "理念", "nav_destinations": "目的地", "nav_experiences": "体验", "nav_gallery": "画廊", "nav_testimonials": "客户心声", "nav_faq": "常见问题", "nav_cta": "立即咨询", "hero_overline": "精品旅行 · 黄金时刻", "hero_title_pre": "不喧哗，只", "hero_title_em": "低语", "hero_title_post": "的奢华。", "hero_lead": "Adrian-Structure 精心策划前往世界最美日落之地的静谧私人之旅——献给那些珍视宁静、品味与专属感，而非宣传册的人。", "hero_cta_primary": "规划旅程", "hero_cta_secondary": "探索目的地", "hero_scroll": "向下滚动", "philo_overline": "我们的理念", "philo_title": "不是展示更多旅程，而是正确的那一个", "philo_text": "Adrian-Structure 会亲自甄选每一个目的地与每一处下榻之所，才会将其呈现给您。我们相信精心策划胜过无尽的目录，静谧的建议胜过销售压力，而正是这些细节，让一次旅行成为一段回忆。每一份咨询都由专属顾问全程陪伴——从最初的构想，直到平安归来。", "dest_overline": "目的地", "dest_title": "精选目的地，而非目录", "dest_intro": "刻意精简的目的地清单——每一处都是我们亲自造访、实地考察并认可的地方。", "dest_link": "了解更多", "dest1_name": "圣托里尼，希腊", "dest1_desc": "俯瞰破火山口的白墙露台，日落时分的私人品酒会。", "dest2_name": "阿马尔菲海岸，意大利", "dest2_desc": "柠檬园、隐秘海湾，以及私人露台上宁静的夜晚。", "dest3_name": "巴厘岛，印度尼西亚", "dest3_desc": "梯田风光、私人别墅，以及稻田边的黄金时刻仪式。", "dest4_name": "开普地区，南非", "dest4_desc": "葡萄园、桌山全景，以及可延展的私人野生动物园之旅。", "dest5_name": "下加利福尼亚，墨西哥", "dest5_desc": "沙漠与太平洋交汇之地——私人游船之旅与宁静的海滩夜晚。", "dest6_name": "京都，日本", "dest6_desc": "暮色中的寺院庭园、私人茶道体验，静谧优雅。", "exp_overline": "体验", "exp_title": "我们出售的是体验，而不只是地点", "exp_intro": "精心挑选的时刻，让每一次旅行都独一无二。", "exp1_title": "私人日落帆船之旅", "exp1_desc": "一艘船，一位船长，没有陌生人——只有水、光与寂静。", "exp1_li1": "专属包船", "exp1_li2": "船上香槟与轻食", "exp1_li3": "航线专为黄金时刻设计", "exp2_title": "暮色中的水疗静修", "exp2_desc": "以静谧为纲——顺应日光变化的疗程。", "exp2_li1": "私人理疗套间", "exp2_li2": "以仪式感取代时间表", "exp2_li3": "在地平线的景致中收尾", "exp3_title": "美食日落晚宴", "exp3_desc": "一张餐桌，一位主厨，一片景致——适合双人或小型聚会。", "exp3_li1": "为您量身定制的菜单", "exp3_li2": "本地食材，专属服务", "exp3_li3": "场地为您专属保留", "gallery_overline": "画廊", "gallery_title": "黄金时刻的氛围", "gallery_intro": "以视觉的方式，靠近我们旅程的氛围——每一次黄金时刻之旅所伴随的光影、宁静与色彩。", "gallery_cap1": "破火山口，暮色", "gallery_cap2": "海岸之光", "gallery_cap3": "静谧海湾", "gallery_cap4": "露台之光", "gallery_cap5": "地平线", "gallery_cap6": "最后的光", "stats_label1": "年经验", "stats_label2": "精选目的地", "stats_label3": "宾客满意度", "stats_label4": "专属服务", "test_overline": "宾客心声", "test_title": "由客户诉说，而非广告宣传", "test1_quote": "“我们什么都不用操心——在我们开口之前，每一个细节都已经被想到了。”", "test1_name": "A. Bergmann", "test1_city": "慕尼黑", "test2_quote": "“这是第一次，一次预订的旅行让人感觉像是一份私人推荐。”", "test2_name": "S. Fontana", "test2_city": "苏黎世", "test3_quote": "“宁静、不张扬，组织得极为出色。这正是我们所珍视的那种奢华。”", "test3_name": "M. Keller", "test3_city": "维也纳", "faq_overline": "常见问题", "faq_title": "咨询之前", "faq1_q": "在 Adrian-Structure 预订的流程是怎样的？", "faq1_a": "在您咨询之后，专属顾问会与您联系，商讨目的地、时间与需求。我们会为您准备个性化的行程方案，并在正式预订前与您共同完善细节。", "faq2_q": "我可以取消或更改行程吗？", "faq2_a": "取消与改期条款视具体行程而定，我们会在正式确认预订前，透明地向您说明——通常设有阶梯式期限，视酒店而定，部分行程可在出发前数周内免费改期。", "faq3_q": "是否提供适合家庭或团体的行程？", "faq3_a": "当然可以。除了双人旅行，我们同样为小型团体与家庭策划专属行程——节奏、住宿与体验都会相应调整。", "faq4_q": "行程可以个性化定制吗？", "faq4_a": "个性化定制是常态，而非例外。每一份方案都只是一次私人对话的起点。", "faq5_q": "咨询后多久能收到回复？", "faq5_a": "通常我们会在两个工作日内回复您，并附上初步的个性化方案。", "contact_overline": "联系与咨询", "contact_title": "让我们从一次对话开始", "contact_intro": "请简单描述您的需求——目的地、时间与出行缘由。我们会由专人与您联系，并附上初步方案。", "contact_email_label": "邮箱", "contact_phone_label": "电话", "contact_hours": "服务时间：周一至周五 9:00–18:00", "contact_mockup_flag": "示意样式——本模板中的表单并不会真正发送", "form_name": "姓名", "form_name_ph": "您的姓名", "form_email": "邮箱", "form_email_ph": "your@email-address.com", "form_dest": "意向目的地", "form_dest_ph": "例如：圣托里尼", "form_period": "出行时间", "form_period_ph": "例如：2026年9月", "form_message": "留言", "form_message_ph": "请告诉我们您理想中的旅行……", "form_submit": "发送咨询（示意）", "news_title": "率先获取专属优惠资讯", "news_text": "拒绝垃圾邮件——只发送精选的旅程与体验，频率极低。", "news_email_label": "订阅通讯的邮箱地址", "news_email_ph": "your@email-address.com", "news_submit": "订阅（示意）", "footer_tagline": "通往黄金时刻的精品旅行——精心策划、私人订制，宁静而非喧嚣。", "footer_h_discover": "探索", "footer_h_about": "关于我们", "footer_h_contact": "联系", "footer_link_destinations": "目的地", "footer_link_experiences": "体验", "footer_link_gallery": "画廊", "footer_link_philosophy": "理念", "footer_link_testimonials": "宾客心声", "footer_link_faq": "常见问题", "footer_link_inquiry": "咨询行程", "footer_copyright": "© 2026 Adrian-Structure. 保留所有权利。· 图片素材由AI生成。", "footer_legal_imprint": "版权信息", "footer_legal_privacy": "隐私政策", "footer_legal_terms": "条款", "meta_title": "Adrian-Structure — 通往黄金时刻的精品旅行", "meta_description": "Adrian-Structure 精心策划通往黄金时刻的静谧精品旅程：精选目的地、私人体验，以及低语而非喧嚣的奢华。"}};
+(function(){
+  "use strict";
+  var KEY = "stLang";
+  var supported = ["de","en","ja","zh"];
+  function apply(lang){
+    var dict = ST_I18N[lang] || ST_I18N.de;
+    document.querySelectorAll("[data-i18n]").forEach(function(el){
+      var k = el.getAttribute("data-i18n");
+      if (dict[k] != null) el.textContent = dict[k];
+    });
+    document.querySelectorAll("[data-i18n-ph]").forEach(function(el){
+      var k = el.getAttribute("data-i18n-ph");
+      if (dict[k] != null) el.setAttribute("placeholder", dict[k]);
+    });
+    if (dict.meta_title) document.title = dict.meta_title;
+    var md = document.querySelector('meta[name="description"]');
+    if (md && dict.meta_description) md.setAttribute("content", dict.meta_description);
+    document.documentElement.setAttribute("lang", lang);
+    var sw = document.getElementById("lang-switch");
+    if (sw) sw.querySelectorAll("button").forEach(function(b){
+      b.classList.toggle("is-active", b.getAttribute("data-lang") === lang);
+    });
+    try { localStorage.setItem(KEY, lang); } catch(e){}
+  }
+  function init(){
+    var saved = null;
+    try { saved = localStorage.getItem(KEY); } catch(e){}
+    var lang = (saved && supported.indexOf(saved) >= 0) ? saved : "de";
+    var sw = document.getElementById("lang-switch");
+    if (sw) sw.addEventListener("click", function(e){
+      var b = e.target.closest("button[data-lang]");
+      if (b) apply(b.getAttribute("data-lang"));
+    });
+    apply(lang);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();
 </script>
 
 </body>
