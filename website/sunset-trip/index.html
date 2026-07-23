@@ -130,7 +130,8 @@
   .hero{
     min-height:100svh; display:flex; align-items:center;
     background:
-      radial-gradient(ellipse at 70% 20%, rgba(242,168,140,0.35), transparent 55%),
+      linear-gradient(200deg, rgba(43,31,46,0.58), rgba(43,31,46,0.30) 55%, rgba(43,31,46,0.66) 100%),
+      url('images/hero.jpg') center/cover no-repeat,
       linear-gradient(200deg, var(--plum) 0%, var(--ink) 62%, var(--ink) 100%);
     color:var(--sand);
     padding:140px 0 100px;
@@ -205,12 +206,13 @@
     left:50%; top:36%; transform:translate(-50%,-50%);
     background:radial-gradient(circle at 35% 35%, #fff, var(--amber) 60%, transparent 78%);
   }
-  .dest1{ background:linear-gradient(160deg, var(--plum), var(--amber) 120%); }
-  .dest2{ background:linear-gradient(160deg, var(--ink), var(--coral) 130%); }
-  .dest3{ background:linear-gradient(160deg, var(--amber), var(--plum) 130%); }
-  .dest4{ background:linear-gradient(160deg, var(--coral), var(--ink) 130%); }
-  .dest5{ background:linear-gradient(160deg, var(--plum), var(--coral) 130%); }
-  .dest6{ background:linear-gradient(160deg, var(--amber), var(--ink) 130%); }
+  .dest1{ background:url('images/dest-santorin.jpg') center/cover, linear-gradient(160deg, var(--plum), var(--amber) 120%); }
+  .dest2{ background:url('images/dest-amalfi.jpg') center/cover, linear-gradient(160deg, var(--ink), var(--coral) 130%); }
+  .dest3{ background:url('images/dest-bali.jpg') center/cover, linear-gradient(160deg, var(--amber), var(--plum) 130%); }
+  .dest4{ background:url('images/dest-kap.jpg') center/cover, linear-gradient(160deg, var(--coral), var(--ink) 130%); }
+  .dest5{ background:url('images/dest-baja.jpg') center/cover, linear-gradient(160deg, var(--plum), var(--coral) 130%); }
+  .dest6{ background:url('images/dest-kyoto.jpg') center/cover, linear-gradient(160deg, var(--amber), var(--ink) 130%); }
+  .card-media .horizon-line, .card-media .sun-dot{ display:none; }
   .card h3{ font-size:1.25rem; margin-bottom:.2em; }
   .card p{ color:rgba(43,31,46,0.75); font-size:.95rem; flex:1; }
   .card-link{
@@ -255,12 +257,12 @@
     font-size:.78rem; letter-spacing:.05em; opacity:.9;
     text-shadow:0 2px 8px rgba(43,31,46,0.6);
   }
-  .t1{ grid-column:span 2; grid-row:span 3; background:radial-gradient(circle at 75% 25%, var(--amber), transparent 55%), linear-gradient(160deg, var(--plum), var(--ink)); }
-  .t2{ grid-column:span 2; grid-row:span 2; background:linear-gradient(135deg, var(--coral), var(--amber)); }
-  .t3{ grid-column:span 1; grid-row:span 1; background:linear-gradient(200deg, var(--ink), var(--plum)); }
-  .t4{ grid-column:span 1; grid-row:span 2; background:radial-gradient(circle at 30% 70%, var(--amber), transparent 60%), linear-gradient(180deg, var(--coral), var(--plum)); }
-  .t5{ grid-column:span 2; grid-row:span 1; background:linear-gradient(90deg, var(--plum), var(--amber), var(--coral)); }
-  .t6{ grid-column:span 2; grid-row:span 2; background:linear-gradient(160deg, var(--ink), var(--coral)); }
+  .t1{ grid-column:span 2; grid-row:span 3; background:url('images/dest-santorin.jpg') center/cover, linear-gradient(160deg, var(--plum), var(--ink)); }
+  .t2{ grid-column:span 2; grid-row:span 2; background:url('images/dest-baja.jpg') center/cover, linear-gradient(135deg, var(--coral), var(--amber)); }
+  .t3{ grid-column:span 1; grid-row:span 1; background:url('images/dest-kyoto.jpg') center/cover, linear-gradient(200deg, var(--ink), var(--plum)); }
+  .t4{ grid-column:span 1; grid-row:span 2; background:url('images/dest-bali.jpg') center/cover, linear-gradient(180deg, var(--coral), var(--plum)); }
+  .t5{ grid-column:span 2; grid-row:span 1; background:url('images/dest-amalfi.jpg') center/cover, linear-gradient(90deg, var(--plum), var(--amber), var(--coral)); }
+  .t6{ grid-column:span 2; grid-row:span 2; background:url('images/dest-kap.jpg') center/cover, linear-gradient(160deg, var(--ink), var(--coral)); }
   @media (max-width:760px){
     .mosaic{ grid-template-columns:repeat(2,1fr); grid-auto-rows:110px; }
     .t1,.t2,.t4,.t5,.t6{ grid-column:span 2; }
