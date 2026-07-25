@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>03 Testbench — die 5 Prüfaufgaben · FPGA-Prozess-Werkstatt</title>
+<style>
+body { font-family: Arial, Helvetica, sans-serif; background: #0d1117; color: #f0f0f0; margin: 0; padding: 40px 20px; }
+h1 { text-align: center; margin: 0 0 6px 0; }
+p.subtitle { text-align: center; color: #9aa4b2; margin: 0 0 28px 0; }
+.hero { display: flex; justify-content: center; margin-bottom: 28px; }
+.hero img { max-width: 340px; width: 100%; border: 1px solid #30363d; border-radius: 10px; background: #0d1117; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+.card.sub { background: #161b22; border: 1px solid #30363d; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; text-align: left; }
+.card.sub img { width: 100%; height: 150px; object-fit: contain; background: #0d1117; display: block; }
+.card.sub .body { padding: 14px 14px 16px 14px; display: flex; flex-direction: column; gap: 9px; }
+.card.sub h2 { font-size: 15px; margin: 0; color: #f0f6fc; line-height: 1.35; }
+.beweis { align-self: flex-start; font-size: 12px; color: #9ae6c3; background: #12261c; border: 1px solid #2fd67b55; border-radius: 6px; padding: 3px 9px; }
+.essenz { font-size: 13px; color: #9aa4b2; margin: 0; line-height: 1.5; }
+.stepnav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 30px auto 0 auto; gap: 12px; }
+.stepnav a { color: #f0f0f0; background: #21262d; border: 1px solid #484f58; border-radius: 8px; padding: 9px 16px; text-decoration: none; font-size: 14px; }
+.stepnav a:hover { background: #30363d; border-color: #6e7681; }
+footer { text-align: center; margin-top: 44px; padding: 24px 0 0 0; font-size: 13px; color: #8b949e; border-top: 1px solid #30363d; }
+footer a { color: #8b949e; }
+</style>
+</head>
+<body>
+<h1>03 Testbench</h1>
+<p class="subtitle">Ebene 2 · die 5 Prüfaufgaben dieses Schritts · FPGA-Prozess-Werkstatt</p>
+<div class="hero"><img src="../app-assets/images/03_Testbench" alt="03 Testbench"></div>
+<div class="grid">
+<div class="card sub">
+  <img src="../app-assets/images/03_Testbench" alt="3.1 Konverter erzeugt Hex WIRKLICH, width-konsistent" loading="lazy">
+  <div class="body">
+    <h2>3.1 · Konverter erzeugt Hex WIRKLICH, width-konsistent</h2>
+    <span class="beweis">Beweis-Artefakt: tb/*.hex (kein Platzhalter)</span>
+    <p class="essenz">Der häufigste stille Totalausfall: Platzhalter-Hex oder Misch-Breiten. EINE Breite je Hex-Satz — sonst prüft die TB gegen Müll und meldet falsche Fehler.</p>
+  </div>
+</div>
+
+<div class="card sub">
+  <img src="../app-assets/images/03_Testbench" alt="3.2 Testbench selbstprüfend (Fehlerzähler + Timeout-Wachhund)" loading="lazy">
+  <div class="body">
+    <h2>3.2 · Testbench selbstprüfend (Fehlerzähler + Timeout-Wachhund)</h2>
+    <span class="beweis">Beweis-Artefakt: tb_&lt;block&gt;.v</span>
+    <p class="essenz">Stimulus und Monitor getrennt, Fehler werden GEZÄHLT. $display läuft nicht in Hardware — eine TB ohne Vergleichszähler ist Show, keine Prüfung.</p>
+  </div>
+</div>
+
+<div class="card sub">
+  <img src="../app-assets/images/03_Testbench" alt="3.3 Stimulus flankenstabil (negedge/#-Offset, kein posedge-Race)" loading="lazy">
+  <div class="body">
+    <h2>3.3 · Stimulus flankenstabil (negedge/#-Offset, kein posedge-Race)</h2>
+    <span class="beweis">Beweis-Artefakt: TB-Review-Vermerk</span>
+    <p class="essenz">Bezahlt gelernt: 25 „Fehler“, und die RTL war korrekt — es war ein Stimulus-Takt-Race. Eingaben auf negedge setzen, nie blockierend im posedge-Zeitschritt.</p>
+  </div>
+</div>
+
+<div class="card sub">
+  <img src="../app-assets/images/03_Testbench" alt="3.4 Positive UND negative Fälle vorhanden" loading="lazy">
+  <div class="body">
+    <h2>3.4 · Positive UND negative Fälle vorhanden</h2>
+    <span class="beweis">Beweis-Artefakt: Vektor-Klassen im JSON</span>
+    <p class="essenz">Korrektes muss bestehen UND Falsches muss durchfallen. Eine Prüfung, die nie rot zeigen kann, beweist nichts — Negativfälle eichen die Maschine.</p>
+  </div>
+</div>
+
+<div class="card sub">
+  <img src="../app-assets/images/03_Testbench" alt="3.5 ASCII-Trace pro Tick eingebaut" loading="lazy">
+  <div class="body">
+    <h2>3.5 · ASCII-Trace pro Tick eingebaut</h2>
+    <span class="beweis">Beweis-Artefakt: Trace-Writer in der TB</span>
+    <p class="essenz">Der Trace macht aus „irgendwo falsch“ ein „Tick 4711, Bit 3“. Ohne Trace debuggst du mit Gefühl, mit Trace mit Zeilennummer.</p>
+  </div>
+</div>
+</div>
+
+<nav class="stepnav">
+  <a href="schritt-02.html">&larr; Schritt 02</a>
+  <a href="index.html">Alle 12 Schritte</a>
+  <a href="schritt-04.html">Schritt 04 &rarr;</a>
+</nav>
+<footer>
+  <a href="index.html">&larr; FPGA-Prozess-Werkstatt</a> &middot;
+  <a href="../index.html">Adrian-Structure</a> &middot;
+  <a href="../impressum.html">Impressum</a> &middot;
+  <a href="../datenschutz.html">Datenschutz</a>
+</footer>
+</body>
+</html>

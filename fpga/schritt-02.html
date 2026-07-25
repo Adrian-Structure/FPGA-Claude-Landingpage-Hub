@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>02 Golden Python — die 5 Prüfaufgaben · FPGA-Prozess-Werkstatt</title>
+<style>
+body { font-family: Arial, Helvetica, sans-serif; background: #0d1117; color: #f0f0f0; margin: 0; padding: 40px 20px; }
+h1 { text-align: center; margin: 0 0 6px 0; }
+p.subtitle { text-align: center; color: #9aa4b2; margin: 0 0 28px 0; }
+.hero { display: flex; justify-content: center; margin-bottom: 28px; }
+.hero img { max-width: 340px; width: 100%; border: 1px solid #30363d; border-radius: 10px; background: #0d1117; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+.card.sub { background: #161b22; border: 1px solid #30363d; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; text-align: left; }
+.card.sub img { width: 100%; height: 150px; object-fit: contain; background: #0d1117; display: block; }
+.card.sub .body { padding: 14px 14px 16px 14px; display: flex; flex-direction: column; gap: 9px; }
+.card.sub h2 { font-size: 15px; margin: 0; color: #f0f6fc; line-height: 1.35; }
+.beweis { align-self: flex-start; font-size: 12px; color: #9ae6c3; background: #12261c; border: 1px solid #2fd67b55; border-radius: 6px; padding: 3px 9px; }
+.essenz { font-size: 13px; color: #9aa4b2; margin: 0; line-height: 1.5; }
+.stepnav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 30px auto 0 auto; gap: 12px; }
+.stepnav a { color: #f0f0f0; background: #21262d; border: 1px solid #484f58; border-radius: 8px; padding: 9px 16px; text-decoration: none; font-size: 14px; }
+.stepnav a:hover { background: #30363d; border-color: #6e7681; }
+footer { text-align: center; margin-top: 44px; padding: 24px 0 0 0; font-size: 13px; color: #8b949e; border-top: 1px solid #30363d; }
+footer a { color: #8b949e; }
+</style>
+</head>
+<body>
+<h1>02 Golden Python</h1>
+<p class="subtitle">Ebene 2 · die 5 Prüfaufgaben dieses Schritts · FPGA-Prozess-Werkstatt</p>
+<div class="hero"><img src="../app-assets/images/02_Golden%20Python.png" alt="02 Golden Python"></div>
+<div class="grid">
+<div class="card sub">
+  <img src="../app-assets/images/02_Golden%20Python.png" alt="2.1 Golden unabhängig (aus der Spec, NIE aus der RTL)" loading="lazy">
+  <div class="body">
+    <h2>2.1 · Golden unabhängig (aus der Spec, NIE aus der RTL)</h2>
+    <span class="beweis">Beweis-Artefakt: Herkunfts-Notiz im Golden</span>
+    <p class="essenz">Das Orakel niemals aus der RTL ableiten — sonst erbt es exakt die Fehler, die es fangen soll. Quelle ist die Spec, sonst nichts.</p>
+  </div>
+</div>
+
+<div class="card sub">
+  <img src="../app-assets/images/02_Golden%20Python.png" alt="2.2 self_check() = 0 Fehler" loading="lazy">
+  <div class="body">
+    <h2>2.2 · self_check() = 0 Fehler</h2>
+    <span class="beweis">Beweis-Artefakt: Run-Log Exit 0</span>
+    <p class="essenz">Das Orakel beweist sich zuerst selbst (Wahrheitstabelle oder Invariante wie q·d+r=n). Erst Exit 0 mit 0 Fehlern macht Referenz zu Gold.</p>
+  </div>
+</div>
+
+<div class="card sub">
+  <img src="../app-assets/images/02_Golden%20Python.png" alt="2.3 Grenzfälle + Wahrheitstabelle vollständig" loading="lazy">
+  <div class="body">
+    <h2>2.3 · Grenzfälle + Wahrheitstabelle vollständig</h2>
+    <span class="beweis">Beweis-Artefakt: Vektor-Statistik</span>
+    <p class="essenz">Zufall ergänzt, ersetzt nie: alle-0, alle-1, 0xAA/0x55, Einzel-Bits, ungültige Vorbedingungen. Fehler wohnen an den Rändern, nicht in der Mitte.</p>
+  </div>
+</div>
+
+<div class="card sub">
+  <img src="../app-assets/images/02_Golden%20Python.png" alt="2.4 Deterministisch: fester, dokumentierter Seed" loading="lazy">
+  <div class="body">
+    <h2>2.4 · Deterministisch: fester, dokumentierter Seed</h2>
+    <span class="beweis">Beweis-Artefakt: Seed in Datei + JSON</span>
+    <p class="essenz">Fester Seed = bit-identische Läufe = jeder Mismatch reproduzierbar. Ein „zufälliger“ Fehler ohne Seed ist ein verlorener Fehler.</p>
+  </div>
+</div>
+
+<div class="card sub">
+  <img src="../app-assets/images/02_Golden%20Python.png" alt="2.5 Jeder Testfall trägt seinen Erwartungswert" loading="lazy">
+  <div class="body">
+    <h2>2.5 · Jeder Testfall trägt seinen Erwartungswert</h2>
+    <span class="beweis">Beweis-Artefakt: vectors_&lt;block&gt;.json</span>
+    <p class="essenz">Die Maschine vergleicht, kein Mensch „schaut drüber“. Augen ermüden, Vergleichszähler nicht.</p>
+  </div>
+</div>
+</div>
+
+<nav class="stepnav">
+  <a href="schritt-01.html">&larr; Schritt 01</a>
+  <a href="index.html">Alle 12 Schritte</a>
+  <a href="schritt-03.html">Schritt 03 &rarr;</a>
+</nav>
+<footer>
+  <a href="index.html">&larr; FPGA-Prozess-Werkstatt</a> &middot;
+  <a href="../index.html">Adrian-Structure</a> &middot;
+  <a href="../impressum.html">Impressum</a> &middot;
+  <a href="../datenschutz.html">Datenschutz</a>
+</footer>
+</body>
+</html>

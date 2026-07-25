@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>07 Timing — die 5 Prüfaufgaben · FPGA-Prozess-Werkstatt</title>
+<style>
+body { font-family: Arial, Helvetica, sans-serif; background: #0d1117; color: #f0f0f0; margin: 0; padding: 40px 20px; }
+h1 { text-align: center; margin: 0 0 6px 0; }
+p.subtitle { text-align: center; color: #9aa4b2; margin: 0 0 28px 0; }
+.hero { display: flex; justify-content: center; margin-bottom: 28px; }
+.hero img { max-width: 340px; width: 100%; border: 1px solid #30363d; border-radius: 10px; background: #0d1117; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+.card.sub { background: #161b22; border: 1px solid #30363d; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; text-align: left; }
+.card.sub img { width: 100%; height: 150px; object-fit: contain; background: #0d1117; display: block; }
+.card.sub .body { padding: 14px 14px 16px 14px; display: flex; flex-direction: column; gap: 9px; }
+.card.sub h2 { font-size: 15px; margin: 0; color: #f0f6fc; line-height: 1.35; }
+.beweis { align-self: flex-start; font-size: 12px; color: #9ae6c3; background: #12261c; border: 1px solid #2fd67b55; border-radius: 6px; padding: 3px 9px; }
+.essenz { font-size: 13px; color: #9aa4b2; margin: 0; line-height: 1.5; }
+.stepnav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 30px auto 0 auto; gap: 12px; }
+.stepnav a { color: #f0f0f0; background: #21262d; border: 1px solid #484f58; border-radius: 8px; padding: 9px 16px; text-decoration: none; font-size: 14px; }
+.stepnav a:hover { background: #30363d; border-color: #6e7681; }
+footer { text-align: center; margin-top: 44px; padding: 24px 0 0 0; font-size: 13px; color: #8b949e; border-top: 1px solid #30363d; }
+footer a { color: #8b949e; }
+</style>
+</head>
+<body>
+<h1>07 Timing</h1>
+<p class="subtitle">Ebene 2 · die 5 Prüfaufgaben dieses Schritts · FPGA-Prozess-Werkstatt</p>
+<div class="hero"><img src="../app-assets/images/07_Timing.png" alt="07 Timing"></div>
+<div class="grid">
+<div class="card sub">
+  <img src="../app-assets/images/07_Timing.png" alt="7.1 Constraints inhaltlich validiert (Takt korrekt, IO sinnvoll)" loading="lazy">
+  <div class="body">
+    <h2>7.1 · Constraints inhaltlich validiert (Takt korrekt, IO sinnvoll)</h2>
+    <span class="beweis">Beweis-Artefakt: Constraint-Review</span>
+    <p class="essenz">Ein grüner Report mit falschen Constraints ist wertloses Grün. Erst prüfen, ob die Constraints die Wirklichkeit beschreiben, dann glauben.</p>
+  </div>
+</div>
+
+<div class="card sub">
+  <img src="../app-assets/images/07_Timing.png" alt="7.2 WNS ≥ 0 im Post-Route-Report" loading="lazy">
+  <div class="body">
+    <h2>7.2 · WNS ≥ 0 im Post-Route-Report</h2>
+    <span class="beweis">Beweis-Artefakt: *_timing.rpt</span>
+    <p class="essenz">DIE eine Zahl — Post-Route, nicht Synthese-Schätzung. Positiv heißt: jeder Pfad kommt rechtzeitig an.</p>
+  </div>
+</div>
+
+<div class="card sub">
+  <img src="../app-assets/images/07_Timing.png" alt="7.3 TNS = 0 (keine Summenverletzung)" loading="lazy">
+  <div class="body">
+    <h2>7.3 · TNS = 0 (keine Summenverletzung)</h2>
+    <span class="beweis">Beweis-Artefakt: *_timing.rpt</span>
+    <p class="essenz">WNS zeigt den schlimmsten Pfad, TNS die Summe aller Sünden. Beide grün — sonst ist das Design eine Lotterie bei Temperatur und Spannung.</p>
+  </div>
+</div>
+
+<div class="card sub">
+  <img src="../app-assets/images/07_Timing.png" alt="7.4 Alle Clock-Domain-Übergänge synchronisiert (2-FF/Gray/FIFO)" loading="lazy">
+  <div class="body">
+    <h2>7.4 · Alle Clock-Domain-Übergänge synchronisiert (2-FF/Gray/FIFO)</h2>
+    <span class="beweis">Beweis-Artefakt: CDC-Liste</span>
+    <p class="essenz">CDC-Fehler sind die unheimlichsten: selten, unreproduzierbar, real. Gated Clocks gehören NIE auf den Taktbaum.</p>
+  </div>
+</div>
+
+<div class="card sub">
+  <img src="../app-assets/images/07_Timing.png" alt="7.5 Takt-Entscheidung dokumentiert (geteilt? Ziel-Fmax erreicht?)" loading="lazy">
+  <div class="body">
+    <h2>7.5 · Takt-Entscheidung dokumentiert (geteilt? Ziel-Fmax erreicht?)</h2>
+    <span class="beweis">Beweis-Artefakt: Timing-Notiz</span>
+    <p class="essenz">Takt teilen ist Ingenieursentscheidung, kein Versagen — ein Kern, der 100 MHz nicht hält, läuft geteilt stabil (gemessen). Dokumentieren, dazu stehen.</p>
+  </div>
+</div>
+</div>
+
+<nav class="stepnav">
+  <a href="schritt-06.html">&larr; Schritt 06</a>
+  <a href="index.html">Alle 12 Schritte</a>
+  <a href="schritt-08.html">Schritt 08 &rarr;</a>
+</nav>
+<footer>
+  <a href="index.html">&larr; FPGA-Prozess-Werkstatt</a> &middot;
+  <a href="../index.html">Adrian-Structure</a> &middot;
+  <a href="../impressum.html">Impressum</a> &middot;
+  <a href="../datenschutz.html">Datenschutz</a>
+</footer>
+</body>
+</html>

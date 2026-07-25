@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>05 RTL Simulation — die 5 Prüfaufgaben · FPGA-Prozess-Werkstatt</title>
+<style>
+body { font-family: Arial, Helvetica, sans-serif; background: #0d1117; color: #f0f0f0; margin: 0; padding: 40px 20px; }
+h1 { text-align: center; margin: 0 0 6px 0; }
+p.subtitle { text-align: center; color: #9aa4b2; margin: 0 0 28px 0; }
+.hero { display: flex; justify-content: center; margin-bottom: 28px; }
+.hero img { max-width: 340px; width: 100%; border: 1px solid #30363d; border-radius: 10px; background: #0d1117; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+.card.sub { background: #161b22; border: 1px solid #30363d; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; text-align: left; }
+.card.sub img { width: 100%; height: 150px; object-fit: contain; background: #0d1117; display: block; }
+.card.sub .body { padding: 14px 14px 16px 14px; display: flex; flex-direction: column; gap: 9px; }
+.card.sub h2 { font-size: 15px; margin: 0; color: #f0f6fc; line-height: 1.35; }
+.beweis { align-self: flex-start; font-size: 12px; color: #9ae6c3; background: #12261c; border: 1px solid #2fd67b55; border-radius: 6px; padding: 3px 9px; }
+.essenz { font-size: 13px; color: #9aa4b2; margin: 0; line-height: 1.5; }
+.stepnav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 30px auto 0 auto; gap: 12px; }
+.stepnav a { color: #f0f0f0; background: #21262d; border: 1px solid #484f58; border-radius: 8px; padding: 9px 16px; text-decoration: none; font-size: 14px; }
+.stepnav a:hover { background: #30363d; border-color: #6e7681; }
+footer { text-align: center; margin-top: 44px; padding: 24px 0 0 0; font-size: 13px; color: #8b949e; border-top: 1px solid #30363d; }
+footer a { color: #8b949e; }
+</style>
+</head>
+<body>
+<h1>05 RTL Simulation</h1>
+<p class="subtitle">Ebene 2 · die 5 Prüfaufgaben dieses Schritts · FPGA-Prozess-Werkstatt</p>
+<div class="hero"><img src="../app-assets/images/05_RTL.png" alt="05 RTL Simulation"></div>
+<div class="grid">
+<div class="card sub">
+  <img src="../app-assets/images/05_RTL.png" alt="5.1 Simulation WIRKLICH gelaufen" loading="lazy">
+  <div class="body">
+    <h2>5.1 · Simulation WIRKLICH gelaufen</h2>
+    <span class="beweis">Beweis-Artefakt: tb_&lt;block&gt;.trace existiert</span>
+    <p class="essenz">„Müsste passen“ existiert nicht. Und: im Block-Ordner starten — sonst findet $readmemh die Hex nicht, und der Harness-Fehler sieht aus wie ein RTL-Fehler.</p>
+  </div>
+</div>
+
+<div class="card sub">
+  <img src="../app-assets/images/05_RTL.png" alt="5.2 Tick-für-Tick-Vergleich gegen Golden: bad == 0" loading="lazy">
+  <div class="body">
+    <h2>5.2 · Tick-für-Tick-Vergleich gegen Golden: bad == 0</h2>
+    <span class="beweis">Beweis-Artefakt: compare-Report</span>
+    <p class="essenz">Feldweise, jeden Tick, Ziel bad==0. Schwächere Kriterien nur begründet und als WARN — ein stilles Grün ist eine Lüge mit Verzögerung.</p>
+  </div>
+</div>
+
+<div class="card sub">
+  <img src="../app-assets/images/05_RTL.png" alt="5.3 Jeder Mismatch klassifiziert: (a) Harness (b) RTL (c) Spec" loading="lazy">
+  <div class="body">
+    <h2>5.3 · Jeder Mismatch klassifiziert: (a) Harness (b) RTL (c) Spec</h2>
+    <span class="beweis">Beweis-Artefakt: Befund-Liste</span>
+    <p class="essenz">Erst Ursache, dann Fix. Wer (a) nicht von (b) trennt, „repariert“ korrekte Hardware kaputt — gesehen und bezahlt.</p>
+  </div>
+</div>
+
+<div class="card sub">
+  <img src="../app-assets/images/05_RTL.png" alt="5.4 Latenzen/valid-Verhalten gesichtet (BRAM-1-Takt beachtet)" loading="lazy">
+  <div class="body">
+    <h2>5.4 · Latenzen/valid-Verhalten gesichtet (BRAM-1-Takt beachtet)</h2>
+    <span class="beweis">Beweis-Artefakt: Waveform-Notiz/.vcd</span>
+    <p class="essenz">BRAM-Sync-Read hat 1 Takt Latenz — bildet der Vergleich sie nicht nach, erzeugt er Pseudo-Fehler. Einmal mit Augen sichten, nicht nur zählen.</p>
+  </div>
+</div>
+
+<div class="card sub">
+  <img src="../app-assets/images/05_RTL.png" alt="5.5 Sim-Grenzen dokumentiert (Metastabilität, Reset, Timing, Power)" loading="lazy">
+  <div class="body">
+    <h2>5.5 · Sim-Grenzen dokumentiert (Metastabilität, Reset, Timing, Power)</h2>
+    <span class="beweis">Beweis-Artefakt: Grenzen-Abschnitt</span>
+    <p class="essenz">Aufschreiben, was die Sim NICHT sieht — diese vier Klassen gehören dem Brett. Wer sie verschweigt, verspricht zu viel.</p>
+  </div>
+</div>
+</div>
+
+<nav class="stepnav">
+  <a href="schritt-04.html">&larr; Schritt 04</a>
+  <a href="index.html">Alle 12 Schritte</a>
+  <a href="schritt-06.html">Schritt 06 &rarr;</a>
+</nav>
+<footer>
+  <a href="index.html">&larr; FPGA-Prozess-Werkstatt</a> &middot;
+  <a href="../index.html">Adrian-Structure</a> &middot;
+  <a href="../impressum.html">Impressum</a> &middot;
+  <a href="../datenschutz.html">Datenschutz</a>
+</footer>
+</body>
+</html>

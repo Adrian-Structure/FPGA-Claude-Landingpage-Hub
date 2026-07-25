@@ -22,20 +22,8 @@ p.subtitle { text-align: center; color: #9aa4b2; margin-top: 0; margin-bottom: 2
 .dl-btn:hover { background: #30363d; border-color: #6e7681; }
 .dl-btn.icon-btn { width: 42px; height: 42px; padding: 0; font-size: 19px; border-radius: 8px; }
 .card.expandable { cursor: pointer; transition: border-color .15s ease; }
-.card.expandable:hover { border-color: #6e7681; }
-.card.active { border-color: #2fd67b; }
+.card.expandable:hover { border-color: #2fd67b; }
 .sub-hint { padding: 0 10px 12px 10px; margin: 0; font-size: 12.5px; color: #7ee2a8; }
-.card.active .sub-hint { color: #2fd67b; }
-.subrow { grid-column: 1 / -1; background: #10151d; border: 1px solid #2fd67b44; border-radius: 10px; padding: 18px; animation: subrow-in .18s ease-out; }
-@keyframes subrow-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
-.subrow h2 { font-size: 17px; margin: 0 0 14px 0; color: #e6edf3; text-align: left; }
-.subgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
-.subcard { background: #161b22; border: 1px solid #30363d; border-radius: 10px; overflow: hidden; text-align: left; display: flex; flex-direction: column; }
-.subcard img { width: 100%; height: 110px; object-fit: contain; background: #0d1117; display: block; }
-.subcard .sc-body { padding: 12px 12px 14px 12px; display: flex; flex-direction: column; gap: 8px; }
-.subcard h3 { font-size: 13.5px; margin: 0; color: #f0f6fc; line-height: 1.35; }
-.subcard .beweis { align-self: flex-start; font-size: 11.5px; color: #9ae6c3; background: #12261c; border: 1px solid #2fd67b55; border-radius: 6px; padding: 3px 8px; }
-.subcard .essenz { font-size: 12.5px; color: #9aa4b2; margin: 0; line-height: 1.45; }
 </style>
 </head>
 <body>
@@ -121,134 +109,28 @@ if (document.readyState === "loading") {
 }
 </script>
 <script>
-/* Zweite Ebene: Klick auf eine Prozess-Kachel klappt die 5 Prüfaufgaben auf.
-   Bilder der Unter-Kacheln erben vorerst das Bild der Eltern-Kachel. */
-var PRUEFAUFGABEN = [
-{ step: "01 Python Code", subs: [
-["1.1","Problem & Protokoll definiert (reset/start/valid, Parameter)","SPEC_<block>_v1.md","Die Spec VOR der ersten Codezeile — Off-by-one und falsche Vorbedingungen entstehen fast immer aus unscharfem Protokoll, nicht aus schlechtem Code."],
-["1.2","Definition aus maßgeblicher Quelle zitiert (Provenance)","Quellzitat in der Spec","Jede Definition trägt ihre Quelle (Standard/Datenblatt). Ohne Zitat ist die „Wahrheit“ erfunden — ein späterer Zweifel kostet Tage, ein Zitat Minuten."],
-["1.3","Referenz-Algorithmus läuft","ref_<block>.py Exit 0","Reine Software zuerst, lesbar schlägt clever: was du nicht in purem Python zeigen kannst, ist keine Idee, sondern eine Hoffnung."],
-["1.4","Bekannter Referenzwert nachgerechnet","Testzeile im Run-Log","Einen bekannten Wert aus der Quelle nachrechnen (z. B. CRC32(„123456789“)=0xCBF43926) — fängt Endianness- und Polynomfehler am Tag 1 statt am Brett."],
-["1.5","Offene Kanten explizit als OFFEN gelistet + Übergabe","HANDOVER-Zeile SPEC","Undefiniertes heißt OFFEN, wird nie geraten. Eine ehrliche Lücke ist billig; eine stillschweigende Annahme wandert bis in den Bitstream."]]},
-{ step: "02 Golden Python", subs: [
-["2.1","Golden unabhängig (aus der Spec, NIE aus der RTL)","Herkunfts-Notiz im Golden","Das Orakel niemals aus der RTL ableiten — sonst erbt es exakt die Fehler, die es fangen soll. Quelle ist die Spec, sonst nichts."],
-["2.2","self_check() = 0 Fehler","Run-Log Exit 0","Das Orakel beweist sich zuerst selbst (Wahrheitstabelle oder Invariante wie q·d+r=n). Erst Exit 0 mit 0 Fehlern macht Referenz zu Gold."],
-["2.3","Grenzfälle + Wahrheitstabelle vollständig","Vektor-Statistik","Zufall ergänzt, ersetzt nie: alle-0, alle-1, 0xAA/0x55, Einzel-Bits, ungültige Vorbedingungen. Fehler wohnen an den Rändern, nicht in der Mitte."],
-["2.4","Deterministisch: fester, dokumentierter Seed","Seed in Datei + JSON","Fester Seed = bit-identische Läufe = jeder Mismatch reproduzierbar. Ein „zufälliger“ Fehler ohne Seed ist ein verlorener Fehler."],
-["2.5","Jeder Testfall trägt seinen Erwartungswert","vectors_<block>.json","Die Maschine vergleicht, kein Mensch „schaut drüber“. Augen ermüden, Vergleichszähler nicht."]]},
-{ step: "03 Testbench", subs: [
-["3.1","Konverter erzeugt Hex WIRKLICH, width-konsistent","tb/*.hex (kein Platzhalter)","Der häufigste stille Totalausfall: Platzhalter-Hex oder Misch-Breiten. EINE Breite je Hex-Satz — sonst prüft die TB gegen Müll und meldet falsche Fehler."],
-["3.2","Testbench selbstprüfend (Fehlerzähler + Timeout-Wachhund)","tb_<block>.v","Stimulus und Monitor getrennt, Fehler werden GEZÄHLT. $display läuft nicht in Hardware — eine TB ohne Vergleichszähler ist Show, keine Prüfung."],
-["3.3","Stimulus flankenstabil (negedge/#-Offset, kein posedge-Race)","TB-Review-Vermerk","Bezahlt gelernt: 25 „Fehler“, und die RTL war korrekt — es war ein Stimulus-Takt-Race. Eingaben auf negedge setzen, nie blockierend im posedge-Zeitschritt."],
-["3.4","Positive UND negative Fälle vorhanden","Vektor-Klassen im JSON","Korrektes muss bestehen UND Falsches muss durchfallen. Eine Prüfung, die nie rot zeigen kann, beweist nichts — Negativfälle eichen die Maschine."],
-["3.5","ASCII-Trace pro Tick eingebaut","Trace-Writer in der TB","Der Trace macht aus „irgendwo falsch“ ein „Tick 4711, Bit 3“. Ohne Trace debuggst du mit Gefühl, mit Trace mit Zeilennummer."]]},
-{ step: "04 Verilog", subs: [
-["4.1","RTL parametrisiert, eine Takt-Domäne, synchrone Resets","rtl/<block>.v","Eine Domäne, synchrone Resets, Parameter statt Magic Numbers — jede Abweichung braucht einen dokumentierten Grund, sonst ist sie ein zukünftiger Geist."],
-["4.2","Nonblocking-Disziplin (Register <=, Kombinatorik =)","Review-Vermerk","Nur Nonblocking macht den Tick-Vergleich reproduzierbar. a=b; b=a; ist KEIN Tausch, sondern undefinierte Reihenfolge."],
-["4.3","Latchfrei (jede if/case-Kette vollständig)","yosys CHECK: 0 Latches","Ein inferiertes Latch simuliert freundlich und geistert auf dem Brett. Jede Kette vollständig, default immer — yosys CHECK ist der Zeuge."],
-["4.4","Async-Eingänge über 2-FF-Synchronizer (+ Entpreller)","Synchronizer-Modul im RTL","Metastabilität ist in der Simulation UNSICHTBAR. Taster und fremde Domänen nur über 2-FF + Entpreller — ein Tastendruck ist nie flankensynchron."],
-["4.5","Kompiliert sauber","iverilog -g2012 Exit 0","Das kleinste Tor — und die wichtigste Demut: RTL_WRITTEN ≠ TB_PASS. Geschriebener Code hat noch nichts bewiesen."]]},
-{ step: "05 RTL Simulation", subs: [
-["5.1","Simulation WIRKLICH gelaufen","tb_<block>.trace existiert","„Müsste passen“ existiert nicht. Und: im Block-Ordner starten — sonst findet $readmemh die Hex nicht, und der Harness-Fehler sieht aus wie ein RTL-Fehler."],
-["5.2","Tick-für-Tick-Vergleich gegen Golden: bad == 0","compare-Report","Feldweise, jeden Tick, Ziel bad==0. Schwächere Kriterien nur begründet und als WARN — ein stilles Grün ist eine Lüge mit Verzögerung."],
-["5.3","Jeder Mismatch klassifiziert: (a) Harness (b) RTL (c) Spec","Befund-Liste","Erst Ursache, dann Fix. Wer (a) nicht von (b) trennt, „repariert“ korrekte Hardware kaputt — gesehen und bezahlt."],
-["5.4","Latenzen/valid-Verhalten gesichtet (BRAM-1-Takt beachtet)","Waveform-Notiz/.vcd","BRAM-Sync-Read hat 1 Takt Latenz — bildet der Vergleich sie nicht nach, erzeugt er Pseudo-Fehler. Einmal mit Augen sichten, nicht nur zählen."],
-["5.5","Sim-Grenzen dokumentiert (Metastabilität, Reset, Timing, Power)","Grenzen-Abschnitt","Aufschreiben, was die Sim NICHT sieht — diese vier Klassen gehören dem Brett. Wer sie verschweigt, verspricht zu viel."]]},
-{ step: "06 Vivado Build", subs: [
-["6.1","yosys-Vorprüfung: CHECK 0 problems, 0 Latches","yosys-Log","Die schnelle lokale Vorprüfung fängt Strukturfehler in Sekunden, bevor der teure Vendor-Lauf Minuten frisst."],
-["6.2","XDC vom offiziellen Master-XDC des Boards abgeleitet","XDC-Kopf-Kommentar","Pins auskommentieren+umbenennen, nie aus dem Gedächtnis tippen — geratene Pins sind die teuerste Art, eine LED dunkel zu lassen."],
-["6.3","Build als Skript, reproduzierbar (keine Klick-Folge)","build.tcl","Ein Build ohne Skript ist nicht wiederholbar — und in drei Wochen unbeweisbar. TCL rein, Klick-Folge raus."],
-["6.4","Utilization-Report archiviert, datiert","*_util.rpt","Kennzahlen NUR mit Datum. Ohne Datum vermischen sich Builds, LUT-Zahlen „wandern“, und niemand weiß mehr, was wahr war."],
-["6.5","Vendor-Zahlen vs. Schätzungen getrennt ausgewiesen","Report-Notiz","yosys schätzt, der Vendor-Report ist Fakt. Nie mischen — ohne Black-Box-Annotation verschätzt sich Fmax um Faktor 2."]]},
-{ step: "07 Timing", subs: [
-["7.1","Constraints inhaltlich validiert (Takt korrekt, IO sinnvoll)","Constraint-Review","Ein grüner Report mit falschen Constraints ist wertloses Grün. Erst prüfen, ob die Constraints die Wirklichkeit beschreiben, dann glauben."],
-["7.2","WNS ≥ 0 im Post-Route-Report","*_timing.rpt","DIE eine Zahl — Post-Route, nicht Synthese-Schätzung. Positiv heißt: jeder Pfad kommt rechtzeitig an."],
-["7.3","TNS = 0 (keine Summenverletzung)","*_timing.rpt","WNS zeigt den schlimmsten Pfad, TNS die Summe aller Sünden. Beide grün — sonst ist das Design eine Lotterie bei Temperatur und Spannung."],
-["7.4","Alle Clock-Domain-Übergänge synchronisiert (2-FF/Gray/FIFO)","CDC-Liste","CDC-Fehler sind die unheimlichsten: selten, unreproduzierbar, real. Gated Clocks gehören NIE auf den Taktbaum."],
-["7.5","Takt-Entscheidung dokumentiert (geteilt? Ziel-Fmax erreicht?)","Timing-Notiz","Takt teilen ist Ingenieursentscheidung, kein Versagen — ein Kern, der 100 MHz nicht hält, läuft geteilt stabil (gemessen). Dokumentieren, dazu stehen."]]},
-{ step: "08 Bitstream", subs: [
-["8.1","Bitstream aus GENAU dem timing-grünen Build","Build-Bit-Zuordnung","Ein „schnell nochmal neu gebaut“ zwischen Report und Bit ist ein ANDERES Design mit fremdem Report."],
-["8.2","Sprechender Name mit Datum (nie top.bit)","Dateiname","top.bit und final_v2_neu.bit sind Amnesie mit Ansage. Name = Block + Variante + Datum — Menschen müssen ihn finden können."],
-["8.3","SHA-256 versiegelt (Custody)","Hash im HANDOVER","Ein Bitstream ohne Hash ist ein Gerücht. Mit Hash wird „ist das wirklich der geflashte Stand?“ eine Rechenfrage statt einer Erinnerungsfrage."],
-["8.4","Report-Paar dokumentiert (Bit ↔ Timing/Util)","Zuordnungszeile","Bit und Report sind ein Paar — getrennt zitiert sind beide wertlos. Die Zuordnungszeile kostet 10 Sekunden und rettet Wochen."],
-["8.5","Alte Bitstreams unangetastet archiviert","Archiv-Ordner","Auch ein überholter Bitstream ist Beweis für „was lief damals“. Nichts löschen — Speicher ist billiger als Zweifel."]]},
-{ step: "09 Flash", subs: [
-["9.1","Hash-Vergleich VOR dem Flashen bestanden","Flash-Log","Vor jedem Flashen die lokale Kopie gegen den Custody-Hash rechnen — SMB-Kopien und Sync-Echos verwechseln Stände lautlos."],
-["9.2","Board eindeutig identifiziert (Serial protokolliert)","--ftdi-serial im Log","„Das linke Brett“ ist keine Adresse. Serial ins Protokoll — sonst beweist die Messung das falsche Gerät."],
-["9.3","Flash-Kommando Exit 0, Ausgabe archiviert","Flash-Log","Exit-Codes schlagen Erinnerung. Ein Flash ohne Log ist nicht passiert."],
-["9.4","Sichtbefund erhoben (Heartbeat/Grundzustand)","Foto/Notiz","Register starten bei 0 — ohne sauberen Power-On-Reset wirkt korrekte Hardware tot. Und: Bestätigungs-LEDs LATCHEN, nie blinken — Blinken liest das Auge als dunkel."],
-["9.5","FLASHED ≠ BEWIESEN vermerkt — Urteil bei Schritt 10","HANDOVER-Zeile","Geflasht heißt nur: der Chip trägt das Design. Ob es TUT was es soll, entscheidet die Messung — ein Wort Disziplin gegen die teuerste Selbsttäuschung."]]},
-{ step: "10 Saleae", subs: [
-["10.1","Zeugen-Hierarchie VOR der Messung definiert (MUSS/KANN)","Messplan","Ein statistischer Zeuge (z. B. 34 % in 60 s) als Pflicht macht korrekte Läufe zu falschen FAILs — zweistimmig gefangen, seither Gesetz."],
-["10.2","Sample-Rate für schmalsten Puls belegt ausreichend","Rate-Rechnung","Rechnen, nicht raten: ein 80-ns-Puls bei 25 MS/s ist 2 Samples — leicht übersehen. Für 1-Takt-Signale @100 MHz: ≥400 MS/s."],
-["10.3","Capture-first: frische Flanke im laufenden Capture",".sal + Flankenzeit","Aufnahme starten, DANN auslösen (Re-Flash mid-capture): die frische Flanke gegen ein sauberes LOW-Vorfenster ist der Beweis — „war schon an“ beweist nichts."],
-["10.4","Negativ-Kontrolle: „aus“ sieht auch als aus aus","Kontroll-Capture","Einmal zeigen, dass AUS als AUS gemessen wird — sonst ist jedes AN wertlos. Die Eichung der ganzen Messkette in einem Capture."],
-["10.5","Beweis versiegelt: .sal-SHA + Bit-SHA, Urteil aus Rohdaten","Custody-Tabelle","Auto-Urteile sind Sensoren: erst Rohdaten, dann Urteil — zeit-gewichtet auswerten, nie CSV-Zeilen zählen. Hash-Paar = Beweiskette."]]},
-{ step: "11 Dokumentation", subs: [
-["11.1","Abnahme-Dokument in Pyramiden-Form (Antwort zuerst)","VALIDIERUNG_*.md","Antwort zuerst: Wer nach Seite 1 aufhört, weiß das Wichtigste. Ein kluger Prüfer ohne Vorwissen darf nie suchen müssen."],
-["11.2","Status-Tabelle: jede Stufe mit Artefakt-Pfad + Datum","Tabelle im Dokument","Keine Stufe behaupten, deren Artefakt fehlt. Die Tabelle ist die ehrliche Version der grünen Haken."],
-["11.3","Custody-Tabelle (Bit-Hash · Capture-Hash · Serial)","Tabelle im Dokument","Drei Spalten — und jeder Beweis ist in einem Jahr noch nachrechenbar, von jedem, ohne mündliche Erklärung."],
-["11.4","Grenzen/Quarantäne sichtbar benannt","Quarantäne-Abschnitt","Grenzen prominent, nicht ins Kleingedruckte. Ein Dokument, das Grenzen verschweigt, lügt — und fliegt beim ersten kritischen Leser auf."],
-["11.5","HANDOVER-Kette 01→11 lückenlos","HANDOVER-Datei","Die Übergabe-Kette ist selbst ein Beweis: kein Schritt übersprungen. Gedächtnis gehört in Artefakte, nicht in Köpfe."]]},
-{ step: "12 Deployment", subs: [
-["12.1","Release-Paket komplett (Bit+Hash, Doku, HOW_TO, KNOWN_LIMITS)","Release-Ordner","Ein Paket, das der Empfänger ohne Anruf benutzen kann. Übergabe-Qualität schlägt Schönheit."],
-["12.2","Nur Bewiesenes als „fertig“ deklariert, Rest markiert","Paket-Review","Ein einziges ungeprüftes Versprechen entwertet zehn bewiesene. VORSCHAU heißt VORSCHAU."],
-["12.3","Version + Datum vergeben, Stand eingefroren","Versions-Tag","Rückfragen kommen in einem Jahr — dann muss „v1.2 vom 05.07.“ eine exakte, hash-versiegelte Antwort sein, kein Achselzucken."],
-["12.4","Empfänger-Blindtest: HOW_TO funktioniert ohne Erklärung","Testvermerk","Die Anleitung selbst blind durchspielen: muss ich etwas erklären, das nicht drinsteht, fehlt es im Paket — nicht im Kopf des Empfängers."],
-["12.5","Abschlusszeile geschrieben — Kette geschlossen","HANDOVER SHIPPED","Die Abschlusszeile macht aus Arbeit ein Werk — und die nächste Idee startet bei Schritt 01 auf einem Fundament statt auf Erinnerung."]]}
-];
-function escHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
-var openSubrow = null, openCard = null;
-function closeSubrow(){
-  if (openSubrow) { openSubrow.remove(); openSubrow = null; }
-  if (openCard) { openCard.classList.remove("active"); openCard = null; }
-}
-function toggleSubrow(card, idx){
-  var wasOpen = (openCard === card);
-  closeSubrow();
-  if (wasOpen) { return; }
-  var data = PRUEFAUFGABEN[idx];
-  if (!data) { return; }
-  var imgSrc = (card.querySelector("img") || {}).src || "";
-  var row = document.createElement("div");
-  row.className = "subrow";
-  var html = "<h2>" + escHtml(data.step) + " — die 5 Prüfaufgaben</h2><div class=\"subgrid\">";
-  data.subs.forEach(function(s){
-    html += "<div class=\"subcard\"><img src=\"" + imgSrc + "\" alt=\"" + escHtml(s[0]) + "\" loading=\"lazy\">"
-      + "<div class=\"sc-body\"><h3>" + escHtml(s[0]) + " · " + escHtml(s[1]) + "</h3>"
-      + "<span class=\"beweis\">Beweis: " + escHtml(s[2]) + "</span>"
-      + "<p class=\"essenz\">" + escHtml(s[3]) + "</p></div></div>";
-  });
-  html += "</div>";
-  row.innerHTML = html;
-  card.insertAdjacentElement("afterend", row);
-  card.classList.add("active");
-  openSubrow = row; openCard = card;
-}
-function setupSubTiles(){
+/* Zweite Ebene: Klick auf eine Prozess-Kachel oeffnet ihre Ebene-2-Seite
+   (fpga/schritt-NN.html) mit den 5 Pruefaufgaben des Schritts. */
+function setupStepLinks(){
   var cards = document.querySelectorAll(".gallery > .card");
   cards.forEach(function(card, idx){
-    if (idx >= PRUEFAUFGABEN.length) { return; }
+    if (idx >= 12) { return; }
+    var nn = String(idx + 1).padStart(2, "0");
     card.classList.add("expandable");
     var hint = document.createElement("p");
     hint.className = "sub-hint";
-    hint.textContent = "▸ 5 Prüfaufgaben anzeigen";
+    hint.textContent = "\u25B8 5 Pr\u00FCfaufgaben \u00F6ffnen";
     card.appendChild(hint);
     card.addEventListener("click", function(ev){
       if (ev.target.closest(".card-actions") || ev.target.closest("a")) { return; }
-      toggleSubrow(card, idx);
-      hint.textContent = (openCard === card) ? "▾ Prüfaufgaben ausblenden" : "▸ 5 Prüfaufgaben anzeigen";
-      cards.forEach(function(c){
-        var h = c.querySelector(".sub-hint");
-        if (h && c !== card) { h.textContent = "▸ 5 Prüfaufgaben anzeigen"; }
-      });
+      window.location.href = "schritt-" + nn + ".html";
     });
   });
 }
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", setupSubTiles);
+  document.addEventListener("DOMContentLoaded", setupStepLinks);
 } else {
-  setupSubTiles();
+  setupStepLinks();
 }
 </script>
 </body>
