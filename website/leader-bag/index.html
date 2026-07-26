@@ -74,6 +74,14 @@
   .feat h3{font-size:17px;margin-bottom:10px}
   .feat p{font-size:14px;color:#D9C6AD}
 
+  .shop-experience{background:#FBF7F0}
+  .shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;max-width:1000px;margin:0 auto}
+  .shop-photo{aspect-ratio:4/3;border-radius:6px;overflow:hidden}
+  .shop-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .shop-experience .eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#B8875B;display:block;margin-bottom:14px}
+  .shop-text h2{font-size:clamp(24px,3vw,32px);margin-bottom:16px}
+  .shop-text p{color:#6B5A47;font-size:15px}
+
   .cta{background:#F7F1E8;text-align:center}
   .cta h2{font-size:clamp(24px,3.2vw,34px);margin-bottom:16px}
   .cta p{color:#6B5A47;max-width:480px;margin:0 auto 30px}
@@ -85,6 +93,7 @@
 
   @media (max-width:760px){
     .philo-grid{grid-template-columns:1fr}
+    .shop-grid{grid-template-columns:1fr}
     nav{display:none}
   }
 </style>
@@ -209,6 +218,19 @@
         <h3>Zeitloses Design</h3>
         <p>Formen, die in fünf Jahren genauso gut aussehen wie heute.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="shop-experience" id="erlebnis">
+  <div class="wrap">
+    <div class="shop-grid">
+      <div class="shop-text">
+        <span class="eyebrow">Einkaufserlebnis</span>
+        <h2>Beratung, die man in die Hand nehmen kann</h2>
+        <p>Ob online oder bei einem Handelspartner in deiner Nähe — bei Leader Bag steht persönliche Beratung im Mittelpunkt. Leder fühlen, Nähte prüfen, die passende Größe finden.</p>
+      </div>
+      <div class="shop-photo"><img src="images/04-reisetasche.jpg" alt="Kundin lässt sich beim Kauf einer Ledertasche im Fachgeschäft beraten"></div>
     </div>
   </div>
 </section>
