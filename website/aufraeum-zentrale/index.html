@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aufräum-Zentrale — Vorschau | Adrian-Structure</title>
+<meta name="description" content="Aufräum-Zentrale: eine Sammlung lokaler Aufräum-Werkzeuge für den Mac. Diese Seite zeigt eine Vorschau — ohne Funktion, demnächst verfügbar.">
+<meta name="robots" content="index, follow">
+<style>
+:root{
+  --bg:#05070D;
+  --card:#0D111C;
+  --text:#E8ECF2;
+  --muted:#9aa4b2;
+  --accent:#5EEAD4;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+*{ box-sizing:border-box; }
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  line-height:1.7;
+  font-size:16px;
+}
+img{ max-width:100%; display:block; }
+a{ color:var(--accent); }
+a:hover{ color:#fff; }
+.wrap{ max-width:1080px; margin:0 auto; padding:0 24px; }
+.back{ font-size:13px; font-weight:700; letter-spacing:1px; text-decoration:none; opacity:.8; display:inline-block; margin:28px 0 0; }
+
+.hero{ padding:32px 0 48px; text-align:center; }
+.hero img{ max-width:520px; margin:0 auto 28px; border-radius:12px; box-shadow:0 24px 60px -20px rgba(94,234,212,0.25); }
+.hero h1{ font-size:2.2rem; margin:0 0 14px; letter-spacing:0.01em; }
+.hero p{ max-width:640px; margin:0 auto; color:var(--muted); font-size:1rem; }
+.badge-soon{
+  display:inline-block; margin-top:22px; padding:8px 20px; border:1px solid var(--accent);
+  border-radius:999px; color:var(--accent); font-size:0.75rem; letter-spacing:0.14em; text-transform:uppercase;
+}
+
+.grid{
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(300px,1fr)); gap:28px;
+  padding:0 0 64px;
+}
+.card{
+  background:var(--card); border:1px solid rgba(94,234,212,0.12); border-radius:12px; overflow:hidden;
+  display:flex; flex-direction:column;
+}
+.card img{ width:100%; aspect-ratio:1/1; object-fit:cover; }
+.card-body{ padding:20px 22px 24px; display:flex; flex-direction:column; gap:10px; flex:1; }
+.card-title{ font-size:1.15rem; margin:0; font-weight:700; }
+.card-status{ font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); }
+.card-text{ font-size:0.92rem; color:var(--muted); margin:0; flex:1; }
+.card-not{ font-size:0.82rem; color:var(--muted); margin:0; border-top:1px solid rgba(255,255,255,0.08); padding-top:12px; }
+.card-not strong{ color:var(--text); }
+.card-cta{
+  margin-top:6px; display:inline-block; align-self:flex-start; padding:9px 18px; border-radius:8px;
+  background:rgba(94,234,212,0.08); border:1px solid rgba(94,234,212,0.3); color:var(--accent);
+  font-size:0.75rem; letter-spacing:0.08em; text-transform:uppercase; cursor:default; user-select:none;
+}
+
+.footnote{
+  padding:28px 0 64px; border-top:1px solid rgba(255,255,255,0.08); color:var(--muted); font-size:0.85rem;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="back" href="../index.html">← Zurück</a>
+
+<section class="hero">
+<img src="./images/hero-claude-trash.png" alt="Claude Trash — Illustration eines Roboters, der Dateien prüft, bevor er sie löscht" loading="lazy">
+<h1>Aufräum-Zentrale</h1>
+<p>Alle Aufräum-Werkzeuge dieses Rechners an einer Stelle. Jedes läuft in seinem eigenen Steuerpult — gelöscht wird immer nur dort, immer in den Papierkorb, immer nach deinem Klick. Diese Seite selbst löscht nichts.</p>
+<span class="badge-soon">Vorschau · Demnächst verfügbar</span>
+</section>
+
+<section class="grid">
+
+<article class="card">
+<img src="./images/icloud-sync.png" alt="Claude Sync — Desktop-Ordner als sync oder nosync markieren" loading="lazy">
+<div class="card-body">
+<h2 class="card-title">iCloud: sync oder nosync?</h2>
+<span class="card-status">Demnächst verfügbar</span>
+<p class="card-text">Zeigt je Ordner Größe und Zustand (SYNC / NOSYNC / LOKAL) — gefragt wird Spotlight nach dem wirklichen Pfad, nicht der Ordnername. Häkchen setzen schaltet um; danach wird der Zustand nachgemessen. Warnt, wenn ein Ordner Build-Müll oder ein Git-Repo enthält, und wenn sein Pfad in Skripten steht.</p>
+<p class="card-not"><strong>Nicht:</strong> Löscht nichts — benennt nur um, und das ist umkehrbar. Verschiebt nie selbst aus iCloud heraus.</p>
+<span class="card-cta">Demnächst verfügbar</span>
+</div>
+</article>
+
+<article class="card">
+<img src="./images/dmg-aufraeumen.png" alt="Claude Trash sammelt alte .dmg-Installationsdateien ein" loading="lazy">
+<div class="card-body">
+<h2 class="card-title">.dmg aufräumen</h2>
+<span class="card-status">Demnächst verfügbar</span>
+<p class="card-text">Findet alle Disk-Images (.dmg) auf dem Mac und zeigt sie nach Größe mit vollem Pfad. Meist der größte schnelle Platzgewinn — alte Installer.</p>
+<p class="card-not"><strong>Nicht:</strong> Fasst /Volumes (NAS, USB) nie an. Leert den Papierkorb nicht.</p>
+<span class="card-cta">Demnächst verfügbar</span>
+</div>
+</article>
+
+<article class="card">
+<img src="./images/leere-ordner.png" alt="Claude Empty findet leere Ordner" loading="lazy">
+<div class="card-body">
+<h2 class="card-title">Leere Ordner aufräumen</h2>
+<span class="card-status">Demnächst verfügbar</span>
+<p class="card-text">Findet Ordner ohne Inhalt unter Schreibtisch, Dokumente und Downloads. Wird ein Elternordner dadurch leer, wird er erneut angeboten.</p>
+<p class="card-not"><strong>Nicht:</strong> Ordner MIT Inhalt bleiben unangetastet. Kein NAS, kein USB.</p>
+<span class="card-cta">Demnächst verfügbar</span>
+</div>
+</article>
+
+<article class="card">
+<img src="./images/bildschirmfotos-inhalt.png" alt="Claude Trash sortiert Bildschirmfotos nach Inhalt per OCR" loading="lazy">
+<div class="card-body">
+<h2 class="card-title">Bildschirmfotos nach Inhalt</h2>
+<span class="card-status">Demnächst verfügbar</span>
+<p class="card-text">Liest jeden Screenshot lokal per OCR (Apple Vision, kein Netz) und sortiert in Körbe: Hintergrundaufgaben, Zu Prüfen, Zu Löschen. Erkannte Aufgaben werden in eine ToDo-Liste gerettet, bevor etwas wegkommt.</p>
+<p class="card-not"><strong>Nicht:</strong> Löscht nie ohne dein ausdrückliches Ja. Unklares landet immer in „Zu Prüfen".</p>
+<span class="card-cta">Demnächst verfügbar</span>
+</div>
+</article>
+
+<article class="card">
+<img src="./images/bildschirmfotos-inhalt.png" alt="Bildschirmfotos werden nach Größe sortiert" loading="lazy">
+<div class="card-body">
+<h2 class="card-title">Bildschirmfotos nach Größe</h2>
+<span class="card-status">Demnächst verfügbar</span>
+<p class="card-text">Der schnelle Weg: listet Screenshots nach Größe, ohne den Inhalt zu lesen. Gut, wenn du die Bilder selbst kennst und nur Platz brauchst.</p>
+<p class="card-not"><strong>Nicht:</strong> Sortiert nicht nach Inhalt und rettet keine Aufgaben — dafür ist „nach Inhalt" da.</p>
+<span class="card-cta">Demnächst verfügbar</span>
+</div>
+</article>
+
+<article class="card">
+<img src="./images/mermaid-diagramm.png" alt="Claude Mermaid rendert technische Diagramme lokal" loading="lazy">
+<div class="card-body">
+<h2 class="card-title">Mermaid-Diagramm lokal rendern</h2>
+<span class="card-status">Demnächst verfügbar</span>
+<p class="card-text">Rendert Diagramme, Flussdiagramme und Patentfiguren ausschließlich lokal — es geht nichts ins Web.</p>
+<p class="card-not"><strong>Nicht:</strong> Kein Web-Steuerpult — die Umsetzung folgt.</p>
+<span class="card-cta">Demnächst verfügbar</span>
+</div>
+</article>
+
+</section>
+
+<p class="footnote">Alles bleibt auf diesem Rechner — nichts geht ins Netz. Diese Seite ist eine reine Vorschau ohne Funktion; es passiert nichts beim Anklicken. · <a href="../../impressum.html">Impressum</a> · <a href="../../datenschutz.html">Datenschutz</a></p>
+
+</div>
+</body>
+</html>
