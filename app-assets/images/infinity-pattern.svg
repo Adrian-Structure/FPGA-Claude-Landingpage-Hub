@@ -3,54 +3,35 @@
 <desc>Infinity Cube Muster — isometrische Projektion des geprueften Modells: 18 Staebe Vierkant 40 x 40 mm, Aussenmass 400 mm, Luftspalt 10 mm, Rasterschritt 350 mm. Nahtlos kachelnd, frei skalierbar.</desc>
 <defs>
 <g id="c" fill="#161826" stroke="#efeef7" stroke-width="9.13" stroke-linejoin="round">
-<path d="M8.66,5.00L311.77,-170.00L346.41,-150.00L311.77,-95.00L346.41,-110.00L346.41,-70.00L8.66,125.00Z"/>
-<path d="M-346.41,-70.00L-346.41,-110.00L-311.77,-95.00L-311.77,-170.00L-8.66,5.00L-8.66,125.00Z"/>
-<path d="M-346.41,-150.00L-311.77,-170.00L-311.77,-95.00Z"/>
-<path d="M0,-180.00L311.77,-360.00L346.41,-340.00L346.41,-300.00L69.28,-140.00L346.41,20.00L346.41,60.00L311.77,80.00Z"/>
-<path d="M-346.41,60.00L-346.41,20.00L-69.28,-140.00L-346.41,-300.00L-346.41,-340.00L-311.77,-360.00L0,-180.00L311.77,80.00Z"/>
-<path d="M-311.77,80.00L-346.41,60.00L0,-140.00Z"/>
-<path d="M346.41,-300.00L346.41,-340.00L693.15,-140.00L346.41,60.00L346.41,20.00L623.87,-140.00Z"/>
-<path d="M-346.41,20.00L-346.41,60.00L-693.15,-140.00L-346.41,-340.00L-346.41,-300.00L-623.87,-140.00Z"/>
-<path d="M8.66,125.00L8.66,5.00L311.77,180.00L311.77,220.00Z"/>
-<path d="M-8.66,5.00L-8.66,125.00L-311.77,220.00L-311.77,180.00Z"/>
-<path d="M311.77,220.00L311.77,180.00L346.41,200.00L346.41,240.00Z"/>
-<path d="M-346.41,240.00L-346.41,200.00L-311.77,180.00L-311.77,220.00Z"/>
-<path d="M346.41,240.00L346.41,200.00L346.41,160.00L381.05,180.00Z"/>
-<path d="M-381.05,180.00L-346.41,160.00L-346.41,240.00Z"/>
-<path d="M381.05,180.00L346.41,160.00L346.41,120.00L693.15,-75.00L693.15,-35.00Z"/>
-<path d="M-693.15,-35.00L-693.15,-75.00L-346.41,120.00L-346.41,160.00L-381.05,180.00Z"/>
-<path d="M693.15,-35.00L693.15,-75.00L727.79,-55.00L727.79,-15.00Z"/>
-<path d="M-727.79,-15.00L-727.79,-55.00L-693.15,-75.00L-693.15,-35.00Z"/>
-<path d="M727.79,-15.00L727.79,-55.00L1039.56,125.00L727.79,305.00Z"/>
-<path d="M-727.79,305.00L-1039.56,125.00L-727.79,-55.00L-727.79,-15.00Z"/>
+<path d="M8.66,5.00L311.77,-170.00L346.41,-150.00L311.77,-90.00L77.94,45.00Z"></path>
+<path d="M8.66,5.00L77.94,45.00L77.94,315.00L43.30,375.00L8.66,355.00Z"></path>
+<path d="M-77.94,45.00L-43.30,25.00L-8.66,5.00L-8.66,355.00L-43.30,375.00L-77.94,315.00Z"></path>
+<path d="M-346.41,-150.00L-311.77,-170.00L-8.66,5.00L-77.94,45.00L-311.77,-90.00Z"></path>
+<path d="M-303.11,-225.00L-233.83,-225.00L0.00,-90.00L0.00,-10.00L-303.11,-185.00Z"></path>
+<path d="M0.00,-90.00L233.83,-225.00L303.11,-225.00L303.11,-185.00L0.00,-10.00Z"></path>
+<path d="M277.13,-110.00L311.77,-170.00L346.41,-150.00L346.41,150.00L311.77,170.00L277.13,110.00Z"></path>
+<path d="M8.66,355.00L43.30,295.00L233.83,185.00L303.11,185.00L303.11,225.00L43.30,375.00Z"></path>
+<path d="M-303.11,185.00L-233.83,185.00L-43.30,295.00L-8.66,355.00L-43.30,375.00L-303.11,225.00Z"></path>
+<path d="M-346.41,-150.00L-311.77,-170.00L-277.13,-110.00L-277.13,110.00L-311.77,170.00L-346.41,150.00Z"></path>
+<path d="M-303.11,-225.00L-43.30,-375.00L-8.66,-355.00L-43.30,-295.00L-233.83,-185.00L-303.11,-185.00Z"></path>
+<path d="M8.66,-355.00L43.30,-375.00L303.11,-225.00L303.11,-185.00L233.83,-185.00L43.30,-295.00Z"></path>
+<path d="M8.66,-5.00L77.94,-45.00L311.77,90.00L346.41,150.00L311.77,170.00Z"></path>
+<path d="M0.00,10.00L303.11,185.00L303.11,225.00L233.83,225.00L0.00,90.00Z"></path>
+<path d="M-303.11,185.00L0.00,10.00L0.00,90.00L-233.83,225.00L-303.11,225.00Z"></path>
+<path d="M-346.41,150.00L-311.77,90.00L-77.94,-45.00L-8.66,-5.00L-311.77,170.00Z"></path>
+<path d="M-77.94,-315.00L-43.30,-375.00L-8.66,-355.00L-8.66,-5.00L-77.94,-45.00Z"></path>
+<path d="M8.66,-355.00L43.30,-375.00L77.94,-315.00L77.94,-45.00L43.30,-25.00L8.66,-5.00Z"></path>
 </g>
-<pattern id="p" width="606.22" height="350" patternUnits="userSpaceOnUse" patternTransform="scale(0.13142857)">
-<use xlink:href="#c" x="0" y="0"/>
-<use xlink:href="#c" x="606.22" y="0"/>
-<use xlink:href="#c" x="303.11" y="175"/>
-<use xlink:href="#c" x="-303.11" y="175"/>
-<use xlink:href="#c" x="909.33" y="175"/>
-<use xlink:href="#c" x="0" y="350"/>
-<use xlink:href="#c" x="606.22" y="350"/>
-<use xlink:href="#c" x="303.11" y="525"/>
-<use xlink:href="#c" x="-303.11" y="525"/>
-<use xlink:href="#c" x="909.33" y="525"/>
-<use xlink:href="#c" x="0" y="700"/>
-<use xlink:href="#c" x="606.22" y="700"/>
-<use xlink:href="#c" x="303.11" y="875"/>
-<use xlink:href="#c" x="-303.11" y="875"/>
-<use xlink:href="#c" x="909.33" y="875"/>
-<use xlink:href="#c" x="0" y="1050"/>
-<use xlink:href="#c" x="606.22" y="1050"/>
+<pattern id="p" patternUnits="userSpaceOnUse" width="606.218" height="350" patternTransform="scale(0.115)">
+<rect width="606.218" height="350" fill="#161826"></rect>
+<use href="#c" xlink:href="#c" transform="translate(0.00 700.00)"></use><use href="#c" xlink:href="#c" transform="translate(606.22 700.00)"></use><use href="#c" xlink:href="#c" transform="translate(-303.11 525.00)"></use><use href="#c" xlink:href="#c" transform="translate(303.11 525.00)"></use><use href="#c" xlink:href="#c" transform="translate(909.33 525.00)"></use><use href="#c" xlink:href="#c" transform="translate(0.00 350.00)"></use><use href="#c" xlink:href="#c" transform="translate(606.22 350.00)"></use><use href="#c" xlink:href="#c" transform="translate(-303.11 175.00)"></use><use href="#c" xlink:href="#c" transform="translate(303.11 175.00)"></use><use href="#c" xlink:href="#c" transform="translate(909.33 175.00)"></use><use href="#c" xlink:href="#c" transform="translate(0.00 0.00)"></use><use href="#c" xlink:href="#c" transform="translate(606.22 0.00)"></use><use href="#c" xlink:href="#c" transform="translate(-303.11 -175.00)"></use><use href="#c" xlink:href="#c" transform="translate(303.11 -175.00)"></use><use href="#c" xlink:href="#c" transform="translate(909.33 -175.00)"></use><use href="#c" xlink:href="#c" transform="translate(0.00 -350.00)"></use><use href="#c" xlink:href="#c" transform="translate(606.22 -350.00)"></use>
 </pattern>
 <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-<stop offset="0" stop-color="#ffffff"/>
-<stop offset="0.4" stop-color="#b3aade"/>
-<stop offset="0.75" stop-color="#8d82cf"/>
-<stop offset="1" stop-color="#7468b8"/>
+<stop offset="0" stop-color="#efedf9"></stop><stop offset="0.34" stop-color="#b6adea"></stop>
+<stop offset="0.68" stop-color="#9184d9"></stop><stop offset="1" stop-color="#6257a0"></stop>
 </linearGradient>
 </defs>
-<rect width="1920" height="1080" fill="#161826"/>
-<rect width="1920" height="1080" fill="url(#p)"/>
-<rect width="1920" height="1080" fill="url(#g)" style="mix-blend-mode:multiply" opacity="0.9"/>
+<rect width="1920" height="1080" fill="#161826"></rect>
+<rect width="1920" height="1080" fill="url(#p)"></rect>
+<rect width="1920" height="1080" fill="url(#g)" style="mix-blend-mode:multiply"></rect>
 </svg>
