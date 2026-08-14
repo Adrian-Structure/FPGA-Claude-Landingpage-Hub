@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 1080" width="1920" height="1080" preserveAspectRatio="xMidYMid slice">
+<title>Infinity Pattern — lackiert, Kantenlaenge 46 px</title>
+<desc>Infinity Cube Muster — isometrische Projektion des geprueften Modells: 18 Staebe Vierkant 40 x 40 mm, Aussenmass 400 mm, Luftspalt 10 mm, Rasterschritt 350 mm. Nahtlos kachelnd, frei skalierbar.</desc>
+<defs>
+<g id="c" fill="#161826" stroke="#efeef7" stroke-width="9.13" stroke-linejoin="round">
+<path d="M8.66,5.00L311.77,-170.00L346.41,-150.00L311.77,-95.00L346.41,-110.00L346.41,-70.00L8.66,125.00Z"/>
+<path d="M-346.41,-70.00L-346.41,-110.00L-311.77,-95.00L-311.77,-170.00L-8.66,5.00L-8.66,125.00Z"/>
+<path d="M-346.41,-150.00L-311.77,-170.00L-311.77,-95.00Z"/>
+<path d="M0,-180.00L311.77,-360.00L346.41,-340.00L346.41,-300.00L69.28,-140.00L346.41,20.00L346.41,60.00L311.77,80.00Z"/>
+<path d="M-346.41,60.00L-346.41,20.00L-69.28,-140.00L-346.41,-300.00L-346.41,-340.00L-311.77,-360.00L0,-180.00L311.77,80.00Z"/>
+<path d="M-311.77,80.00L-346.41,60.00L0,-140.00Z"/>
+<path d="M346.41,-300.00L346.41,-340.00L693.15,-140.00L346.41,60.00L346.41,20.00L623.87,-140.00Z"/>
+<path d="M-346.41,20.00L-346.41,60.00L-693.15,-140.00L-346.41,-340.00L-346.41,-300.00L-623.87,-140.00Z"/>
+<path d="M8.66,125.00L8.66,5.00L311.77,180.00L311.77,220.00Z"/>
+<path d="M-8.66,5.00L-8.66,125.00L-311.77,220.00L-311.77,180.00Z"/>
+<path d="M311.77,220.00L311.77,180.00L346.41,200.00L346.41,240.00Z"/>
+<path d="M-346.41,240.00L-346.41,200.00L-311.77,180.00L-311.77,220.00Z"/>
+<path d="M346.41,240.00L346.41,200.00L346.41,160.00L381.05,180.00Z"/>
+<path d="M-381.05,180.00L-346.41,160.00L-346.41,240.00Z"/>
+<path d="M381.05,180.00L346.41,160.00L346.41,120.00L693.15,-75.00L693.15,-35.00Z"/>
+<path d="M-693.15,-35.00L-693.15,-75.00L-346.41,120.00L-346.41,160.00L-381.05,180.00Z"/>
+<path d="M693.15,-35.00L693.15,-75.00L727.79,-55.00L727.79,-15.00Z"/>
+<path d="M-727.79,-15.00L-727.79,-55.00L-693.15,-75.00L-693.15,-35.00Z"/>
+<path d="M727.79,-15.00L727.79,-55.00L1039.56,125.00L727.79,305.00Z"/>
+<path d="M-727.79,305.00L-1039.56,125.00L-727.79,-55.00L-727.79,-15.00Z"/>
+</g>
+<pattern id="p" width="606.22" height="350" patternUnits="userSpaceOnUse" patternTransform="scale(0.13142857)">
+<use xlink:href="#c" x="0" y="0"/>
+<use xlink:href="#c" x="606.22" y="0"/>
+<use xlink:href="#c" x="303.11" y="175"/>
+<use xlink:href="#c" x="-303.11" y="175"/>
+<use xlink:href="#c" x="909.33" y="175"/>
+<use xlink:href="#c" x="0" y="350"/>
+<use xlink:href="#c" x="606.22" y="350"/>
+<use xlink:href="#c" x="303.11" y="525"/>
+<use xlink:href="#c" x="-303.11" y="525"/>
+<use xlink:href="#c" x="909.33" y="525"/>
+<use xlink:href="#c" x="0" y="700"/>
+<use xlink:href="#c" x="606.22" y="700"/>
+<use xlink:href="#c" x="303.11" y="875"/>
+<use xlink:href="#c" x="-303.11" y="875"/>
+<use xlink:href="#c" x="909.33" y="875"/>
+<use xlink:href="#c" x="0" y="1050"/>
+<use xlink:href="#c" x="606.22" y="1050"/>
+</pattern>
+<linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#ffffff"/>
+<stop offset="0.4" stop-color="#b3aade"/>
+<stop offset="0.75" stop-color="#8d82cf"/>
+<stop offset="1" stop-color="#7468b8"/>
+</linearGradient>
+</defs>
+<rect width="1920" height="1080" fill="#161826"/>
+<rect width="1920" height="1080" fill="url(#p)"/>
+<rect width="1920" height="1080" fill="url(#g)" style="mix-blend-mode:multiply" opacity="0.9"/>
+</svg>
