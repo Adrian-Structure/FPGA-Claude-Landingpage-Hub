@@ -18,7 +18,9 @@ opacity:.5}
 /* Lesbarkeit: Inhalt bekommt eine ruhige Mitte — das Muster traegt an den Raendern. */
 body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 background:radial-gradient(90% 75% at 50% 45%, rgba(5,7,13,.82) 0%, rgba(5,7,13,.35) 55%, rgba(5,7,13,0) 100%)}
-header{padding:32px 24px;text-align:center}
+header{padding:32px 24px 0;text-align:center}
+#wuerfel{display:block;margin:10px auto 0;width:190px;height:190px}
+@media (prefers-reduced-motion: reduce){#wuerfel{display:none}}
 header h1{font-size:22px;font-weight:700;letter-spacing:.02em}
 main{flex:1;display:flex;align-items:center;justify-content:center;padding:0 24px 48px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;max-width:900px;width:100%}
@@ -35,7 +37,7 @@ footer a{color:#7d8694;text-decoration:underline}
 </style>
 </head>
 <body>
-<header><h1>Adrian-Structure</h1></header>
+<header><h1>Adrian-Structure</h1><canvas id="wuerfel" width="380" height="380" aria-hidden="true"></canvas></header>
 <main>
 <div class="grid">
 <a class="card" href="./fpga/index.html">
@@ -66,5 +68,40 @@ footer a{color:#7d8694;text-decoration:underline}
 <footer>
 © 2026 Adrian-Structure · <a href="./impressum.html">Impressum</a> · <a href="./datenschutz.html">Datenschutz</a>
 </footer>
+<script>
+/* Dreh-Wuerfel: die 18 Staebe des geprueften Infinity Cube (Quelle: cube-model.js,
+   23/23 Bauplan-Pruefungen bestanden). Rotation um die Raumdiagonale, Projektion
+   identisch mit dem Hintergrundmuster. Kein Framework, ~2 KB Geometriedaten. */
+(function(){
+var c=document.getElementById('wuerfel');if(!c||!c.getContext)return;
+if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+var x=c.getContext('2d'),S3=Math.sqrt(3),S2=Math.sqrt(2),S6=Math.sqrt(6);
+var n=[1/S3,1/S3,1/S3],U=[1/S2,0,-1/S2],V=[-1/S6,2/S6,-1/S6];
+var Q=[[0,4,5,1],[1,5,6,2],[2,6,7,3],[3,7,4,0],[3,2,1,0],[4,5,6,7]];
+function rot(p,a){ /* Rodrigues um n */
+ var c1=Math.cos(a),s1=Math.sin(a),d=p[0]*n[0]+p[1]*n[1]+p[2]*n[2];
+ var cx=n[1]*p[2]-n[2]*p[1],cy=n[2]*p[0]-n[0]*p[2],cz=n[0]*p[1]-n[1]*p[0];
+ return [p[0]*c1+cx*s1+n[0]*d*(1-c1),p[1]*c1+cy*s1+n[1]*d*(1-c1),p[2]*c1+cz*s1+n[2]*d*(1-c1)];}
+function frame(t){
+ var a=t/9000*2*Math.PI, w=c.width, m=w/2, k=w/760;
+ x.clearRect(0,0,w,w);
+ var faces=[];
+ for(var i=0;i<BARS.length;i++){
+  var P=[];
+  for(var j=0;j<8;j++){var r=rot(BARS[i][j],a);
+   P.push([m+(r[0]*U[0]+r[1]*U[1]+r[2]*U[2])*k, m-(r[0]*V[0]+r[1]*V[1]+r[2]*V[2])*k, r[0]+r[1]+r[2]]);}
+  for(var q=0;q<6;q++){var f=Q[q],z=(P[f[0]][2]+P[f[1]][2]+P[f[2]][2]+P[f[3]][2])/4;
+   faces.push([z,P[f[0]],P[f[1]],P[f[2]],P[f[3]]]);}
+ }
+ faces.sort(function(a,b){return a[0]-b[0];});
+ x.lineWidth=1.4;x.lineJoin='round';x.fillStyle='#05070D';x.strokeStyle='rgba(203,196,240,.85)';
+ for(var i=0;i<faces.length;i++){var f=faces[i];
+  x.beginPath();x.moveTo(f[1][0],f[1][1]);x.lineTo(f[2][0],f[2][1]);x.lineTo(f[3][0],f[3][1]);x.lineTo(f[4][0],f[4][1]);
+  x.closePath();x.fill();x.stroke();}
+ requestAnimationFrame(frame);}
+var BARS=[[[-150,-150,-160],[-110,-110,-160],[-110,-110,-200],[-150,-150,-200],[200,-150,-160],[160,-110,-160],[160,-110,-200],[200,-150,-200]],[[200,-150,-200],[200,-150,-160],[160,-110,-160],[160,-110,-200],[200,150,-200],[200,110,-160],[160,110,-160],[160,150,-200]],[[160,110,-160],[160,150,-200],[200,150,-200],[200,110,-160],[160,110,110],[160,150,150],[200,150,150],[200,110,110]],[[160,110,110],[160,150,150],[200,150,150],[200,110,110],[160,-160,110],[160,-200,150],[200,-200,150],[200,-160,110]],[[200,-200,150],[200,-160,110],[160,-160,110],[160,-200,150],[200,-200,-150],[200,-160,-150],[160,-160,-110],[160,-200,-110]],[[200,-200,-150],[200,-160,-150],[160,-160,-110],[160,-200,-110],[-150,-200,-150],[-150,-160,-150],[-110,-160,-110],[-110,-200,-110]],[[-150,-200,-150],[-150,-160,-150],[-110,-160,-110],[-110,-200,-110],[-150,-200,200],[-150,-160,200],[-110,-160,160],[-110,-200,160]],[[-150,-200,200],[-150,-160,200],[-110,-160,160],[-110,-200,160],[150,-200,200],[110,-160,200],[110,-160,160],[150,-200,160]],[[150,-200,160],[150,-200,200],[110,-160,200],[110,-160,160],[150,150,160],[150,150,200],[110,110,200],[110,110,160]],[[110,110,160],[150,150,160],[150,150,200],[110,110,200],[-160,110,160],[-200,150,160],[-200,150,200],[-160,110,200]],[[-200,150,160],[-200,150,200],[-160,110,200],[-160,110,160],[-200,-110,160],[-200,-150,200],[-160,-150,200],[-160,-110,160]],[[-160,-150,200],[-160,-110,160],[-200,-110,160],[-200,-150,200],[-160,-150,-150],[-160,-110,-110],[-200,-110,-110],[-200,-150,-150]],[[-160,-150,-150],[-160,-110,-110],[-200,-110,-110],[-200,-150,-150],[-160,200,-150],[-160,160,-110],[-200,160,-110],[-200,200,-150]],[[-200,160,-110],[-200,200,-150],[-160,200,-150],[-160,160,-110],[-200,160,150],[-200,200,150],[-160,200,110],[-160,160,110]],[[-200,160,150],[-200,200,150],[-160,200,110],[-160,160,110],[150,160,150],[150,200,150],[110,200,110],[110,160,110]],[[150,160,150],[150,200,150],[110,200,110],[110,160,110],[150,160,-200],[150,200,-200],[110,200,-160],[110,160,-160]],[[150,160,-200],[150,200,-200],[110,200,-160],[110,160,-160],[-110,160,-200],[-150,200,-200],[-150,200,-160],[-110,160,-160]],[[-150,200,-200],[-150,200,-160],[-110,160,-160],[-110,160,-200],[-150,-150,-200],[-150,-150,-160],[-110,-110,-160],[-110,-110,-200]]];
+requestAnimationFrame(frame);
+})();
+</script>
 </body>
 </html>
