@@ -70,26 +70,25 @@ footer a{color:#7d8694;text-decoration:underline}
 </footer>
 <script>
 /* Dreh-Wuerfel: die 18 Staebe des geprueften Infinity Cube (Quelle: cube-model.js,
-   23/23 Bauplan-Pruefungen bestanden). Rotation um die Raumdiagonale, Projektion
-   identisch mit dem Hintergrundmuster. Kein Framework, ~2 KB Geometriedaten. */
+   23/23 Bauplan-Pruefungen bestanden). Drehteller-Rotation um die senkrechte Achse,
+   Blick leicht von oben (~24 Grad). Kein Framework, ~2 KB Geometriedaten. */
 (function(){
 var c=document.getElementById('wuerfel');if(!c||!c.getContext)return;
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-var x=c.getContext('2d'),S3=Math.sqrt(3),S2=Math.sqrt(2),S6=Math.sqrt(6);
-var n=[1/S3,1/S3,1/S3],U=[1/S2,0,-1/S2],V=[-1/S6,2/S6,-1/S6];
+var x=c.getContext('2d');
+var PH=0.42,CP=Math.cos(PH),SP=Math.sin(PH);
 var Q=[[0,4,5,1],[1,5,6,2],[2,6,7,3],[3,7,4,0],[3,2,1,0],[4,5,6,7]];
-function rot(p,a){ /* Rodrigues um n */
- var c1=Math.cos(a),s1=Math.sin(a),d=p[0]*n[0]+p[1]*n[1]+p[2]*n[2];
- var cx=n[1]*p[2]-n[2]*p[1],cy=n[2]*p[0]-n[0]*p[2],cz=n[0]*p[1]-n[1]*p[0];
- return [p[0]*c1+cx*s1+n[0]*d*(1-c1),p[1]*c1+cy*s1+n[1]*d*(1-c1),p[2]*c1+cz*s1+n[2]*d*(1-c1)];}
 function frame(t){
- var a=t/9000*2*Math.PI, w=c.width, m=w/2, k=w/760;
+ var a=t/9000*2*Math.PI,ca=Math.cos(a),sa=Math.sin(a);
+ var w=c.width,m2=w/2,k=w/640;
  x.clearRect(0,0,w,w);
  var faces=[];
  for(var i=0;i<BARS.length;i++){
   var P=[];
-  for(var j=0;j<8;j++){var r=rot(BARS[i][j],a);
-   P.push([m+(r[0]*U[0]+r[1]*U[1]+r[2]*U[2])*k, m-(r[0]*V[0]+r[1]*V[1]+r[2]*V[2])*k, r[0]+r[1]+r[2]]);}
+  for(var j=0;j<8;j++){var p=BARS[i][j];
+   var x1=p[0]*ca+p[2]*sa, y1=p[1], z1=-p[0]*sa+p[2]*ca;   /* Drehteller: um y */
+   P.push([m2+x1*k, m2-(y1*CP-z1*SP)*k-w*0.02, y1*SP+z1*CP]);/* Kippblick um x */
+  }
   for(var q=0;q<6;q++){var f=Q[q],z=(P[f[0]][2]+P[f[1]][2]+P[f[2]][2]+P[f[3]][2])/4;
    faces.push([z,P[f[0]],P[f[1]],P[f[2]],P[f[3]]]);}
  }
