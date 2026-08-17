@@ -129,10 +129,10 @@ function frame(t){
    var p0=P[f[0]],p1=P[f[1]],p3=P[f[3]];
    var lu=Math.hypot(p1[3]-p0[3],p1[4]-p0[4],p1[5]-p0[5]);
    var lv=Math.hypot(p3[3]-p0[3],p3[4]-p0[4],p3[5]-p0[5]);
-   var su=Math.max(lu/110,0.02),sv=Math.max(lv/110,0.02); /* Kachel = 110 mm wie im Viewer */
+   var su=Math.max(lu/240,0.02),sv=Math.max(lv/240,0.02); /* Kachel = 110 mm wie im Viewer */
    x.save();x.clip();
    x.setTransform((p1[0]-p0[0])/(256*su),(p1[1]-p0[1])/(256*su),(p3[0]-p0[0])/(256*sv),(p3[1]-p0[1])/(256*sv),p0[0],p0[1]);
-   x.globalCompositeOperation='multiply';x.globalAlpha=0.75;
+   x.globalCompositeOperation='multiply';x.globalAlpha=0.88;
    x.fillStyle=PAT;x.fillRect(0,0,256*su,256*sv);
    x.setTransform(1,0,0,1,0,0);x.globalCompositeOperation='source-over';x.globalAlpha=1;
    x.restore();}
