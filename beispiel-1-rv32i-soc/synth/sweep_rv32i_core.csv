@@ -1,0 +1,9 @@
+recipe,LUT,CARRY4,MUXF,DSP,cells
+default,0,8,0,0,127
+abc9,0,8,0,0,127
+nowidelut,0,8,0,0,127
+abc9_nowidelut,0,8,0,0,127
+flatten,0,8,0,0,127
+flatten_abc9,0,8,0,0,127
+dff_abc9,0,8,0,0,127
+widemux5,428,33,145,0,793

@@ -1,0 +1,66 @@
+########################################################################
+# RV32I Schmiede-Neustart  --  Synthese-Report (yosys Yosys 0.65+71)
+# Ziel-FPGA: Xilinx 7-Serie (xc7 / Nexys A7 xc7a100t), synth_xilinx
+# Datum: 2026-09-09 21:15:33
+########################################################################
+
+WICHTIGE EHRLICHE ANMERKUNG ZUR MESSUNG:
+  imem und dmem werden ASYNCHRON (kombinatorisch) gelesen (Single-Cycle-Kern).
+  -> koennen NICHT auf BRAM (RAMB18/36) abgebildet werden (BRAM braucht getakteten Read).
+  -> yosys bildet sie auf verteiltes LUT-RAM/ROM + breite MUXF-Makros ab.
+  Folge: 'stat' (Local Count, excluding submodules) versteckt im Default-Flow die
+  LUTs in Makro-Submodulen und zeigt 0 LUT. Nur eine vollstaendige Zerlegung
+  (Rezept 'widemux 5') macht ALLE Primitive sichtbar. Beide Sichten unten.
+  yosys-LUT ist Vergleichsmass; post-route (Vivado) bleibt das Verdikt (SYNTH != BOARD).
+
+======================================================================
+SICHT A -- Default synth_xilinx (Top-Ebene, excluding submodules)
+======================================================================
+3. Printing statistics.
+
+=== rv32i_core ===
+
+        +----------Local Count, excluding submodules.
+      218 wires
+        5 ports
+      127 cells
+        1   BUFG
+        8   CARRY4
+       30   FDRE
+        7   IBUF
+        1   INV
+       64   OBUF
+       16   RAM32M
+
+End of script. Logfile hash: 4ca566729f, time: 1.49s, user: 1.44s, system: 0.03s, MEM: 153.83 MB peak
+
+======================================================================
+SICHT B -- vollstaendig zerlegt (synth_xilinx -widemux 5): ALLE Primitive sichtbar
+======================================================================
+3. Printing statistics.
+
+=== rv32i_core ===
+
+        +----------Local Count, excluding submodules.
+      576 wires
+        5 ports
+      793 cells
+        1   BUFG
+       33   CARRY4
+       34   FDRE
+        7   IBUF
+       33   INV
+      185   LUT2
+      123   LUT3
+       14   LUT4
+       55   LUT5
+       51   LUT6
+      109   MUXF7
+       36   MUXF8
+       64   OBUF
+       32   RAM256X1S
+       16   RAM32M
+
+End of script. Logfile hash: 761820230d, time: 1.87s, user: 1.73s, system: 0.04s, MEM: 159.08 MB peak
+
+=== ENDE SYNTH-REPORT ===

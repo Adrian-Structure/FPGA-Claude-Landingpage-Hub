@@ -1,0 +1,51 @@
+########################################################################
+# RV32I Schmiede-Neustart  --  Simulationslog (iverilog 14.0 (devel) (s20260301-172-g311c22e4d-dirty))
+# Datum: 2026-09-09 21:09:59
+########################################################################
+
+=== [1] POSITIVLAUF  (programm.hex, korrektes Programm) ===
+iverilog rc=0
+WARNING: rv32i_core.v:45: $readmemh(programm.hex): Not enough words in the file for the requested range [0:255].
+==== RV32I Selbstpruefung ====
+  PASS  x5  LUI  0x12345000  = 0x12345000
+  PASS  x30 OR   0xF0|0x0F   = 0x000000ff
+  PASS  x31 AND  0xF0&0x0F   = 0x00000000
+  PASS  x27 XOR  0xF0^0x0F   = 0x000000ff
+  PASS  x26 SLLI 0x0F<<4     = 0x000000f0
+  PASS  x25 SUB  0xF0-0x0F   = 0x000000e1
+  PASS  x2  SUMME 1..10      = 0x00000037
+  PASS  x10 a0 = Summe       = 0x00000037
+  PASS  x6  JAL-Skip (0)     = 0x00000000
+  PASS  x7  JAL-Link 0x40    = 0x00000040
+  PASS  mem[0] SW  = 55      = 0x00000037
+  PASS  x12 LW mem[0]        = 0x00000037
+==============================
+ALL-PASS
+==============================
+tb_rv32i.v:63: $finish called at 3015000 (1ps)
+vvp rc=0
+
+=== [2] NEGATIVKONTROLLE  (programm_bad.hex: add->sub bei Schleifenaddition) ===
+    Gezielte Verfaelschung: Wort 12  00110133 (add x2,x2,x1) -> 40110133 (sub x2,x2,x1)
+iverilog rc=0
+WARNING: rv32i_core.v:45: $readmemh(programm_bad.hex): Not enough words in the file for the requested range [0:255].
+==== RV32I Selbstpruefung ====
+  PASS  x5  LUI  0x12345000  = 0x12345000
+  PASS  x30 OR   0xF0|0x0F   = 0x000000ff
+  PASS  x31 AND  0xF0&0x0F   = 0x00000000
+  PASS  x27 XOR  0xF0^0x0F   = 0x000000ff
+  PASS  x26 SLLI 0x0F<<4     = 0x000000f0
+  PASS  x25 SUB  0xF0-0x0F   = 0x000000e1
+  FAIL  x2  SUMME 1..10      ist=0xffffffc9  soll=0x00000037
+  FAIL  x10 a0 = Summe       ist=0xffffffc9  soll=0x00000037
+  PASS  x6  JAL-Skip (0)     = 0x00000000
+  PASS  x7  JAL-Link 0x40    = 0x00000040
+  FAIL  mem[0] SW  = 55      ist=0xffffffc9  soll=0x00000037
+  FAIL  x12 LW mem[0]        ist=0xffffffc9  soll=0x00000037
+==============================
+FAIL  (4 von 12 Pruefungen fehlgeschlagen)
+==============================
+tb_rv32i.v:63: $finish called at 3015000 (1ps)
+vvp rc=0
+
+=== ENDE SIMLOG ===

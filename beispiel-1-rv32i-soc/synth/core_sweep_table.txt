@@ -1,0 +1,14 @@
+RECIPE                  LUT   CARRY4     MUXF    DSP
+default                   0        8        0      0
+abc9                      0        8        0      0
+nowidelut                 0        8        0      0
+abc9_nowidelut            0        8        0      0
+flatten                   0        8        0      0
+flatten_abc9              0        8        0      0
+dff_abc9                  0        8        0      0
+widemux5                428       33      145      0
+
+Kleinste LUT-Zahl: widemux5 (428 LUTs)  — Vergleichsmass, KEIN Endurteil.
+NAECHSTE SCHRITTE (Pflicht): (1) Aequivalenz pruefen (references/equivalence.md),
+(2) Gewinner in Vivado post-route gegenpruefen (LUTs+WNS+Bitstream), erst dann uebernehmen.
+CSV: /private/tmp/claude-501/-Users-robertoadrian-Library-Mobile-Documents-com-apple-CloudDocs-Claude-Arbeitsordner/e3203054-f483-400d-8113-67d6e80c5d95/scratchpad/coresweep_out/sweep_rv32i_core.csv
