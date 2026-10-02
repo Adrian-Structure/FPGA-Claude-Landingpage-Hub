@@ -594,11 +594,7 @@
     font:500 13px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;text-align:center}
   .as-demohinweis strong{letter-spacing:.08em;text-transform:uppercase}
   .as-demohinweis a{color:#fff;text-decoration:underline}
-  .as-kibild{position:relative;display:block;width:100%;height:100%;line-height:0}
-  .as-kibild>img{display:block;width:100%;height:100%;object-fit:inherit}
-  .as-kibild>.as-kibadge{position:absolute;left:10px;bottom:10px;z-index:5;pointer-events:none;
-    width:132px;height:auto;display:block;filter:drop-shadow(0 1px 5px rgba(0,0,0,.5))}
-  @media (max-width:520px){.as-kibild>.as-kibadge{width:98px;left:6px;bottom:6px}}
+  @media (max-width:520px){}
 </style>
 </head>
 <body>
@@ -955,39 +951,6 @@ var PR_I18N = {"de": {"nav_examples": "Beispiele", "nav_pricing": "Preise", "nav
 })();
 </script>
 
-<script id="as-kibadge-script">
-/* Kennzeichnet KI-erzeugte Bildmotive unmittelbar am Medium (Art. 50 Abs. 5 VO (EU) 2024/1689).
-   Der Hinweis im Demo-Banner oben traegt die Aussage auch ohne JavaScript. */
-(function(){
-  var TEXT = (document.documentElement.lang || 'de').slice(0,2) === 'en' ? 'AI generated' : 'KI-generiert';
-  function kennzeichne(img){
-    if (img.closest('.as-kibild') || img.closest('.as-demohinweis')) return;
-    if (img.naturalWidth && img.naturalWidth < 200) return;
-    var cs = window.getComputedStyle(img);
-    var huelle = document.createElement('span');
-    huelle.className = 'as-kibild';
-    huelle.style.display = (cs.display === 'inline' ? 'inline-block' : cs.display);
-    huelle.style.width = cs.width; huelle.style.height = cs.height;
-    huelle.style.gridArea = cs.gridArea; huelle.style.flex = cs.flex;
-    huelle.style.borderRadius = cs.borderRadius;
-    huelle.style.aspectRatio = cs.aspectRatio;
-    huelle.style.overflow = 'hidden';
-    img.parentNode.insertBefore(huelle, img);
-    huelle.appendChild(img);
-    img.style.width = '100%'; img.style.height = '100%';
-    var b = document.createElement('img');
-    b.className = 'as-kibadge';
-    b.src = '../../app-assets/labels/label-ai-generated-black.svg';
-    b.alt = (TEXT === 'AI generated')
-      ? 'AI generated - this image was created with artificial intelligence'
-      : 'KI-generiert - dieses Bild wurde mit Kuenstlicher Intelligenz erzeugt';
-    b.setAttribute('loading','lazy');
-    huelle.appendChild(b);
-  }
-  function lauf(){ Array.prototype.forEach.call(document.images, function(i){ try{ kennzeichne(i); }catch(e){} }); }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', lauf); else lauf();
-  window.addEventListener('load', lauf);
-})();
-</script>
+<script src="../../app-assets/ki-badge.js" defer></script>
 </body>
 </html>
