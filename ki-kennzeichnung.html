@@ -36,8 +36,33 @@
            font-size: 13px; color: #9aa4b2; }
   footer a { color: #9aa4b2; }
 </style>
+<style id="as-heimweg">
+  .as-heim{position:sticky;top:0;z-index:999;display:flex;gap:12px;align-items:center;
+    padding:6px 14px;margin:0 0 8px;background:rgba(13,17,23,.92);backdrop-filter:blur(8px);
+    border-bottom:1px solid rgba(255,255,255,.08)}
+  .as-heim .heimknopf{display:flex;align-items:center;gap:9px;text-decoration:none;color:#9aa4b2;
+    font:14px/1 Arial,Helvetica,sans-serif;border:1px solid #30363d;border-radius:44px;
+    padding:4px 16px 4px 5px;transition:color .15s,border-color .15s,background .15s}
+  .as-heim .heimknopf:hover,.as-heim .heimknopf:focus-visible{color:#f0f0f0;border-color:#6e7681;background:#21262d}
+  .as-heim canvas.as-wuerfel{display:block;width:76px;height:76px}
+  .as-heim a.textknopf{display:inline-block;color:#9aa4b2;text-decoration:none;
+    font:14px/1 Arial,Helvetica,sans-serif;border:1px solid #30363d;border-radius:20px;padding:8px 16px;
+    transition:color .15s,border-color .15s,background .15s}
+  .as-heim a.textknopf:hover,.as-heim a.textknopf:focus-visible{color:#f0f0f0;border-color:#6e7681;background:#21262d}
+  @media (prefers-reduced-motion: reduce){.as-heim canvas.as-wuerfel{display:none}
+    .as-heim .heimknopf{padding:8px 16px}}
+  @media (max-width:420px){.as-heim canvas.as-wuerfel{width:56px;height:56px}
+    .as-heim .heimknopf,.as-heim a.textknopf{font-size:13px}}
+</style>
 </head>
 <body>
+<nav class="as-heim" aria-label="Bereichsnavigation">
+  <a class="heimknopf" href="index.html" aria-label="Zur Startseite von Adrian-Structure">
+    <canvas class="as-wuerfel" width="380" height="380" aria-hidden="true"></canvas>
+    <span>Adrian-Structure</span>
+  </a>
+</nav>
+
 <div class="wrap">
   <a class="back" href="./index.html">← Zurück</a>
   <h1>KI-Kennzeichnung</h1>
@@ -107,5 +132,6 @@
     <a href="./impressum.html">Impressum</a> &middot; <a href="./datenschutz.html">Datenschutz</a>
   </footer>
 </div>
+<script src="app-assets/wuerfel.js" defer></script>
 </body>
 </html>
