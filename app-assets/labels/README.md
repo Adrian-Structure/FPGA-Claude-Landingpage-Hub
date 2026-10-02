@@ -53,14 +53,32 @@ Deshalb bekommt jedes Label ein sprechendes `alt`:
 Nie `alt=""` und nie als CSS-Hintergrundbild einbinden — beides macht den
 Hinweis für Screenreader unsichtbar.
 
-## Was diese Labels NICHT sind
+## Was diese Icons sind
 
-Kein amtliches Symbol der Europäischen Union. Ein solches gibt es nicht: Art. 50
-schreibt kein Zeichen vor, sondern eine klare, eindeutige und barrierefreie
-Information. Die Praxisleitfäden zur Kennzeichnung nach Art. 50 Abs. 7 werden vom
-Büro für Künstliche Intelligenz erst erarbeitet. Die Labels sind also eine
-freiwillige Kennzeichnung durch den Betreiber — gut und üblich, aber nicht
-vorgeschrieben, und sie dürfen nicht als behördliches Siegel dargestellt werden.
+Die von der **Europäischen Kommission** bereitgestellten EU-Icons zur Kennzeichnung
+KI-erzeugter Inhalte. Ihre Verwendung ist **freiwillig** — die Kennzeichnungspflicht
+nach Art. 50 der Verordnung (EU) 2024/1689 ist es **nicht**. Das Icon ersetzt also
+keine Pflicht, es erfüllt sie sichtbar.
+
+Die Kommission stellt sie jedem frei zur Verfügung; eine Namensnennung der Kommission
+oder des Büros für Künstliche Intelligenz ist nicht erforderlich.
+
+Vorgaben der Kommission zur Darstellung:
+
+- spätestens bei der ersten Wahrnehmung klar erkennbar und unterscheidbar
+- an einer Stelle ohne überlagernde Elemente
+- unmittelbar in den Inhalt eingebettet (Ausnahme: Werke der Kunst)
+- auch nach Weitergabe oder Herunterladen noch sichtbar
+- in klar sichtbarer Größe
+- barrierefrei: Alternativtext beziehungsweise ARIA-Beschriftung, verständliche
+  Sprache, ausreichende Sichtbarkeitsdauer
+
+Wer den Verhaltenskodex zur Kennzeichnung KI-erzeugter Inhalte unterzeichnet hat, muss
+die dortigen Platzierungsvorgaben einhalten. Wer ihn nicht unterzeichnet hat, darf durch
+die Verwendung der Icons nicht den Eindruck erwecken, er halte sich daran.
+
+Die Kennzeichnungspflicht für täuschend echte Darstellungen betrifft lebensechte
+Abbildungen von Menschen; stilisierte Illustrationen fallen nicht darunter.
 
 ## Wo sie auf dieser Website verwendet werden
 
