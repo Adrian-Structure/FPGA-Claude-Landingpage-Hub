@@ -20,3 +20,12 @@ rights holder.
 
 Lizenzierung / licensing ausschließlich über: agensi.io
 Kontakt / contact: roberto.adrian@adrian-structure.com
+
+EINZIGE AUSNAHME / SOLE EXCEPTION
+=================================
+Nur der Ordner voice/factory_voices (Sprechspuren der FPGA-Landingpage) steht
+unter der MIT-Lizenz, siehe voice/factory_voices/LICENSE. Alle anderen Ordner,
+ausdrücklich auch app-assets/voices, bleiben ohne Lizenz: alle Rechte vorbehalten.
+Only the folder voice/factory_voices (voice tracks of the FPGA landing page) is
+MIT-licensed, see voice/factory_voices/LICENSE. Every other folder, expressly
+including app-assets/voices, remains unlicensed: all rights reserved.

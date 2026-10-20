@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skills — YouTube Knowledge Factory — Adrian-Structure</title>
+<meta name="description" content="Wie aus einem YouTube-Vortrag ein installierter Claude-Skill wird: elf Schritte, 100 % lokal, kein Server. Und die Skills, die es schon gibt.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#05070D;color:#E8ECF2;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:#05070D url("../app-assets/images/infinity-pattern.svg") center top/1920px 1080px repeat;opacity:.35}
+.as-heim{position:sticky;top:0;z-index:999;display:flex;gap:12px;align-items:center;padding:6px 14px;background:rgba(5,7,13,.92);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.08)}
+.as-heim .heimknopf{display:flex;align-items:center;gap:9px;text-decoration:none;color:#9aa4b2;font:14px/1 Arial,Helvetica,sans-serif;border:1px solid #30363d;border-radius:44px;padding:4px 16px 4px 5px}
+.as-heim .heimknopf:hover{color:#f0f0f0;border-color:#6e7681;background:#21262d}
+.as-heim canvas.as-wuerfel{display:block;width:76px;height:76px}
+@media (prefers-reduced-motion: reduce){.as-heim canvas.as-wuerfel{display:none}.as-heim .heimknopf{padding:8px 16px}}
+main{flex:1;width:100%;max-width:1180px;margin:0 auto;padding:28px 16px 48px}
+.eyebrow{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#5EEAD4;display:block;margin-bottom:8px}
+h1{font-size:28px;color:#F5F8FC;margin-bottom:8px}
+.intro{font-size:15px;color:#B8C4D4;line-height:1.6;max-width:760px;margin-bottom:26px}
+h2{font-size:17px;color:#F5F8FC;margin:30px 0 12px}
+figure{margin:0 0 22px;background:#0E1622;border:1px solid rgba(94,234,212,.18);border-radius:14px;overflow:hidden}
+figure a{display:block} figure img{display:block;width:100%;height:auto}
+figcaption{padding:12px 18px;font-size:14px;color:#8a8f98;line-height:1.5} figcaption b{color:#E8ECF2;font-weight:600}
+ol.schritte{counter-reset:s;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin-bottom:8px}
+ol.schritte li{background:#0E1622;border:1px solid rgba(94,234,212,.18);border-radius:12px;padding:12px 14px;font-size:14px;color:#D6DEE8;line-height:1.45}
+ol.schritte li::before{counter-increment:s;content:counter(s);display:inline-block;min-width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:#5EEAD4;color:#05070D;font-weight:700;font-size:12px;margin-right:8px}
+ul.skills{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px}
+ul.skills li{background:#0E1622;border:1px solid rgba(94,234,212,.18);border-radius:10px;padding:10px 14px;font-size:14px}
+ul.skills a{color:#E8ECF2;text-decoration:none} ul.skills a:hover{color:#5EEAD4} ul.skills small{color:#5EEAD4;font-family:ui-monospace,Menlo,monospace;font-size:11px;margin-left:6px}
+.hinweis{font-size:13px;color:#7d8694;line-height:1.7;margin-top:18px}
+footer{text-align:center;padding:24px;font-size:13px;color:#7d8694} footer a{color:#7d8694;text-decoration:underline}
+</style>
+</head>
+<body>
+<nav class="as-heim" aria-label="Bereichsnavigation">
+  <a class="heimknopf" href="../index.html" aria-label="Zur Startseite von Adrian-Structure">
+    <canvas class="as-wuerfel" width="380" height="380" aria-hidden="true"></canvas>
+    <span>Adrian-Structure</span>
+  </a>
+</nav>
+<main>
+<span class="eyebrow">Skills</span>
+<h1>YouTube Knowledge Factory</h1>
+<p class="intro">Vom Vortrag zum installierten Claude-Skill. Ein Thema suchen, das beste Video prüfen, lokal herunterladen, Ton und Folien in Text verwandeln, mit dem vorhandenen Wissen vergleichen, nur das Neue zum Skill machen, installieren, in Obsidian verknüpfen. Alles auf dem eigenen Rechner, kein Server, keine Cloud.</p>
+
+<figure>
+  <a href="../app-assets/images/youtube-knowledge-factory.jpg" target="_blank" rel="noopener"><img src="../app-assets/images/youtube-knowledge-factory.jpg" alt="YouTube Knowledge Factory: elf Schritte von Suche und Filter über Download, lokale Transkription, OCR, Wissensvergleich und Skill-Erzeugung bis zum installierten Skill und zur Obsidian-Wissensbasis" width="1254" height="1254" loading="lazy"></a>
+  <figcaption><b>Die Fabrik in elf Schritten.</b> Suche und Filter · YouTube-Suche · Vorschau und Qualitätsprüfung · Download · Extraktion (Whisper lokal, OCR, Bilder) · Wissenspaket · Claude-Wissensabgleich · Skill-Erzeugung · Skill-Installer · Obsidian-Wissensbasis · Skill im Einsatz. Dann von vorn: der Kreislauf lernt weiter.</figcaption>
+</figure>
+<figure>
+  <a href="../app-assets/images/youtube-knowledge-factory-hephaisto5.jpg" target="_blank" rel="noopener"><img src="../app-assets/images/youtube-knowledge-factory-hephaisto5.jpg" alt="HEPHAISTO5 Claude Skills, YouTube Knowledge Factory: zehn Stationen vom Thema bis zum installierten Skill, lokal, privat" width="1086" height="724" loading="lazy"></a>
+  <figcaption><b>Dieselbe Fabrik als Straße.</b> Thema und Filter · Suche · Download und Bilder · OCR · lokale Transkription · Wissenspaket · Wissensabgleich · Skill erzeugen · Skill installieren · Obsidian. Your knowledge, your skills, your advantage.</figcaption>
+</figure>
+
+<h2>Was ein Durchlauf liefert</h2>
+<ol class="schritte">
+  <li>Thema und Filter: Dauer, Datum, Vortrag oder Tutorial, Kanal, Relevanz.</li>
+  <li>Die besten zehn Treffer, mit Vorschau geprüft: Folien, klarer Ton, zum Thema.</li>
+  <li>Video und Metadaten lokal gespeichert.</li>
+  <li>Transkript mit Whisper, OCR von Folien und Code, Schlüsselbilder.</li>
+  <li>Ein Wissenspaket in einem Ordner: MP4, JSON, TXT, Bilder, Kapitel.</li>
+  <li>Abgleich mit dem, was Claude, die vorhandenen Skills und Obsidian schon wissen.</li>
+  <li>Nur das Neue wird zum Skill: Beschreibung, Anleitung, Beispiele, Code, Quellen.</li>
+  <li>Installiert und registriert. Beim nächsten Mal weiß Claude es.</li>
+</ol>
+
+<h2>Skills, die es schon gibt</h2>
+<ul class="skills"><li><a href="https://github.com/Adrian-Structure/FPGA-Claude-Landingpage-Hub/blob/main/skills/01-python-claude/SKILL.md">Python Claude (Modus 1/12)</a> <small>DE · EN</small></li><li><a href="https://github.com/Adrian-Structure/FPGA-Claude-Landingpage-Hub/blob/main/skills/02-golden-python-claude/SKILL.md">Golden Python Claude (Modus 2/12)</a> <small>DE · EN</small></li><li><a href="https://github.com/Adrian-Structure/FPGA-Claude-Landingpage-Hub/blob/main/skills/03-testbench-claude/SKILL.md">Testbench Claude (Modus 3/12)</a> <small>DE · EN</small></li><li><a href="https://github.com/Adrian-Structure/FPGA-Claude-Landingpage-Hub/blob/main/skills/04-verilog-claude/SKILL.md">Verilog Claude (Modus 4/12)</a> <small>DE · EN</small></li><li><a href="https://github.com/Adrian-Structure/FPGA-Claude-Landingpage-Hub/blob/main/skills/05-rtl-claude/SKILL.md">RTL Claude (Modus 5/12)</a> <small>DE · EN</small></li><li><a href="https://github.com/Adrian-Structure/FPGA-Claude-Landingpage-Hub/blob/main/skills/06-vivado-claude/SKILL.md">Vivado Claude (Modus 6/12)</a> <small>DE · EN</small></li><li><a href="https://github.com/Adrian-Structure/FPGA-Claude-Landingpage-Hub/blob/main/skills/07-timing-claude/SKILL.md">Timing Claude (Modus 7/12)</a> <small>DE · EN</small></li><li><a href="https://github.com/Adrian-Structure/FPGA-Claude-Landingpage-Hub/blob/main/skills/08-bitstream-claude/SKILL.md">Bitstream Claude (Modus 8/12)</a> <small>DE · EN</small></li><li><a href="https://github.com/Adrian-Structure/FPGA-Claude-Landingpage-Hub/blob/main/skills/09-flash-claude/SKILL.md">Flash Claude (Modus 9/12)</a> <small>DE · EN</small></li><li><a href="https://github.com/Adrian-Structure/FPGA-Claude-Landingpage-Hub/blob/main/skills/10-saleae-claude/SKILL.md">Saleae Claude (Modus 10/12)</a> <small>DE · EN</small></li><li><a href="https://github.com/Adrian-Structure/FPGA-Claude-Landingpage-Hub/blob/main/skills/11-documentation-claude/SKILL.md">Documentation Claude (Modus 11/12)</a> <small>DE · EN</small></li><li><a href="https://github.com/Adrian-Structure/FPGA-Claude-Landingpage-Hub/blob/main/skills/12-deploy-claude/SKILL.md">Deploy Claude (Modus 12/12)</a> <small>DE · EN</small></li><li><a href="https://github.com/Adrian-Structure/FPGA-Claude-Landingpage-Hub/blob/main/skills/fpga-golden-model/SKILL.md">fpga-golden-model - Build a golden model for FPGA designs</a></li></ul>
+<p class="hinweis">Jeder Skill ist eine Markdown-Datei nach dem Claude-Skill-Format, lesbar auf GitHub. Lizenz: siehe <a href="https://github.com/Adrian-Structure/FPGA-Claude-Landingpage-Hub/blob/main/LICENSE" style="color:#9aa4b2">LICENSE</a> des Repositories. Beziehen über den <a href="../shop/index.html" style="color:#9aa4b2">Skill-Shop</a>.</p>
+</main>
+<footer>© 2026 Adrian-Structure · <a href="../impressum.html">Impressum</a> · <a href="../datenschutz.html">Datenschutz</a> &middot; <a href="../ki-kennzeichnung.html">KI-Kennzeichnung</a></footer>
+<script src="../app-assets/wuerfel.js" defer></script>
+</body>
+</html>
